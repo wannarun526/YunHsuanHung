@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hung Yun Hsuan — Software Engineer</title>
+<meta name="description" content="Resume of Hung Yun Hsuan, Fullstack Software Engineer based in Taipei, Taiwan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #16202E;   /* deep navy — primary text */
+    --ink-soft:   #45566B;   /* slate — secondary text */
+    --paper:      #F7F9FB;   /* cool white — page background */
+    --card:       #FFFFFF;
+    --line:       #DDE4EC;
+    --commit:     #0E9F6E;   /* commit green — the accent */
+    --commit-dim: #E3F4EC;
+    --mono:       'IBM Plex Mono', ui-monospace, monospace;
+    --body:       'IBM Plex Sans', system-ui, sans-serif;
+    --display:    'Space Grotesk', var(--body);
+    --maxw: 1060px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    font-size:16px;
+  }
+  ::selection{ background:var(--commit); color:#fff; }
+
+  a{ color:var(--commit); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--commit);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  /* ============ HEADER ============ */
+  header{
+    border-bottom:1px solid var(--line);
+    background:var(--card);
+  }
+  .masthead{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    padding:64px 0 40px;
+  }
+  .id-block .eyebrow{
+    font-family:var(--mono);
+    font-size:.8rem;
+    color:var(--commit);
+    letter-spacing:.06em;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(2.2rem, 5.5vw, 3.6rem);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+  }
+  .role{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(1.05rem, 2.4vw, 1.35rem);
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  .header-actions{ display:flex; gap:10px; padding-bottom:6px; }
+  .btn{
+    font-family:var(--mono);
+    font-size:.82rem;
+    padding:9px 16px;
+    border:1px solid var(--ink);
+    background:var(--card);
+    color:var(--ink);
+    border-radius:6px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .btn:hover{ background:var(--ink); color:#fff; }
+  .btn:active{ transform:translateY(1px); }
+  .btn.primary{ background:var(--commit); border-color:var(--commit); color:#fff; }
+  .btn.primary:hover{ background:#0B855C; border-color:#0B855C; }
+
+  .contact-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 28px;
+    padding:14px 0 22px;
+    font-family:var(--mono);
+    font-size:.85rem;
+    color:var(--ink-soft);
+  }
+  .contact-bar span::before{
+    content:attr(data-key)": ";
+    color:var(--commit);
+  }
+
+  /* ============ LAYOUT ============ */
+  main{ padding:48px 0 72px; }
+  .grid{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:56px;
+    align-items:start;
+  }
+  @media (max-width:820px){
+    .grid{ grid-template-columns:1fr; gap:40px; }
+  }
+
+  section{ margin-bottom:44px; }
+  section:last-child{ margin-bottom:0; }
+  h2{
+    font-family:var(--display);
+    font-size:.95rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--ink);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  h2::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .about p{ color:var(--ink-soft); }
+  .about p + p{ margin-top:12px; }
+  .about strong{ color:var(--ink); font-weight:600; }
+
+  /* ---- skills ---- */
+  .skill-group{ margin-bottom:16px; }
+  .skill-group .label{
+    font-family:var(--mono);
+    font-size:.72rem;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+    margin-bottom:7px;
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:7px; }
+  .chip{
+    font-family:var(--mono);
+    font-size:.78rem;
+    padding:4px 11px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:var(--ink);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .chip:hover{ border-color:var(--commit); background:var(--commit-dim); }
+
+  .lang-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:.9rem;
+    padding:8px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .lang-row:last-child{ border-bottom:none; }
+  .lang-row .score{ font-family:var(--mono); color:var(--commit); font-weight:500; }
+
+  /* ---- education ---- */
+  .edu{ font-size:.92rem; }
+  .edu .school{ font-weight:600; }
+  .edu .dept{ color:var(--ink-soft); }
+  .edu .years{ font-family:var(--mono); font-size:.78rem; color:var(--commit); margin-bottom:4px; }
+  .edu ul{ margin-top:10px; padding-left:18px; color:var(--ink-soft); font-size:.88rem; }
+  .edu li{ margin-bottom:6px; }
+
+  /* ============ SIGNATURE: git-log timeline ============ */
+  .log-hint{
+    font-family:var(--mono);
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin:-8px 0 22px;
+  }
+  .log-hint .cmd{ color:var(--commit); }
+
+  .timeline{ position:relative; padding-left:34px; }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:8px; top:10px; bottom:10px;
+    width:2px;
+    background:linear-gradient(var(--commit) 0 60%, var(--line));
+  }
+  .commit{
+    position:relative;
+    margin-bottom:36px;
+  }
+  .commit:last-child{ margin-bottom:0; }
+  .commit::before{
+    content:"";
+    position:absolute;
+    left:-33px; top:8px;
+    width:16px; height:16px;
+    border-radius:50%;
+    background:var(--paper);
+    border:3px solid var(--commit);
+  }
+  .commit.head::before{
+    background:var(--commit);
+    box-shadow:0 0 0 5px var(--commit-dim);
+  }
+
+  .commit-meta{
+    font-family:var(--mono);
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 14px;
+    align-items:center;
+  }
+  .commit-meta .date{ color:var(--commit); font-weight:500; }
+  .tag{
+    font-size:.7rem;
+    padding:2px 9px;
+    border-radius:4px;
+    background:var(--commit-dim);
+    color:#0B7A55;
+    border:1px solid #BCE5D3;
+  }
+  .commit h3{
+    font-family:var(--display);
+    font-size:1.18rem;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+  .commit .company{ color:var(--ink-soft); font-weight:500; font-family:var(--body); }
+
+  .commit-body{
+    margin-top:12px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .commit-body h4{
+    font-family:var(--mono);
+    font-size:.72rem;
+    font-weight:500;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .commit-body ul{ padding-left:18px; color:var(--ink-soft); font-size:.92rem; }
+  .commit-body li{ margin-bottom:6px; }
+  .commit-body li::marker{ color:var(--commit); }
+
+  .project{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .project .p-name{
+    font-weight:600;
+    font-size:.95rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 10px;
+    align-items:baseline;
+  }
+  .project .p-name a{
+    font-family:var(--mono);
+    font-size:.76rem;
+    font-weight:400;
+    word-break:break-all;
+  }
+
+  /* ============ reveal animation ============ */
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
+  .reveal.visible{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 0 40px;
+    font-family:var(--mono);
+    font-size:.78rem;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  /* toast for copy-email */
+  #toast{
+    position:fixed;
+    left:50%; bottom:28px;
+    transform:translate(-50%, 20px);
+    background:var(--ink);
+    color:#fff;
+    font-family:var(--mono);
+    font-size:.8rem;
+    padding:10px 18px;
+    border-radius:8px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  #toast.show{ opacity:1; transform:translate(-50%, 0); }
+
+  /* ============ print ============ */
+  @media print{
+    body{ background:#fff; font-size:12px; }
+    .header-actions, #toast, .log-hint{ display:none; }
+    header, .commit-body{ border:none; }
+    .commit-body{ padding:8px 0 0; }
+    main{ padding:16px 0; }
+    .grid{ grid-template-columns:1fr; gap:20px; }
+    .reveal{ opacity:1 !important; transform:none !important; }
+    a{ color:var(--ink); }
+    .timeline::before{ background:var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="masthead">
+      <div class="id-block">
+        <p class="eyebrow">~/resume $ whoami</p>
+        <h1>Hung Yun Hsuan</h1>
+        <p class="role">Software Engineer · Fullstack</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn primary" id="copyEmail" type="button">Copy email</button>
+        <button class="btn" id="printBtn" type="button">Print / PDF</button>
+      </div>
+    </div>
+    <div class="contact-bar">
+      <span data-key="base">Taipei City, Taiwan</span>
+      <span data-key="mail"><a href="mailto:yunshanghong@gmail.com">yunshanghong@gmail.com</a></span>
+      <span data-key="tel"><a href="tel:+886918990526">0918-990-526</a></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+
+    <!-- ======== LEFT COLUMN ======== -->
+    <aside>
+      <section class="about reveal">
+        <h2>About</h2>
+        <p>Dedicated to new technologies, with expertise in <strong>C#, Node.js, React, Angular, SQL, MongoDB</strong> and more. Currently in charge of several core projects in the enterprise field, focused on solving problems with people from different cultures and backgrounds.</p>
+        <p>After nearly 4 years of experience at large companies, I am confident in constructing efficient business systems — whether an e-commerce website, a large banking transactional system, or a blockchain system. Going forward, I aim to grow into a <strong>team lead / mentor</strong> role.</p>
+      </section>
+
+      <section class="reveal">
+        <h2>Skills</h2>
+        <div class="skill-group">
+          <p class="label">// backend</p>
+          <div class="chips"><span class="chip">Node.js</span><span class="chip">NestJS</span><span class="chip">C# .NET</span></div>
+        </div>
+        <div class="skill-group">
+          <p class="label">// frontend</p>
+          <div class="chips"><span class="chip">React</span><span class="chip">Angular</span><span class="chip">Vue</span></div>
+        </div>
+        <div class="skill-group">
+          <p class="label">// data</p>
+          <div class="chips"><span class="chip">MongoDB</span><span class="chip">MSSQL</span><span class="chip">Redis</span></div>
+        </div>
+        <div class="skill-group">
+          <p class="label">// infra</p>
+          <div class="chips"><span class="chip">Docker</span><span class="chip">k8s</span><span class="chip">GCP</span></div>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Language</h2>
+        <div class="lang-row"><span>IELTS</span><span class="score">6.5</span></div>
+        <div class="lang-row"><span>TOEIC</span><span class="score">805</span></div>
+      </section>
+
+      <section class="edu reveal">
+        <h2>Education</h2>
+        <p class="years">2012 — 2016</p>
+        <p class="school">National Cheng Kung University</p>
+        <p class="dept">Department of Civil Engineering</p>
+        <ul>
+          <li>Internship at Beijing Institute of Architectural Design (BIAD)</li>
+          <li>Vice Leader of the IJoing team, 6th Career Coaching Program</li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- ======== RIGHT COLUMN: EXPERIENCE ======== -->
+    <div>
+      <section>
+        <h2>Work Experience</h2>
+        <p class="log-hint"><span class="cmd">$ git log</span> --career --reverse=false</p>
+
+        <div class="timeline">
+
+          <!-- Freelance -->
+          <article class="commit head reveal">
+            <p class="commit-meta">
+              <span class="date">Jan 2023 — Now</span>
+              <span class="tag">HEAD</span>
+            </p>
+            <h3>Fullstack Engineer <span class="company">· Freelancer</span></h3>
+            <div class="commit-body">
+              <h4>Job description</h4>
+              <ul>
+                <li>Develop backend services with C# .NET 6.</li>
+                <li>Develop frontend implementations with Angular and Vue 3.</li>
+                <li>Design system architecture and database patterns.</li>
+              </ul>
+              <div class="project">
+                <p class="p-name">Toyota Dealer Singapore / Toyota Kinto Singapore
+                  <a href="https://toyota-dealer-test.web.app/" target="_blank" rel="noopener">toyota-dealer-test.web.app</a>
+                  <a href="https://one.kinto-sg.com/" target="_blank" rel="noopener">one.kinto-sg.com</a>
+                </p>
+                <ul>
+                  <li>Angular framework design: modules, components, services, directives, pipe transformations, interceptors, route guards, etc.</li>
+                  <li>Fetching data from APIs and managing the data flow of every page and step.</li>
+                  <li>Building lightweight page-transition animations to optimize the UI.</li>
+                </ul>
+              </div>
+              <div class="project">
+                <p class="p-name">Sakura Taiwan
+                  <a href="https://www.sakura.com.tw/" target="_blank" rel="noopener">sakura.com.tw</a>
+                </p>
+                <ul>
+                  <li>.NET 6 MVC framework design: middleware, controllers, models, and DB design.</li>
+                  <li>Fetching data from APIs and managing the data flow of every page and step.</li>
+                  <li>Building frontend UI with Vue.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- Xfers -->
+          <article class="commit reveal">
+            <p class="commit-meta"><span class="date">Apr 2022 — Jan 2023</span></p>
+            <h3>Fullstack Engineer <span class="company">· Xfers / StraitsX / Fazz</span></h3>
+            <div class="commit-body">
+              <h4>Job description</h4>
+              <ul>
+                <li>Developed newly designed wallet features for the StraitsX dashboard using React.</li>
+                <li>Developed new features and functions for the admin panel using React and Ruby on Rails.</li>
+                <li>Developed the user verification flow and 2FA flow in the dashboard.</li>
+                <li>Maintained and debugged APIs (Ruby on Rails).</li>
+                <li>Wrote unit and integration tests for each Ruby on Rails function.</li>
+                <li>Developed a Node.js server implementing proxy, authentication, and server-side rendering.</li>
+              </ul>
+              <div class="project">
+                <p class="p-name">StraitsX XSGD / XIDR Stablecoin
+                  <a href="https://www.straitsx.com/sg/otc" target="_blank" rel="noopener">straitsx.com/sg/otc</a>
+                </p>
+                <ul>
+                  <li>Used React/Redux to develop new features and optimize the UI within the original framework.</li>
+                  <li>Developed wallet features including connection, signing, transactions, etc.</li>
+                  <li>Developed Ruby on Rails functions including controllers and services.</li>
+                  <li>Wrote unit and integration tests to prevent predictable bugs.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- Provision -->
+          <article class="commit reveal">
+            <p class="commit-meta"><span class="date">Nov 2020 — Apr 2022</span></p>
+            <h3>Software Engineer <span class="company">· Provision Information</span></h3>
+            <div class="commit-body">
+              <h4>Job description</h4>
+              <ul>
+                <li>Proposed web application solutions to increase the number of newly applied accounts.</li>
+                <li>Developed and designed new features and functions for regional offices.</li>
+                <li>Developed HTML, CSS, and JavaScript for system web views.</li>
+                <li>Developed APIs connecting multiple systems: DB, file streams, sessions, and cache.</li>
+                <li>Developed batch programs to run automatically on a schedule.</li>
+                <li>Wrote unit and integration tests for each function node.</li>
+              </ul>
+              <div class="project">
+                <p class="p-name">E.SUN Loan Verify System / E.SUN Open Account System
+                  <a href="https://www.esunbank.com.tw/s/personalloanverification/" target="_blank" rel="noopener">esunbank.com.tw/s/personalloanverification</a>
+                  <a href="https://www.esunbank.com.tw/s/OpenAccount/" target="_blank" rel="noopener">esunbank.com.tw/s/OpenAccount</a>
+                </p>
+                <ul>
+                  <li>Wrote Vue 3 to dynamically render parts of the frontend components.</li>
+                  <li>Used C# .NET Core to design mechanisms improving system efficiency (middleware, filters, cache, Redis, etc.).</li>
+                  <li>Wrote unit tests to secure each node of the API.</li>
+                  <li>Built APIs handling data from DBs, file systems, and external systems with C# .NET Core.</li>
+                  <li>Built services and mock services for development and production.</li>
+                  <li>Managed the data flow of every page and step.</li>
+                  <li>Deployed the system through TFS to Azure.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <!-- TPI -->
+          <article class="commit reveal">
+            <p class="commit-meta"><span class="date">Mar 2020 — Nov 2020</span></p>
+            <h3>Software Engineer <span class="company">· TPI Software</span></h3>
+            <div class="commit-body">
+              <h4>Job description</h4>
+              <ul>
+                <li>Used the .NET framework to develop APIs and a web platform for the Taishin Bank E-Ticket system.</li>
+                <li>Developed batch programs and unit tests for each node of the system.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- TY Lin -->
+          <article class="commit reveal">
+            <p class="commit-meta"><span class="date">Mar 2017 — Mar 2019</span></p>
+            <h3>Civil / Project Engineer <span class="company">· T.Y.Lin International Consulting Engineering</span></h3>
+            <div class="commit-body">
+              <h4>Job description</h4>
+              <ul>
+                <li>Coded APIs to automatically calculate material quantities (steel, concrete, machinery).</li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <span>© <span id="year"></span> Hung Yun Hsuan</span>
+  <span>built with HTML · CSS · JS</span>
+</footer>
+
+<div id="toast" role="status" aria-live="polite">yunshanghong@gmail.com copied</div>
+
+<script>
+  // current year in footer
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // copy email
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  document.getElementById('copyEmail').addEventListener('click', async () => {
+    const email = 'yunshanghong@gmail.com';
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch (e) {
+      // fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = email;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  });
+
+  // print / save as PDF
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+  // scroll reveal (respects prefers-reduced-motion via CSS)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
