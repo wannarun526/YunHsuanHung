@@ -42,7 +42,7 @@
     border-radius:2px;
   }
 
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:12px 24px; }
 
   /* ============ HEADER ============ */
   header{
@@ -268,6 +268,7 @@
   .commit-body ul{ padding-left:18px; color:var(--ink-soft); font-size:.92rem; }
   .commit-body li{ margin-bottom:6px; }
   .commit-body li::marker{ color:var(--commit); }
+  .commit-body strong{ color:var(--ink); font-weight:600; }
 
   .project{
     margin-top:16px;
@@ -346,7 +347,6 @@
   <div class="wrap">
     <div class="masthead">
       <div class="id-block">
-        <p class="eyebrow">~/resume $ whoami</p>
         <h1>Hung Yun Hsuan</h1>
         <p class="role">Software Engineer · Fullstack</p>
       </div>
@@ -356,7 +356,7 @@
       </div>
     </div>
     <div class="contact-bar">
-      <span data-key="base">Taipei City, Taiwan</span>
+      <span data-key="base">Tainan City, Taiwan</span>
       <span data-key="mail"><a href="mailto:yunshanghong@gmail.com">yunshanghong@gmail.com</a></span>
       <span data-key="tel"><a href="tel:+886918990526">0918-990-526</a></span>
     </div>
@@ -370,8 +370,8 @@
     <aside>
       <section class="about reveal">
         <h2>About</h2>
-        <p>Dedicated to new technologies, with expertise in <strong>C#, Node.js, React, Angular, SQL, MongoDB</strong> and more. Currently in charge of several core projects in the enterprise field, focused on solving problems with people from different cultures and backgrounds.</p>
-        <p>After nearly 4 years of experience at large companies, I am confident in constructing efficient business systems — whether an e-commerce website, a large banking transactional system, or a blockchain system. Going forward, I aim to grow into a <strong>team lead / mentor</strong> role.</p>
+        <p>Fullstack engineer with <strong>6+ years of experience</strong> shipping production systems for fintech, insurance, e-commerce, and SaaS — including Digiwin's Digiknow knowledge platform, Sakura Taiwan's official site, Taishin Life Insurance's corporate site, StraitsX's stablecoin dashboard, and Toyota's Singapore dealer sites.</p>
+        <p>Strong in <strong>C# .NET, Node.js, React, Angular, and Vue</strong>, and used to owning features end-to-end: architecture, database design, implementation, testing, and deployment. Comfortable working across cultures and time zones with distributed teams. Next step: growing into a <strong>team lead / mentor</strong> role.</p>
       </section>
 
       <section class="reveal">
@@ -385,12 +385,16 @@
           <div class="chips"><span class="chip">React</span><span class="chip">Angular</span><span class="chip">Vue</span></div>
         </div>
         <div class="skill-group">
+          <p class="label">// mobile</p>
+          <div class="chips"><span class="chip">React Native</span></div>
+        </div>
+        <div class="skill-group">
           <p class="label">// data</p>
           <div class="chips"><span class="chip">MongoDB</span><span class="chip">MSSQL</span><span class="chip">Redis</span></div>
         </div>
         <div class="skill-group">
           <p class="label">// infra</p>
-          <div class="chips"><span class="chip">Docker</span><span class="chip">k8s</span><span class="chip">GCP</span></div>
+          <div class="chips"><span class="chip">Docker</span><span class="chip">k8s</span><span class="chip">GCP</span><span class="chip">Azure</span></div>
         </div>
       </section>
 
@@ -416,7 +420,6 @@
     <div>
       <section>
         <h2>Work Experience</h2>
-        <p class="log-hint"><span class="cmd">$ git log</span> --career --reverse=false</p>
 
         <div class="timeline">
 
@@ -430,19 +433,16 @@
             <div class="commit-body">
               <h4>Job description</h4>
               <ul>
-                <li>Develop backend services with C# .NET 6.</li>
-                <li>Develop frontend implementations with Angular and Vue 3.</li>
-                <li>Design system architecture and database patterns.</li>
+                <li>Delivered production web systems for enterprise clients, each launched and running live today, by owning architecture, database design, implementation, and release as a one-person engineering team.</li>
               </ul>
               <div class="project">
-                <p class="p-name">Toyota Dealer Singapore / Toyota Kinto Singapore
-                  <a href="https://toyota-dealer-test.web.app/" target="_blank" rel="noopener">toyota-dealer-test.web.app</a>
-                  <a href="https://one.kinto-sg.com/" target="_blank" rel="noopener">one.kinto-sg.com</a>
+                <p class="p-name">Digiwin Digiknow
+                  <a href="https://www.digiknow.com.tw/" target="_blank" rel="noopener">digiknow.com.tw</a>
                 </p>
                 <ul>
-                  <li>Angular framework design: modules, components, services, directives, pipe transformations, interceptors, route guards, etc.</li>
-                  <li>Fetching data from APIs and managing the data flow of every page and step.</li>
-                  <li>Building lightweight page-transition animations to optimize the UI.</li>
+                  <li><strong>Doubled</strong> platform membership within two years and lifted daily user engagement by developing a mission (task) system tied to a ticket-redemption reward mechanism.</li>
+                  <li>Significantly raised content creators' willingness to publish by <strong>eliminating race conditions</strong> in the pipeline and refactoring the APIs to support automatic transcoding of article video and audio.</li>
+                  <li>Cut bug-resolution time by <strong>40%</strong> and brought weekly deployment errors down to zero by introducing an automated CI/CD pipeline.</li>
                 </ul>
               </div>
               <div class="project">
@@ -450,9 +450,17 @@
                   <a href="https://www.sakura.com.tw/" target="_blank" rel="noopener">sakura.com.tw</a>
                 </p>
                 <ul>
-                  <li>.NET 6 MVC framework design: middleware, controllers, models, and DB design.</li>
-                  <li>Fetching data from APIs and managing the data flow of every page and step.</li>
-                  <li>Building frontend UI with Vue.</li>
+                  <li>Grew monthly active users by <strong>50%</strong>, contributing to record-high annual revenue, by revamping the visual design and user experience of the official site of Sakura, a leading Taiwanese kitchen-appliance brand.</li>
+                  <li>Rebuilt the site on .NET 6 MVC — middleware, controllers, data models, and database schema — with interactive Vue 3 components layered on the server-rendered views.</li>
+                </ul>
+              </div>
+              <div class="project">
+                <p class="p-name">Taishin Life Insurance
+                  <a href="https://www.taishinlife.com.tw/" target="_blank" rel="noopener">taishinlife.com.tw</a>
+                </p>
+                <ul>
+                  <li>Boosted development efficiency by over <strong>80%</strong> and shortened delivery timelines by upgrading the legacy system to a Vite-based development workflow.</li>
+                  <li>Reduced production deployment errors to <strong> nearly zero </strong> by building an automated mechanism that imports page templates into the database, paired with version-aware debugging checks.</li>
                 </ul>
               </div>
             </div>
@@ -461,26 +469,23 @@
           <!-- Xfers -->
           <article class="commit reveal">
             <p class="commit-meta"><span class="date">Apr 2022 — Jan 2023</span></p>
-            <h3>Fullstack Engineer <span class="company">· Xfers / StraitsX / Fazz</span></h3>
+            <h3>Fullstack Engineer <span class="company">· Xfers / StraitsX / Fazz (Singapore Taiwan Branch)</span></h3>
             <div class="commit-body">
               <h4>Job description</h4>
               <ul>
-                <li>Developed newly designed wallet features for the StraitsX dashboard using React.</li>
-                <li>Developed new features and functions for the admin panel using React and Ruby on Rails.</li>
-                <li>Developed the user verification flow and 2FA flow in the dashboard.</li>
-                <li>Maintained and debugged APIs (Ruby on Rails).</li>
-                <li>Wrote unit and integration tests for each Ruby on Rails function.</li>
-                <li>Developed a Node.js server implementing proxy, authentication, and server-side rendering.</li>
+                <li>Shipped customer-facing features into production for StraitsX, a licensed Singapore payments platform issuing the XSGD/XIDR stablecoins, by developing across a React/Redux dashboard and Ruby on Rails backend.</li>
+                <li>Strengthened account security on a regulated fintech product by implementing the user-verification (KYC) and two-factor authentication flows in the dashboard.</li>
+                <li>Reduced manual work for internal operations teams by shipping new admin-panel features in React and Ruby on Rails.</li>
+                <li>Enabled server-side rendering and centralized authentication for the dashboard by building a Node.js gateway server handling proxying, auth, and SSR.</li>
+                <li>Kept regressions out of production by writing unit and integration tests for every Rails change, as part of the team's definition of done.</li>
               </ul>
               <div class="project">
                 <p class="p-name">StraitsX XSGD / XIDR Stablecoin
                   <a href="https://www.straitsx.com/sg/otc" target="_blank" rel="noopener">straitsx.com/sg/otc</a>
                 </p>
                 <ul>
-                  <li>Used React/Redux to develop new features and optimize the UI within the original framework.</li>
-                  <li>Developed wallet features including connection, signing, transactions, etc.</li>
-                  <li>Developed Ruby on Rails functions including controllers and services.</li>
-                  <li>Wrote unit and integration tests to prevent predictable bugs.</li>
+                  <li>Launched end-to-end crypto-wallet support — connection, transaction signing, and on-chain transfers for stablecoin users — by integrating wallet providers into the React dashboard.</li>
+                  <li>Powered the new wallet features on the backend by extending Rails with the required controllers and services, covered by unit and integration tests.</li>
                 </ul>
               </div>
             </div>
@@ -493,12 +498,9 @@
             <div class="commit-body">
               <h4>Job description</h4>
               <ul>
-                <li>Proposed web application solutions to increase the number of newly applied accounts.</li>
-                <li>Developed and designed new features and functions for regional offices.</li>
-                <li>Developed HTML, CSS, and JavaScript for system web views.</li>
-                <li>Developed APIs connecting multiple systems: DB, file streams, sessions, and cache.</li>
-                <li>Developed batch programs to run automatically on a schedule.</li>
-                <li>Wrote unit and integration tests for each function node.</li>
+                <li>Grew digital customer acquisition for E.SUN Bank, one of Taiwan's largest banks, by building the public web applications customers use to open accounts and verify loans online.</li>
+                <li>Connected the bank's databases, file streams, sessions, cache, and external systems by developing the integration APIs between them.</li>
+                <li>Automated recurring back-office jobs by building scheduled batch programs, with unit and integration tests covering every API node.</li>
               </ul>
               <div class="project">
                 <p class="p-name">E.SUN Loan Verify System / E.SUN Open Account System
@@ -506,13 +508,10 @@
                   <a href="https://www.esunbank.com.tw/s/OpenAccount/" target="_blank" rel="noopener">esunbank.com.tw/s/OpenAccount</a>
                 </p>
                 <ul>
-                  <li>Wrote Vue 3 to dynamically render parts of the frontend components.</li>
-                  <li>Used C# .NET Core to design mechanisms improving system efficiency (middleware, filters, cache, Redis, etc.).</li>
-                  <li>Wrote unit tests to secure each node of the API.</li>
-                  <li>Built APIs handling data from DBs, file systems, and external systems with C# .NET Core.</li>
-                  <li>Built services and mock services for development and production.</li>
-                  <li>Managed the data flow of every page and step.</li>
-                  <li>Deployed the system through TFS to Azure.</li>
+                  <li>Launched the bank's public online loan-verification and account-opening flows by co-building them with Vue 3 and C# .NET Core.</li>
+                  <li>Kept the high-traffic flows responsive under load by designing performance mechanisms — middleware, filters, response caching, and Redis.</li>
+                  <li>Unblocked development and testing against external banking systems by building mock services that mirror them, removing any dependency on production environments.</li>
+                  <li>Made releases repeatable and auditable by deploying through TFS pipelines to Azure.</li>
                 </ul>
               </div>
             </div>
@@ -525,23 +524,23 @@
             <div class="commit-body">
               <h4>Job description</h4>
               <ul>
-                <li>Used the .NET framework to develop APIs and a web platform for the Taishin Bank E-Ticket system.</li>
-                <li>Developed batch programs and unit tests for each node of the system.</li>
+                <li>Delivered the APIs and web platform behind Taishin Bank's E-Ticket system by developing them on the .NET Framework.</li>
+                <li>Reduced manual processing and guarded against regressions by building scheduled batch programs with unit tests covering each node of the system.</li>
               </ul>
             </div>
           </article>
 
           <!-- TY Lin -->
-          <article class="commit reveal">
+          <!-- <article class="commit reveal">
             <p class="commit-meta"><span class="date">Mar 2017 — Mar 2019</span></p>
             <h3>Civil / Project Engineer <span class="company">· T.Y.Lin International Consulting Engineering</span></h3>
             <div class="commit-body">
               <h4>Job description</h4>
               <ul>
-                <li>Coded APIs to automatically calculate material quantities (steel, concrete, machinery).</li>
+                <li>Eliminated manual spreadsheet estimation for material quantities (steel, concrete, machinery) by building internal tools that calculated them automatically — the work that sparked my move into software engineering.</li>
               </ul>
             </div>
-          </article>
+          </article> -->
 
         </div>
       </section>
@@ -551,7 +550,6 @@
 
 <footer class="wrap">
   <span>© <span id="year"></span> Hung Yun Hsuan</span>
-  <span>built with HTML · CSS · JS</span>
 </footer>
 
 <div id="toast" role="status" aria-live="polite">yunshanghong@gmail.com copied</div>
