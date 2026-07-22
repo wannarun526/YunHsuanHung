@@ -44,6 +44,18 @@
 
   .wrap{ max-width:var(--maxw); margin:0 auto; padding:12px 24px; }
 
+  /* ============ ICONS ============ */
+  .ic{
+    stroke:currentColor;
+    fill:none;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    color:var(--commit);
+    flex-shrink:0;
+    vertical-align:-3px;
+  }
+
   /* ============ HEADER ============ */
   header{
     border-bottom:1px solid var(--line);
@@ -104,10 +116,8 @@
     font-size:.85rem;
     color:var(--ink-soft);
   }
-  .contact-bar span::before{
-    content:attr(data-key)": ";
-    color:var(--commit);
-  }
+  .contact-item{ display:inline-flex; align-items:center; gap:7px; }
+  .contact-item a{ display:inline-flex; align-items:center; gap:7px; }
 
   /* ============ LAYOUT ============ */
   main{ padding:48px 0 72px; }
@@ -141,14 +151,43 @@
     height:1px;
     background:var(--line);
   }
+  .h2-label{ display:flex; align-items:center; gap:8px; }
 
-  .about p{ color:var(--ink-soft); }
-  .about p + p{ margin-top:12px; }
-  .about strong{ color:var(--ink); font-weight:600; }
+  .about .lede{ color:var(--ink-soft); }
+
+  /* ---- stat tiles (image+text style highlights) ---- */
+  .stats{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .stat{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:9px 13px;
+    flex:0 0 200px;
+    width:200px;
+  }
+  .stat strong{
+    display:block;
+    font-family:var(--display);
+    font-size:1.05rem;
+    line-height:1.15;
+    color:var(--ink);
+  }
+  .stat span{
+    display:block;
+    font-size:.72rem;
+    color:var(--ink-soft);
+    margin-top:1px;
+  }
 
   /* ---- skills ---- */
   .skill-group{ margin-bottom:16px; }
   .skill-group .label{
+    display:flex;
+    align-items:center;
+    gap:7px;
     font-family:var(--mono);
     font-size:.72rem;
     letter-spacing:.05em;
@@ -168,15 +207,18 @@
   }
   .chip:hover{ border-color:var(--commit); background:var(--commit-dim); }
 
-  .lang-row{
+  /* ---- language (meter bars) ---- */
+  .lang-block{ margin-bottom:14px; }
+  .lang-block:last-child{ margin-bottom:0; }
+  .lang-head{
     display:flex;
     justify-content:space-between;
-    font-size:.9rem;
-    padding:8px 0;
-    border-bottom:1px dashed var(--line);
+    font-size:.88rem;
+    margin-bottom:6px;
   }
-  .lang-row:last-child{ border-bottom:none; }
-  .lang-row .score{ font-family:var(--mono); color:var(--commit); font-weight:500; }
+  .lang-head .score{ font-family:var(--mono); color:var(--commit); font-weight:500; }
+  .meter{ height:6px; background:var(--line); border-radius:99px; overflow:hidden; }
+  .meter-fill{ height:100%; background:var(--commit); border-radius:99px; }
 
   /* ---- education ---- */
   .edu{ font-size:.92rem; }
@@ -187,14 +229,6 @@
   .edu li{ margin-bottom:6px; }
 
   /* ============ SIGNATURE: git-log timeline ============ */
-  .log-hint{
-    font-family:var(--mono);
-    font-size:.78rem;
-    color:var(--ink-soft);
-    margin:-8px 0 22px;
-  }
-  .log-hint .cmd{ color:var(--commit); }
-
   .timeline{ position:relative; padding-left:34px; }
   .timeline::before{
     content:"";
@@ -226,7 +260,7 @@
     font-family:var(--mono);
     font-size:.78rem;
     color:var(--ink-soft);
-    margin-bottom:4px;
+    margin-bottom:8px;
     display:flex;
     flex-wrap:wrap;
     gap:6px 14px;
@@ -240,6 +274,24 @@
     background:var(--commit-dim);
     color:#0B7A55;
     border:1px solid #BCE5D3;
+  }
+  .commit-head-row{ display:flex; align-items:center; gap:12px; }
+  .org-avatar{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:36px;
+    height:36px;
+    padding:0 7px;
+    border-radius:9px;
+    background:var(--commit-dim);
+    color:#0B7A55;
+    border:1px solid #BCE5D3;
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:.72rem;
+    letter-spacing:.02em;
+    flex-shrink:0;
   }
   .commit h3{
     font-family:var(--display);
@@ -270,6 +322,11 @@
   .commit-body li::marker{ color:var(--commit); }
   .commit-body strong{ color:var(--ink); font-weight:600; }
 
+  /* ---- icon-list: image+text bullets ---- */
+  .icon-list{ list-style:none; padding-left:0 !important; display:flex; flex-direction:column; gap:8px; }
+  .icon-list li{ display:flex; gap:10px; align-items:flex-start; margin-bottom:0; }
+  .icon-list li .ic{ margin-top:3px; }
+
   .project{
     margin-top:16px;
     padding-top:14px;
@@ -282,6 +339,7 @@
     flex-wrap:wrap;
     gap:4px 10px;
     align-items:baseline;
+    margin-bottom:10px;
   }
   .project .p-name a{
     font-family:var(--mono);
@@ -289,6 +347,7 @@
     font-weight:400;
     word-break:break-all;
   }
+  .project .stats{ margin-top:0; margin-bottom:12px; }
 
   /* ============ reveal animation ============ */
   .reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
@@ -330,7 +389,7 @@
   /* ============ print ============ */
   @media print{
     body{ background:#fff; font-size:12px; }
-    .header-actions, #toast, .log-hint{ display:none; }
+    .header-actions, #toast{ display:none; }
     header, .commit-body{ border:none; }
     .commit-body{ padding:8px 0 0; }
     main{ padding:16px 0; }
@@ -342,6 +401,32 @@
 </style>
 </head>
 <body>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+  <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+  <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-refresh-cw" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></symbol>
+  <symbol id="i-check-square" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
+</svg>
 
 <header>
   <div class="wrap">
@@ -356,9 +441,9 @@
       </div>
     </div>
     <div class="contact-bar">
-      <span data-key="base">Tainan City, Taiwan</span>
-      <span data-key="mail"><a href="mailto:yunshanghong@gmail.com">yunshanghong@gmail.com</a></span>
-      <span data-key="tel"><a href="tel:+886918990526">0918-990-526</a></span>
+      <span class="contact-item"><svg class="ic" width="15" height="15"><use href="#i-pin"/></svg>Tainan City, Taiwan</span>
+      <span class="contact-item"><a href="mailto:yunshanghong@gmail.com"><svg class="ic" width="15" height="15"><use href="#i-mail"/></svg>yunshanghong@gmail.com</a></span>
+      <span class="contact-item"><a href="tel:+886918990526"><svg class="ic" width="15" height="15"><use href="#i-phone"/></svg>0918-990-526</a></span>
     </div>
   </div>
 </header>
@@ -369,53 +454,63 @@
     <!-- ======== LEFT COLUMN ======== -->
     <aside>
       <section class="about reveal">
-        <h2>About</h2>
-        <p>Fullstack engineer with <strong>6+ years of experience</strong> shipping production systems for fintech, insurance, e-commerce, and SaaS — including Digiwin's Digiknow knowledge platform, Sakura Taiwan's official site, Taishin Life Insurance's corporate site, StraitsX's stablecoin dashboard, and Toyota's Singapore dealer sites.</p>
-        <p>Strong in <strong>C# .NET, Node.js, React, Angular, and Vue</strong>, and used to owning features end-to-end: architecture, database design, implementation, testing, and deployment. Comfortable working across cultures and time zones with distributed teams, and <strong>open to relocation</strong> for the right opportunity. Next step: growing into a <strong>team lead / mentor</strong> role.</p>
+        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-user"/></svg>About</span></h2>
+        <p class="lede">Fullstack engineer, <strong>6+ years</strong> shipping production systems for fintech, insurance, e-commerce, and SaaS — architecture to deployment, end to end.</p>
+        <div class="stats">
+          <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-trending-up"/></svg><div><strong>6+ yrs</strong><span>Fullstack experience</span></div></div>
+          <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-globe"/></svg><div><strong>Open</strong><span>To relocation</span></div></div>
+          <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-award"/></svg><div><strong>Next</strong><span>Team lead / mentor</span></div></div>
+        </div>
       </section>
 
       <section class="reveal">
-        <h2>Skills</h2>
+        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-cpu"/></svg>Skills</span></h2>
         <div class="skill-group">
-          <p class="label">// ai tools</p>
+          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-cpu"/></svg>// ai tools</p>
           <div class="chips"><span class="chip">Claude Code</span><span class="chip">GitHub Copilot</span></div>
         </div>
         <div class="skill-group">
-          <p class="label">// backend</p>
+          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-server"/></svg>// backend</p>
           <div class="chips"><span class="chip">Node.js</span><span class="chip">NestJS</span><span class="chip">C# .NET</span></div>
         </div>
         <div class="skill-group">
-          <p class="label">// frontend</p>
+          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-monitor"/></svg>// frontend</p>
           <div class="chips"><span class="chip">React</span><span class="chip">Angular</span><span class="chip">Vue</span></div>
         </div>
         <div class="skill-group">
-          <p class="label">// mobile</p>
+          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-smartphone"/></svg>// mobile</p>
           <div class="chips"><span class="chip">React Native</span></div>
         </div>
         <div class="skill-group">
-          <p class="label">// data</p>
+          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-database"/></svg>// data</p>
           <div class="chips"><span class="chip">MongoDB</span><span class="chip">MSSQL</span><span class="chip">Redis</span></div>
         </div>
         <div class="skill-group">
-          <p class="label">// infra</p>
+          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-cloud"/></svg>// infra</p>
           <div class="chips"><span class="chip">Docker</span><span class="chip">k8s</span><span class="chip">GCP</span><span class="chip">Azure</span></div>
         </div>
       </section>
 
       <section class="reveal">
-        <h2>Language</h2>
-        <div class="lang-row"><span>IELTS</span><span class="score">6.5</span></div>
-        <div class="lang-row"><span>TOEIC</span><span class="score">805</span></div>
+        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-globe"/></svg>Language</span></h2>
+        <div class="lang-block">
+          <div class="lang-head"><span>IELTS</span><span class="score">6.5 / 9</span></div>
+          <div class="meter"><div class="meter-fill" style="width:72%"></div></div>
+        </div>
+        <div class="lang-block">
+          <div class="lang-head"><span>TOEIC</span><span class="score">805 / 990</span></div>
+          <div class="meter"><div class="meter-fill" style="width:81%"></div></div>
+        </div>
       </section>
 
       <section class="edu reveal">
-        <h2>Education</h2>
+        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-award"/></svg>Education</span></h2>
         <p class="years">2012 — 2016</p>
         <p class="school">National Cheng Kung University</p>
         <p class="dept">Department of Civil Engineering</p>
         <ul>
-          <li>Internship at Beijing Institute of Architectural Design (BIAD)</li>
-          <li>Vice Leader of the IJoing team, 6th Career Coaching Program</li>
+          <li>Internship, Beijing Institute of Architectural Design (BIAD)</li>
+          <li>Vice Leader, IJoing Team — 6th Career Coaching Program</li>
         </ul>
       </section>
     </aside>
@@ -423,7 +518,7 @@
     <!-- ======== RIGHT COLUMN: EXPERIENCE ======== -->
     <div>
       <section>
-        <h2>Work Experience</h2>
+        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-briefcase"/></svg>Work Experience</span></h2>
 
         <div class="timeline">
 
@@ -433,46 +528,65 @@
               <span class="date">Jan 2023 — Now</span>
               <span class="tag">HEAD</span>
             </p>
-            <h3>Fullstack Engineer <span class="company">· Freelancer</span></h3>
+            <div class="commit-head-row">
+              <span class="org-avatar">FL</span>
+              <h3>Fullstack Engineer <span class="company">· Freelancer</span></h3>
+            </div>
             <div class="commit-body">
               <h4>Job description</h4>
-              <ul>
-                <li>Delivered production web systems for enterprise clients, each launched and running live today, by owning architecture, database design, implementation, and release as a one-person engineering team.</li>
+              <ul class="icon-list">
+                <li><svg class="ic" width="16" height="16"><use href="#i-briefcase"/></svg><span>Production systems for enterprise clients, as a one-person engineering team — architecture to release.</span></li>
               </ul>
+
               <div class="project">
                 <p class="p-name">Digiwin Digiknow Chatbot
                   <a href="https://www.chatbot.digiknow.com.tw/" target="_blank" rel="noopener">chatbot.digiknow.com.tw</a>
                 </p>
-                <ul>
-                  <li>Launched an <strong>AI chatbot</strong> for Digiwin's Digiknow knowledge platform — members ask questions in natural language and get answers drawn from the platform's content — by building the full stack, from the chat frontend to the <strong>LLM-integration</strong> backend services.</li>
+                <ul class="icon-list">
+                  <li><svg class="ic" width="16" height="16"><use href="#i-cpu"/></svg><span><strong>AI chatbot</strong> answering member questions from platform content — built full stack, chat UI to LLM backend.</span></li>
                 </ul>
               </div>
+
               <div class="project">
                 <p class="p-name">Digiwin Digiknow
                   <a href="https://www.digiknow.com.tw/" target="_blank" rel="noopener">digiknow.com.tw</a>
                 </p>
-                <ul>
-                  <li><strong>Doubled</strong> membership within two years and lifted daily user engagement by developing a mission (task) system tied to a ticket-redemption reward mechanism.</li>
-                  <li>Significantly raised content creators' willingness to publish by <strong>eliminating race conditions</strong> in the pipeline and refactoring the APIs to support automatic transcoding of article video and audio.</li>
-                  <li>Cut bug-resolution time by <strong>40%</strong> and brought weekly deployment <strong>errors down to zero</strong> by introducing an automated CI/CD pipeline.</li>
+                <div class="stats">
+                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-trending-up"/></svg><div><strong>2×</strong><span>Membership in 2 yrs</span></div></div>
+                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-zap"/></svg><div><strong>40%</strong><span>Faster bug fixes</span></div></div>
+                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-check-circle"/></svg><div><strong>0</strong><span>Weekly deploy errors</span></div></div>
+                </div>
+                <ul class="icon-list">
+                  <li><svg class="ic" width="16" height="16"><use href="#i-award"/></svg><span>Mission + reward system to grow engagement</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-settings"/></svg><span>Fixed pipeline <strong>race conditions</strong>; automated video/audio transcoding</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Automated CI/CD pipeline</span></li>
                 </ul>
               </div>
+
               <div class="project">
                 <p class="p-name">Sakura Taiwan
                   <a href="https://www.sakura.com.tw/" target="_blank" rel="noopener">sakura.com.tw</a>
                 </p>
-                <ul>
-                  <li>Grew monthly active users by <strong>50%</strong>, contributing to record-high annual revenue, by revamping the visual design and user experience of the official site of Sakura, a leading Taiwanese kitchen-appliance brand.</li>
-                  <li>Rebuilt the site on .NET 6 MVC — middleware, controllers, data models, and database schema — with interactive Vue 3 components layered on the server-rendered views.</li>
+                <div class="stats">
+                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-trending-up"/></svg><div><strong>+50%</strong><span>MAU · record revenue</span></div></div>
+                </div>
+                <ul class="icon-list">
+                  <li><svg class="ic" width="16" height="16"><use href="#i-layout"/></svg><span>Revamped visual design & UX</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Rebuilt on .NET 6 MVC + Vue 3 components</span></li>
                 </ul>
               </div>
+
               <div class="project">
                 <p class="p-name">Taishin Life Insurance
                   <a href="https://www.taishinlife.com.tw/" target="_blank" rel="noopener">taishinlife.com.tw</a>
                 </p>
-                <ul>
-                  <li>Boosted development efficiency by over <strong>80%</strong> and shortened delivery timelines by upgrading the legacy system to a Vite-based development workflow.</li>
-                  <li>Reduced production deployment <strong>errors to nearly zero</strong> by building an automated mechanism that imports page templates into the database, paired with version-aware debugging checks.</li>
+                <div class="stats">
+                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-zap"/></svg><div><strong>80%</strong><span>Faster dev workflow</span></div></div>
+                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-check-circle"/></svg><div><strong>~0</strong><span>Deploy errors</span></div></div>
+                </div>
+                <ul class="icon-list">
+                  <li><svg class="ic" width="16" height="16"><use href="#i-settings"/></svg><span>Migrated legacy system to a Vite-based workflow</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Automated template import + version-aware debug checks</span></li>
                 </ul>
               </div>
             </div>
@@ -481,23 +595,26 @@
           <!-- Xfers -->
           <article class="commit reveal">
             <p class="commit-meta"><span class="date">Apr 2022 — Jan 2023</span></p>
-            <h3>Fullstack Engineer <span class="company">· Xfers / StraitsX / Fazz (Singapore Taiwan Branch)</span></h3>
+            <div class="commit-head-row">
+              <span class="org-avatar">XF</span>
+              <h3>Fullstack Engineer <span class="company">· Xfers / StraitsX / Fazz (Singapore Taiwan Branch)</span></h3>
+            </div>
             <div class="commit-body">
               <h4>Job description</h4>
-              <ul>
-                <li>Shipped customer-facing features into production for StraitsX, a licensed Singapore payments platform issuing the XSGD/XIDR stablecoins, by developing across a React/Redux dashboard and Ruby on Rails backend.</li>
-                <li>Strengthened account security on a regulated fintech product by implementing the user-verification (KYC) and two-factor authentication flows in the dashboard.</li>
-                <li>Reduced manual work for internal operations teams by shipping new admin-panel features in React and Ruby on Rails.</li>
-                <li>Enabled server-side rendering and centralized authentication for the dashboard by building a Node.js gateway server handling proxying, auth, and SSR.</li>
-                <li>Kept regressions out of production by writing unit and integration tests for every Rails change, as part of the team's definition of done.</li>
+              <ul class="icon-list">
+                <li><svg class="ic" width="16" height="16"><use href="#i-layout"/></svg><span>Customer-facing features for StraitsX — React/Redux dashboard + Ruby on Rails backend</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-shield"/></svg><span>KYC verification + two-factor auth flows for account security</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-layout"/></svg><span>Admin-panel features to cut ops teams' manual work</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-server"/></svg><span>Node.js gateway server for SSR, auth, and proxying</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-check-square"/></svg><span>Unit/integration tests on every Rails change</span></li>
               </ul>
               <div class="project">
                 <p class="p-name">StraitsX XSGD / XIDR Stablecoin
                   <a href="https://www.straitsx.com/sg/otc" target="_blank" rel="noopener">straitsx.com/sg/otc</a>
                 </p>
-                <ul>
-                  <li>Launched end-to-end crypto-wallet support — connection, transaction signing, and on-chain transfers for stablecoin users — by integrating wallet providers into the React dashboard.</li>
-                  <li>Powered the new wallet features on the backend by extending Rails with the required controllers and services, covered by unit and integration tests.</li>
+                <ul class="icon-list">
+                  <li><svg class="ic" width="16" height="16"><use href="#i-link"/></svg><span>Crypto-wallet support — connect, sign, on-chain transfer — in the React dashboard</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-server"/></svg><span>Rails controllers/services powering the new wallet features, test-covered</span></li>
                 </ul>
               </div>
             </div>
@@ -506,24 +623,27 @@
           <!-- Provision -->
           <article class="commit reveal">
             <p class="commit-meta"><span class="date">Nov 2020 — Apr 2022</span></p>
-            <h3>Software Engineer <span class="company">· Provision Information</span></h3>
+            <div class="commit-head-row">
+              <span class="org-avatar">PI</span>
+              <h3>Software Engineer <span class="company">· Provision Information</span></h3>
+            </div>
             <div class="commit-body">
               <h4>Job description</h4>
-              <ul>
-                <li>Grew digital customer acquisition for E.SUN Bank, one of Taiwan's largest banks, by building the public web applications customers use to open accounts and verify loans online.</li>
-                <li>Connected the bank's databases, file streams, sessions, cache, and external systems by developing the integration APIs between them.</li>
-                <li>Automated recurring back-office jobs by building scheduled batch programs, with unit and integration tests covering every API node.</li>
+              <ul class="icon-list">
+                <li><svg class="ic" width="16" height="16"><use href="#i-trending-up"/></svg><span>Public web apps for E.SUN Bank — account opening & loan verification</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-database"/></svg><span>Integration APIs across DB, file streams, sessions, cache, and external systems</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-clock"/></svg><span>Scheduled batch programs, test-covered</span></li>
               </ul>
               <div class="project">
                 <p class="p-name">E.SUN Loan Verify System / E.SUN Open Account System
                   <a href="https://www.esunbank.com.tw/s/personalloanverification/" target="_blank" rel="noopener">esunbank.com.tw/s/personalloanverification</a>
                   <a href="https://www.esunbank.com.tw/s/OpenAccount/" target="_blank" rel="noopener">esunbank.com.tw/s/OpenAccount</a>
                 </p>
-                <ul>
-                  <li>Launched the bank's public online loan-verification and account-opening flows by co-building them with Vue 3 and C# .NET Core.</li>
-                  <li>Kept the high-traffic flows responsive under load by designing performance mechanisms — middleware, filters, response caching, and Redis.</li>
-                  <li>Unblocked development and testing against external banking systems by building mock services that mirror them, removing any dependency on production environments.</li>
-                  <li>Made releases repeatable and auditable by deploying through TFS pipelines to Azure.</li>
+                <ul class="icon-list">
+                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Loan-verification & account-opening flows — Vue 3 + C# .NET Core</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-zap"/></svg><span>Performance under load — middleware, filters, response caching, Redis</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-settings"/></svg><span>Mock services for external banking systems — no dependency on prod</span></li>
+                  <li><svg class="ic" width="16" height="16"><use href="#i-check-circle"/></svg><span>Repeatable releases via TFS pipelines to Azure</span></li>
                 </ul>
               </div>
             </div>
@@ -532,12 +652,15 @@
           <!-- TPI -->
           <article class="commit reveal">
             <p class="commit-meta"><span class="date">Mar 2020 — Nov 2020</span></p>
-            <h3>Software Engineer <span class="company">· TPI Software</span></h3>
+            <div class="commit-head-row">
+              <span class="org-avatar">TPI</span>
+              <h3>Software Engineer <span class="company">· TPI Software</span></h3>
+            </div>
             <div class="commit-body">
               <h4>Job description</h4>
-              <ul>
-                <li>Delivered the APIs and web platform behind Taishin Bank's E-Ticket system by developing them on the .NET Framework.</li>
-                <li>Reduced manual processing and guarded against regressions by building scheduled batch programs with unit tests covering each node of the system.</li>
+              <ul class="icon-list">
+                <li><svg class="ic" width="16" height="16"><use href="#i-server"/></svg><span>APIs + web platform for Taishin Bank's E-Ticket system (.NET Framework)</span></li>
+                <li><svg class="ic" width="16" height="16"><use href="#i-clock"/></svg><span>Scheduled batch programs, unit-tested end to end</span></li>
               </ul>
             </div>
           </article>
