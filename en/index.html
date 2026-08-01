@@ -3,730 +3,262 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hung Yun Hsuan — Software Engineer</title>
-<meta name="description" content="Resume of Hung Yun Hsuan, Fullstack Software Engineer based in Taipei, Taiwan.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Resume — Microsoft SE2 Performance</title>
 <style>
   :root{
-    --ink:        #16202E;   /* deep navy — primary text */
-    --ink-soft:   #45566B;   /* slate — secondary text */
-    --paper:      #F7F9FB;   /* cool white — page background */
-    --card:       #FFFFFF;
-    --line:       #DDE4EC;
-    --commit:     #0E9F6E;   /* commit green — the accent */
-    --commit-dim: #E3F4EC;
-    --mono:       'IBM Plex Mono', ui-monospace, monospace;
-    --body:       'IBM Plex Sans', system-ui, sans-serif;
-    --display:    'Space Grotesk', var(--body);
-    --maxw: 1060px;
+    --ink:#1a1a1a;
+    --muted:#5c5c5c;
+    --line:#d8d8d8;
+    --accent:#0067b8;
+    --placeholder-bg:#fff4d6;
+    --placeholder-ink:#8a6d00;
+    --page:#ffffff;
+    --font: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   }
-
   *{ box-sizing:border-box; margin:0; padding:0; }
-  html{ scroll-behavior:smooth; }
   body{
-    font-family:var(--body);
-    background:var(--paper);
+    background:#e9ebee;
+    font-family:var(--font);
     color:var(--ink);
-    line-height:1.6;
-    font-size:16px;
+    line-height:1.4;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 16px;
   }
-  ::selection{ background:var(--commit); color:#fff; }
-
-  a{ color:var(--commit); text-decoration:none; }
-  a:hover{ text-decoration:underline; }
-  a:focus-visible, button:focus-visible{
-    outline:2px solid var(--commit);
-    outline-offset:3px;
-    border-radius:2px;
+  .toolbar{
+    max-width:816px; margin:0 auto 20px;
+    display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
   }
-
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:12px 24px; }
-
-  /* ============ ICONS ============ */
-  .ic{
-    stroke:currentColor;
-    fill:none;
-    stroke-width:2;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    color:var(--commit);
-    flex-shrink:0;
-    vertical-align:-3px;
-  }
-
-  /* ============ HEADER ============ */
-  header{
-    border-bottom:1px solid var(--line);
-    background:var(--card);
-  }
-  .masthead{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:24px;
-    padding:64px 0 40px;
-  }
-  .id-block .eyebrow{
-    font-family:var(--mono);
-    font-size:.8rem;
-    color:var(--commit);
-    letter-spacing:.06em;
-    margin-bottom:10px;
-  }
-  h1{
-    font-family:var(--display);
-    font-weight:700;
-    font-size:clamp(2.2rem, 5.5vw, 3.6rem);
-    line-height:1.05;
-    letter-spacing:-0.02em;
-  }
-  .role{
-    font-family:var(--display);
-    font-weight:500;
-    font-size:clamp(1.05rem, 2.4vw, 1.35rem);
-    color:var(--ink-soft);
-    margin-top:8px;
-  }
-  .header-actions{ display:flex; gap:10px; padding-bottom:6px; }
+  .toolbar .hint{ font-size:13px; color:#4a5568; max-width:520px; }
   .btn{
-    font-family:var(--mono);
-    font-size:.82rem;
-    padding:9px 16px;
-    border:1px solid var(--ink);
-    background:var(--card);
-    color:var(--ink);
-    border-radius:6px;
-    cursor:pointer;
-    transition:background .15s ease, color .15s ease, transform .15s ease;
+    appearance:none; border:none; background:var(--accent); color:#fff;
+    font-family:var(--font); font-size:15px; font-weight:600;
+    padding:11px 22px; border-radius:4px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.18);
+    transition:background .15s ease, transform .05s ease; white-space:nowrap;
   }
-  .btn:hover{ background:var(--ink); color:#fff; }
+  .btn:hover{ background:#005094; }
   .btn:active{ transform:translateY(1px); }
-  .btn.primary{ background:var(--commit); border-color:var(--commit); color:#fff; }
-  .btn.primary:hover{ background:#0B855C; border-color:#0B855C; }
+  .btn:focus-visible{ outline:3px solid #ffb900; outline-offset:2px; }
 
-  .contact-bar{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px 28px;
-    padding:14px 0 22px;
-    font-family:var(--mono);
-    font-size:.85rem;
-    color:var(--ink-soft);
+  .page{
+    background:var(--page); max-width:816px; margin:0 auto;
+    padding:44px 52px; box-shadow:0 4px 24px rgba(0,0,0,.12);
   }
-  .contact-item{ display:inline-flex; align-items:center; gap:7px; }
-  .contact-item a{ display:inline-flex; align-items:center; gap:7px; }
+  header{ border-bottom:2px solid var(--ink); padding-bottom:12px; margin-bottom:14px; }
+  .name{ font-size:27px; font-weight:700; letter-spacing:-.01em; line-height:1.1; }
+  .role{ font-size:14px; font-weight:600; color:var(--accent); margin-top:3px; }
+  .contact{
+    margin-top:8px; font-size:12px; color:var(--muted);
+    display:flex; flex-wrap:wrap; gap:3px 14px;
+  }
+  .contact a{ color:var(--muted); text-decoration:none; }
+  .contact a:hover{ color:var(--accent); text-decoration:underline; }
 
-  /* ============ LAYOUT ============ */
-  main{ padding:48px 0 72px; }
-  .grid{
-    display:grid;
-    grid-template-columns:300px 1fr;
-    gap:56px;
-    align-items:start;
-  }
-  @media (max-width:820px){
-    .grid{ grid-template-columns:1fr; gap:40px; }
-  }
-
-  section{ margin-bottom:44px; }
-  section:last-child{ margin-bottom:0; }
+  section{ margin-top:14px; }
   h2{
-    font-family:var(--display);
-    font-size:.95rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-    color:var(--ink);
-    margin-bottom:18px;
-    display:flex;
-    align-items:center;
-    gap:12px;
+    font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--ink); border-bottom:1px solid var(--line);
+    padding-bottom:3px; margin-bottom:8px;
   }
-  h2::after{
-    content:"";
-    flex:1;
-    height:1px;
-    background:var(--line);
-  }
-  .h2-label{ display:flex; align-items:center; gap:8px; }
+  .summary{ font-size:12.5px; color:#333; line-height:1.5; }
 
-  .about .lede{ color:var(--ink-soft); }
+  .entry{ margin-bottom:11px; page-break-inside:avoid; }
+  .entry:last-child{ margin-bottom:0; }
+  .entry-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .entry-title{ font-size:13.5px; font-weight:700; }
+  .entry-org{ font-size:12.5px; font-weight:600; color:var(--accent); }
+  .entry-meta{ font-size:11.5px; color:var(--muted); white-space:nowrap; text-align:right; }
+  ul.bullets{ list-style:none; margin-top:4px; }
+  ul.bullets li{
+    position:relative; padding-left:14px; font-size:12px; color:#2b2b2b;
+    margin-bottom:3.5px; line-height:1.42;
+  }
+  ul.bullets li::before{
+    content:""; position:absolute; left:2px; top:6.5px;
+    width:4px; height:4px; background:var(--accent); border-radius:50%;
+  }
+  ul.bullets li strong{ font-weight:600; color:#1a1a1a; }
 
-  /* ---- stat tiles (image+text style highlights) ---- */
-  .stats{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-  .stat{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:9px 13px;
-    flex:0 0 200px;
-    width:200px;
-  }
-  .stat strong{
-    display:block;
-    font-family:var(--display);
-    font-size:1.05rem;
-    line-height:1.15;
-    color:var(--ink);
-  }
-  .stat span{
-    display:block;
-    font-size:.72rem;
-    color:var(--ink-soft);
-    margin-top:1px;
+  .skills-grid{ display:grid; grid-template-columns:118px 1fr; gap:4px 14px; font-size:12px; }
+  .skills-grid dt{ font-weight:700; color:var(--ink); }
+  .skills-grid dd{ color:#2b2b2b; }
+
+  .edu-row{ display:flex; justify-content:space-between; gap:12px; font-size:12.5px; }
+  .edu-row .deg{ font-weight:600; }
+  .edu-row .meta{ color:var(--muted); white-space:nowrap; }
+
+  .fill{
+    background:var(--placeholder-bg); color:var(--placeholder-ink);
+    padding:0 4px; border-radius:2px; font-weight:600; font-style:normal;
   }
 
-  /* ---- skills ---- */
-  .skill-group{ margin-bottom:16px; }
-  .skill-group .label{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    font-family:var(--mono);
-    font-size:.72rem;
-    letter-spacing:.05em;
-    color:var(--ink-soft);
-    margin-bottom:7px;
-  }
-  .chips{ display:flex; flex-wrap:wrap; gap:7px; }
-  .chip{
-    font-family:var(--mono);
-    font-size:.78rem;
-    padding:4px 11px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:999px;
-    color:var(--ink);
-    transition:border-color .15s ease, background .15s ease;
-  }
-  .chip:hover{ border-color:var(--commit); background:var(--commit-dim); }
-
-  /* ---- language (meter bars) ---- */
-  .lang-block{ margin-bottom:14px; }
-  .lang-block:last-child{ margin-bottom:0; }
-  .lang-head{
-    display:flex;
-    justify-content:space-between;
-    font-size:.88rem;
-    margin-bottom:6px;
-  }
-  .lang-head .score{ font-family:var(--mono); color:var(--commit); font-weight:500; }
-  .meter{ height:6px; background:var(--line); border-radius:99px; overflow:hidden; }
-  .meter-fill{ height:100%; background:var(--commit); border-radius:99px; }
-
-  /* ---- education ---- */
-  .edu{ font-size:.92rem; }
-  .edu .school{ font-weight:600; }
-  .edu .dept{ color:var(--ink-soft); }
-  .edu .years{ font-family:var(--mono); font-size:.78rem; color:var(--commit); margin-bottom:4px; }
-  .edu ul{ margin-top:10px; padding-left:18px; color:var(--ink-soft); font-size:.88rem; }
-  .edu li{ margin-bottom:6px; }
-
-  /* ============ SIGNATURE: git-log timeline ============ */
-  .timeline{ position:relative; padding-left:34px; }
-  .timeline::before{
-    content:"";
-    position:absolute;
-    left:8px; top:10px; bottom:10px;
-    width:2px;
-    background:linear-gradient(var(--commit) 0 60%, var(--line));
-  }
-  .commit{
-    position:relative;
-    margin-bottom:36px;
-  }
-  .commit:last-child{ margin-bottom:0; }
-  .commit::before{
-    content:"";
-    position:absolute;
-    left:-33px; top:8px;
-    width:16px; height:16px;
-    border-radius:50%;
-    background:var(--paper);
-    border:3px solid var(--commit);
-  }
-  .commit.head::before{
-    background:var(--commit);
-    box-shadow:0 0 0 5px var(--commit-dim);
-  }
-
-  .commit-meta{
-    font-family:var(--mono);
-    font-size:.78rem;
-    color:var(--ink-soft);
-    margin-bottom:8px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 14px;
-    align-items:center;
-  }
-  .commit-meta .date{ color:var(--commit); font-weight:500; }
-  .tag{
-    font-size:.7rem;
-    padding:2px 9px;
-    border-radius:4px;
-    background:var(--commit-dim);
-    color:#0B7A55;
-    border:1px solid #BCE5D3;
-  }
-  .commit-head-row{ display:flex; align-items:center; gap:12px; }
-  .org-avatar{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:36px;
-    height:36px;
-    padding:0 7px;
-    border-radius:9px;
-    background:var(--commit-dim);
-    color:#0B7A55;
-    border:1px solid #BCE5D3;
-    font-family:var(--mono);
-    font-weight:600;
-    font-size:.72rem;
-    letter-spacing:.02em;
-    flex-shrink:0;
-  }
-  .commit h3{
-    font-family:var(--display);
-    font-size:1.18rem;
-    font-weight:700;
-    letter-spacing:-.01em;
-  }
-  .commit .company{ color:var(--ink-soft); font-weight:500; font-family:var(--body); }
-
-  .commit-body{
-    margin-top:12px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:18px 20px;
-  }
-  .commit-body h4{
-    font-family:var(--mono);
-    font-size:.72rem;
-    font-weight:500;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    margin-bottom:8px;
-  }
-  .commit-body ul{ padding-left:18px; color:var(--ink-soft); font-size:.92rem; }
-  .commit-body li{ margin-bottom:6px; }
-  .commit-body li::marker{ color:var(--commit); }
-  .commit-body strong{ color:var(--ink); font-weight:600; }
-
-  /* ---- icon-list: image+text bullets ---- */
-  .icon-list{ list-style:none; padding-left:0 !important; display:flex; flex-direction:column; gap:8px; }
-  .icon-list li{ display:flex; gap:10px; align-items:flex-start; margin-bottom:0; }
-  .icon-list li .ic{ margin-top:3px; }
-
-  .project{
-    margin-top:16px;
-    padding-top:14px;
-    border-top:1px dashed var(--line);
-  }
-  .project .p-name{
-    font-weight:600;
-    font-size:.95rem;
-    display:flex;
-    flex-wrap:wrap;
-    gap:4px 10px;
-    align-items:baseline;
-    margin-bottom:10px;
-  }
-  .project .p-name a{
-    font-family:var(--mono);
-    font-size:.76rem;
-    font-weight:400;
-    word-break:break-all;
-  }
-  .project .stats{ margin-top:0; margin-bottom:12px; }
-
-  /* ============ reveal animation ============ */
-  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
-  .reveal.visible{ opacity:1; transform:none; }
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .reveal{ opacity:1; transform:none; transition:none; }
-  }
-
-  footer{
-    border-top:1px solid var(--line);
-    padding:26px 0 40px;
-    font-family:var(--mono);
-    font-size:.78rem;
-    color:var(--ink-soft);
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:10px;
-  }
-
-  /* toast for copy-email */
-  #toast{
-    position:fixed;
-    left:50%; bottom:28px;
-    transform:translate(-50%, 20px);
-    background:var(--ink);
-    color:#fff;
-    font-family:var(--mono);
-    font-size:.8rem;
-    padding:10px 18px;
-    border-radius:8px;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .25s ease, transform .25s ease;
-  }
-  #toast.show{ opacity:1; transform:translate(-50%, 0); }
-
-  /* ============ print ============ */
   @media print{
-    body{ background:#fff; font-size:12px; }
-    .header-actions, #toast{ display:none; }
-    header, .commit-body{ border:none; }
-    .commit-body{ padding:8px 0 0; }
-    main{ padding:16px 0; }
-    .grid{ grid-template-columns:1fr; gap:20px; }
-    .reveal{ opacity:1 !important; transform:none !important; }
-    a{ color:var(--ink); }
-    .timeline::before{ background:var(--line); }
+    @page{ size:letter; margin:12mm; }
+    body{ background:#fff; padding:0; }
+    .toolbar{ display:none !important; }
+    .page{ box-shadow:none; max-width:none; width:auto; padding:0; margin:0; }
+    .fill{ background:transparent; color:var(--placeholder-ink); }
+    a{ color:var(--ink) !important; text-decoration:none; }
+    h2{ page-break-after:avoid; }
+    .entry{ page-break-inside:avoid; }
   }
 </style>
 </head>
 <body>
 
-<svg style="display:none" aria-hidden="true">
-  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></symbol>
-  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-  <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
-  <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
-  <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
-  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
-  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
-  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></symbol>
-  <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></symbol>
-  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
-  <symbol id="i-smartphone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></symbol>
-  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
-  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></symbol>
-  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
-  <symbol id="i-refresh-cw" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></symbol>
-  <symbol id="i-check-square" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
-  <symbol id="i-link" viewBox="0 0 24 24"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
-</svg>
 
-<header>
-  <div class="wrap">
-    <div class="masthead">
-      <div class="id-block">
-        <h1>Hung Yun Hsuan</h1>
-        <p class="role">Software Engineer · Fullstack</p>
+  <div class="page" id="resume">
+
+    <header>
+      <div class="name">Hung Yun Hsuan（Sean）</div>
+      <div class="role">Software Engineer · Performance &amp; Full-Stack Systems</div>
+      <div class="contact">
+        <span>yunshanghong@gmail.com</span>
+        <span>+886 918-990-5266</span>
+        <span>Taiwan (open to relocation)</span>
+        <span><a href="https://github.com/wannarun526">https://github.com/wannarun526</a></span>
       </div>
-      <div class="header-actions">
-        <button class="btn primary" id="copyEmail" type="button">Copy email</button>
-        <button class="btn" id="printBtn" type="button">Print / PDF</button>
-      </div>
-    </div>
-    <div class="contact-bar">
-      <span class="contact-item"><svg class="ic" width="15" height="15"><use href="#i-pin"/></svg>Tainan City, Taiwan</span>
-      <span class="contact-item"><a href="mailto:yunshanghong@gmail.com"><svg class="ic" width="15" height="15"><use href="#i-mail"/></svg>yunshanghong@gmail.com</a></span>
-      <span class="contact-item"><a href="tel:+886918990526"><svg class="ic" width="15" height="15"><use href="#i-phone"/></svg>0918-990-526</a></span>
-    </div>
-  </div>
-</header>
+    </header>
 
-<main class="wrap">
-  <div class="grid">
+    <section>
+      <h2>Summary</h2>
+      <p class="summary">
+        Full-stack software engineer with 6 years of experience shipping production systems for
+        banking, fintech, and enterprise clients, now focused on performance engineering. Diagnosed
+        and resolved high-concurrency race conditions, database deadlocks, N+1 query bottlenecks, and
+        out-of-memory failures — repeatedly cutting timing-out APIs to sub-second responses. Brings a
+        measurement-driven, analytical approach from an engineering background and a strong growth
+        mindset, having self-taught the full stack from scratch. Works across .NET, Node.js, and
+        Python with GCP and Kubernetes.
+      </p>
+    </section>
 
-    <!-- ======== LEFT COLUMN ======== -->
-    <aside>
-      <section class="about reveal">
-        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-user"/></svg>About</span></h2>
-        <p class="lede">Fullstack engineer, <strong>6+ years</strong> shipping production systems for fintech, insurance, e-commerce, and SaaS — architecture to deployment, end to end.</p>
-        <div class="stats">
-          <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-trending-up"/></svg><div><strong>6+ yrs</strong><span>Fullstack experience</span></div></div>
-          <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-globe"/></svg><div><strong>Open</strong><span>To relocation</span></div></div>
-          <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-award"/></svg><div><strong>Next</strong><span>Team lead / mentor</span></div></div>
-        </div>
-      </section>
+    <section>
+      <h2>Technical Skills</h2>
+      <dl class="skills-grid">
+        <dt>Languages</dt>
+        <dd>C# / .NET, TypeScript / JavaScript, Python, SQL</dd>
+        <dt>Performance</dt>
+        <dd>Concurrency control, query optimization, indexing, caching, memory/OOM debugging, load balancing, production monitoring &amp; incident diagnosis</dd>
+        <dt>Backend</dt>
+        <dd>.NET, NestJS (Node.js), FastAPI (Python), REST APIs, three-tier architecture, CI/CD</dd>
+        <dt>Frontend</dt>
+        <dd>Angular, React, Vue</dd>
+        <dt>Data</dt>
+        <dd>SQL Server, MySQL, Redis</dd>
+        <dt>Cloud / Infra</dt>
+        <dd>GCP (primary), Kubernetes, Vertex AI, Azure, Docker, Git, Azure Pipelines</dd>
+      </dl>
+    </section>
 
-      <section class="reveal">
-        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-cpu"/></svg>Skills</span></h2>
-        <div class="skill-group">
-          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-cpu"/></svg>// ai tools</p>
-          <div class="chips"><span class="chip">Claude Code</span><span class="chip">GitHub Copilot</span></div>
-        </div>
-        <div class="skill-group">
-          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-server"/></svg>// backend</p>
-          <div class="chips"><span class="chip">Node.js</span><span class="chip">NestJS</span><span class="chip">C# .NET</span></div>
-        </div>
-        <div class="skill-group">
-          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-monitor"/></svg>// frontend</p>
-          <div class="chips"><span class="chip">React</span><span class="chip">Angular</span><span class="chip">Vue</span></div>
-        </div>
-        <div class="skill-group">
-          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-smartphone"/></svg>// mobile</p>
-          <div class="chips"><span class="chip">React Native</span></div>
-        </div>
-        <div class="skill-group">
-          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-database"/></svg>// data</p>
-          <div class="chips"><span class="chip">MongoDB</span><span class="chip">MSSQL</span><span class="chip">Redis</span></div>
-        </div>
-        <div class="skill-group">
-          <p class="label"><svg class="ic" width="14" height="14"><use href="#i-cloud"/></svg>// infra</p>
-          <div class="chips"><span class="chip">Docker</span><span class="chip">k8s</span><span class="chip">GCP</span><span class="chip">Azure</span></div>
-        </div>
-      </section>
+    <section>
+      <h2>Professional Experience</h2>
 
-      <section class="reveal">
-        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-globe"/></svg>Language</span></h2>
-        <div class="lang-block">
-          <div class="lang-head"><span>IELTS</span><span class="score">6.5 / 9</span></div>
-          <div class="meter"><div class="meter-fill" style="width:72%"></div></div>
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <span class="entry-title">Full-Stack Engineer (Independent)</span>
+            —
+            <span class="entry-org">Freelance / Contract</span>
+          </div>
+          <div class="entry-meta">Jan 2023 – Present · Taiwan</div>
         </div>
-        <div class="lang-block">
-          <div class="lang-head"><span>TOEIC</span><span class="score">805 / 990</span></div>
-          <div class="meter"><div class="meter-fill" style="width:81%"></div></div>
-        </div>
-      </section>
-
-      <section class="edu reveal">
-        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-award"/></svg>Education</span></h2>
-        <p class="years">2012 — 2016</p>
-        <p class="school">National Cheng Kung University</p>
-        <p class="dept">Department of Civil Engineering</p>
-        <ul>
-          <li>Internship, Beijing Institute of Architectural Design (BIAD)</li>
-          <li>Vice Leader, IJoing Team — 6th Career Coaching Program</li>
+        <ul class="bullets">
+          <li>Resolved <strong>race conditions and database deadlocks</strong> in a high-concurrency points-redemption feature (peak 5–10 req/s) using pessimistic concurrency control, eliminating data inconsistency on a <strong>100K+ member</strong> loyalty platform (Digiwin DigiKnow).</li>
+          <li>Cut timing-out APIs to <strong>sub-1-second</strong> responses by diagnosing <strong>N+1 queries</strong> and restructuring data access with reusable caching, adding missing <strong>database indexes</strong>, and reducing over-joined queries (DigiKnow, Sakura Taiwan).</li>
+          <li>Eliminated <strong>out-of-memory failures</strong> in large admin data exports by converting to batched and paginated processing.</li>
+          <li>Improved reliability and scalability with <strong>Kubernetes load balancing</strong> and GCP Cloud Logging for production monitoring and incident diagnosis.</li>
+          <li>Led a <strong>cross-team investigation</strong> with infrastructure and DBA teams to diagnose and fix slow page loads on a production corporate site (Sakura Taiwan).</li>
+          <li>Architected an AI chatbot on <strong>Vertex AI Agent Engine</strong> with a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing dependency on Azure OpenAI (DigiKnow Chatbot).</li>
+          <li>Upgraded a production insurance platform from <strong>Angular 11 to 17</strong>, improving development efficiency by 80%+; partnered with QA to prototype an AI-assisted automated testing tool (Taishin Life).</li>
+          <li>Owned end-to-end delivery for external clients — requirements, scoping, estimation, prototyping, and production launch — and ran internal training across 5 repositories.</li>
         </ul>
-      </section>
-    </aside>
+      </div>
 
-    <!-- ======== RIGHT COLUMN: EXPERIENCE ======== -->
-    <div>
-      <section>
-        <h2><span class="h2-label"><svg class="ic" width="18" height="18"><use href="#i-briefcase"/></svg>Work Experience</span></h2>
-
-        <div class="timeline">
-
-          <!-- Freelance -->
-          <article class="commit head reveal">
-            <p class="commit-meta">
-              <span class="date">Jan 2023 — Now</span>
-              <span class="tag">HEAD</span>
-            </p>
-            <div class="commit-head-row">
-              <span class="org-avatar">FL</span>
-              <h3>Fullstack Engineer <span class="company">· Freelancer</span></h3>
-            </div>
-            <div class="commit-body">
-              <h4>Job description</h4>
-              <ul class="icon-list">
-                <li><svg class="ic" width="16" height="16"><use href="#i-briefcase"/></svg><span>Production systems for enterprise clients, as a one-person engineering team — architecture to release.</span></li>
-              </ul>
-
-              <div class="project">
-                <p class="p-name">Digiwin Digiknow Chatbot
-                  <a href="https://www.chatbot.digiknow.com.tw/" target="_blank" rel="noopener">chatbot.digiknow.com.tw</a>
-                </p>
-                <ul class="icon-list">
-                  <li><svg class="ic" width="16" height="16"><use href="#i-cpu"/></svg><span><strong>AI chatbot</strong> answering member questions from platform content — built full stack, chat UI to LLM backend.</span></li>
-                </ul>
-              </div>
-
-              <div class="project">
-                <p class="p-name">Digiwin Digiknow
-                  <a href="https://www.digiknow.com.tw/" target="_blank" rel="noopener">digiknow.com.tw</a>
-                </p>
-                <div class="stats">
-                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-trending-up"/></svg><div><strong>2×</strong><span>Membership in 2 yrs</span></div></div>
-                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-zap"/></svg><div><strong>40%</strong><span>Faster bug fixes</span></div></div>
-                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-check-circle"/></svg><div><strong>0</strong><span>Weekly deploy errors</span></div></div>
-                </div>
-                <ul class="icon-list">
-                  <li><svg class="ic" width="16" height="16"><use href="#i-award"/></svg><span>Mission + reward system to grow engagement</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-settings"/></svg><span>Fixed pipeline <strong>race conditions</strong>; automated video/audio transcoding</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Automated CI/CD pipeline</span></li>
-                </ul>
-              </div>
-
-              <div class="project">
-                <p class="p-name">Sakura Taiwan
-                  <a href="https://www.sakura.com.tw/" target="_blank" rel="noopener">sakura.com.tw</a>
-                </p>
-                <div class="stats">
-                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-trending-up"/></svg><div><strong>+50%</strong><span>MAU · record revenue</span></div></div>
-                </div>
-                <ul class="icon-list">
-                  <li><svg class="ic" width="16" height="16"><use href="#i-layout"/></svg><span>Revamped visual design & UX</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Rebuilt on .NET 6 MVC + Vue 3 components</span></li>
-                </ul>
-              </div>
-
-              <div class="project">
-                <p class="p-name">Taishin Life Insurance
-                  <a href="https://www.taishinlife.com.tw/" target="_blank" rel="noopener">taishinlife.com.tw</a>
-                </p>
-                <div class="stats">
-                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-zap"/></svg><div><strong>80%</strong><span>Faster dev workflow</span></div></div>
-                  <div class="stat"><svg class="ic" width="20" height="20"><use href="#i-check-circle"/></svg><div><strong>~0</strong><span>Deploy errors</span></div></div>
-                </div>
-                <ul class="icon-list">
-                  <li><svg class="ic" width="16" height="16"><use href="#i-settings"/></svg><span>Migrated legacy system to a Vite-based workflow</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Automated template import + version-aware debug checks</span></li>
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <!-- Xfers -->
-          <article class="commit reveal">
-            <p class="commit-meta"><span class="date">Apr 2022 — Jan 2023</span></p>
-            <div class="commit-head-row">
-              <span class="org-avatar">XF</span>
-              <h3>Fullstack Engineer <span class="company">· Xfers / StraitsX / Fazz (Singapore Taiwan Branch)</span></h3>
-            </div>
-            <div class="commit-body">
-              <h4>Job description</h4>
-              <ul class="icon-list">
-                <li><svg class="ic" width="16" height="16"><use href="#i-layout"/></svg><span>Customer-facing features for StraitsX — React/Redux dashboard + Ruby on Rails backend</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-shield"/></svg><span>KYC verification + two-factor auth flows for account security</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-layout"/></svg><span>Admin-panel features to cut ops teams' manual work</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-server"/></svg><span>Node.js gateway server for SSR, auth, and proxying</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-check-square"/></svg><span>Unit/integration tests on every Rails change</span></li>
-              </ul>
-              <div class="project">
-                <p class="p-name">StraitsX XSGD / XIDR Stablecoin
-                  <a href="https://www.straitsx.com/sg/otc" target="_blank" rel="noopener">straitsx.com/sg/otc</a>
-                </p>
-                <ul class="icon-list">
-                  <li><svg class="ic" width="16" height="16"><use href="#i-link"/></svg><span>Crypto-wallet support — connect, sign, on-chain transfer — in the React dashboard</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-server"/></svg><span>Rails controllers/services powering the new wallet features, test-covered</span></li>
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <!-- Provision -->
-          <article class="commit reveal">
-            <p class="commit-meta"><span class="date">Nov 2020 — Apr 2022</span></p>
-            <div class="commit-head-row">
-              <span class="org-avatar">PI</span>
-              <h3>Software Engineer <span class="company">· Provision Information</span></h3>
-            </div>
-            <div class="commit-body">
-              <h4>Job description</h4>
-              <ul class="icon-list">
-                <li><svg class="ic" width="16" height="16"><use href="#i-trending-up"/></svg><span>Public web apps for E.SUN Bank — account opening & loan verification</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-database"/></svg><span>Integration APIs across DB, file streams, sessions, cache, and external systems</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-clock"/></svg><span>Scheduled batch programs, test-covered</span></li>
-              </ul>
-              <div class="project">
-                <p class="p-name">E.SUN Loan Verify System / E.SUN Open Account System
-                  <a href="https://www.esunbank.com.tw/s/personalloanverification/" target="_blank" rel="noopener">esunbank.com.tw/s/personalloanverification</a>
-                  <a href="https://www.esunbank.com.tw/s/OpenAccount/" target="_blank" rel="noopener">esunbank.com.tw/s/OpenAccount</a>
-                </p>
-                <ul class="icon-list">
-                  <li><svg class="ic" width="16" height="16"><use href="#i-refresh-cw"/></svg><span>Loan-verification & account-opening flows — Vue 3 + C# .NET Core</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-zap"/></svg><span>Performance under load — middleware, filters, response caching, Redis</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-settings"/></svg><span>Mock services for external banking systems — no dependency on prod</span></li>
-                  <li><svg class="ic" width="16" height="16"><use href="#i-check-circle"/></svg><span>Repeatable releases via TFS pipelines to Azure</span></li>
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <!-- TPI -->
-          <article class="commit reveal">
-            <p class="commit-meta"><span class="date">Mar 2020 — Nov 2020</span></p>
-            <div class="commit-head-row">
-              <span class="org-avatar">TPI</span>
-              <h3>Software Engineer <span class="company">· TPI Software</span></h3>
-            </div>
-            <div class="commit-body">
-              <h4>Job description</h4>
-              <ul class="icon-list">
-                <li><svg class="ic" width="16" height="16"><use href="#i-server"/></svg><span>APIs + web platform for Taishin Bank's E-Ticket system (.NET Framework)</span></li>
-                <li><svg class="ic" width="16" height="16"><use href="#i-clock"/></svg><span>Scheduled batch programs, unit-tested end to end</span></li>
-              </ul>
-            </div>
-          </article>
-
-          <!-- TY Lin -->
-          <!-- <article class="commit reveal">
-            <p class="commit-meta"><span class="date">Mar 2017 — Mar 2019</span></p>
-            <h3>Civil / Project Engineer <span class="company">· T.Y.Lin International Consulting Engineering</span></h3>
-            <div class="commit-body">
-              <h4>Job description</h4>
-              <ul>
-                <li>Eliminated manual spreadsheet estimation for material quantities (steel, concrete, machinery) by building internal tools that calculated them automatically — the work that sparked my move into software engineering.</li>
-              </ul>
-            </div>
-          </article> -->
-
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <span class="entry-title">Full-Stack Engineer</span>
+            —
+            <span class="entry-org">Xfers / StraitsX / Fazz</span>
+          </div>
+          <div class="entry-meta">Apr 2022 – Jan 2023 · Singapore</div>
         </div>
-      </section>
-    </div>
+        <ul class="bullets">
+          <li>Built user-facing interfaces and off-chain payment-flow logic for <strong>Singapore's largest stablecoin issuer (XSGD)</strong>, on a platform serving <strong>100K+ users and 100K+ daily transactions</strong>.</li>
+          <li>Optimized internal admin tooling, reducing the operations team's daily manual workload.</li>
+          <li>Integrated <strong>MetaMask</strong> wallet connection, significantly improving user onboarding convenience.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <span class="entry-title">Software Engineer</span>
+            —
+            <span class="entry-org">Provision Information</span>
+          </div>
+          <div class="entry-meta">Nov 2020 – Apr 2022 · Taiwan</div>
+        </div>
+        <ul class="bullets">
+          <li>Delivered external-facing banking systems for <strong>E.SUN Bank</strong> as a full-stack engineer.</li>
+          <li>Accelerated parallel multi-developer work by defining complete interface contracts with <strong>mock services</strong>.</li>
+          <li>Automated releases with <strong>CI/CD</strong> (Azure Pipelines), driving deployment error rate to <strong>zero</strong>.</li>
+          <li>Led development of a page-navigation verification module gating users through required, validated steps.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <span class="entry-title">Software Engineer</span>
+            —
+            <span class="entry-org">TPI Software</span>
+          </div>
+          <div class="entry-meta">Mar 2020 – Nov 2020 · Taiwan</div>
+        </div>
+        <ul class="bullets">
+          <li>First software role after transitioning careers; delivered full-stack features for banking systems under senior mentorship.</li>
+        </ul>
+      </div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <span class="entry-title">Civil Engineer</span>
+            —
+            <span class="entry-org">T.Y.Lin International Group</span>
+          </div>
+          <div class="entry-meta">2016 – 2018 · Taiwan</div>
+        </div>
+        <ul class="bullets">
+          <li>Applied a measurement-and-analysis methodology to identify structural bottlenecks and optimize designs — the analytical foundation now applied to software performance work.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Career Transition &amp; Self-Study</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <div><span class="entry-title">Self-Directed Transition to Software Engineering</span></div>
+          <div class="entry-meta">2018 – 2020</div>
+        </div>
+        <ul class="bullets">
+          <li>Made a deliberate pivot from civil to software engineering; self-taught the full stack from scratch — UI design and front-end development through back-end three-tier API architecture and database design — while preparing for an international engineering career.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="edu-row">
+        <div><span class="deg">B.S. in Civil Engineering</span> — National Cheng Kung University (NCKU)</div>
+        <div class="meta">2012 – 2016 · Tainan, Taiwan</div>
+      </div>
+    </section>
+
   </div>
-</main>
-
-<footer class="wrap">
-  <span>© <span id="year"></span> Hung Yun Hsuan</span>
-</footer>
-
-<div id="toast" role="status" aria-live="polite">yunshanghong@gmail.com copied</div>
-
-<script>
-  // current year in footer
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // copy email
-  const toast = document.getElementById('toast');
-  let toastTimer;
-  document.getElementById('copyEmail').addEventListener('click', async () => {
-    const email = 'yunshanghong@gmail.com';
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch (e) {
-      // fallback for older browsers
-      const ta = document.createElement('textarea');
-      ta.value = email;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-    }
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-  });
-
-  // print / save as PDF
-  document.getElementById('printBtn').addEventListener('click', () => window.print());
-
-  // scroll reveal (respects prefers-reduced-motion via CSS)
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-</script>
 </body>
 </html>
