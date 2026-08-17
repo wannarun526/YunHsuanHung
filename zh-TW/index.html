@@ -112,40 +112,41 @@
 
     <header>
       <div class="name">洪昀璿（Sean）</div>
-      <div class="role">軟體工程師 · 效能優化與全端系統</div>
+      <div class="role">軟體工程師 · 金融科技與支付</div>
       <div class="contact">
         <span>yunshanghong@gmail.com</span>
         <span>+886 918-990-5266</span>
         <span>台灣（可配合外派）</span>
-        <span><a href="https://github.com/wannarun526">https://github.com/wannarun526</a></span>
+        <span><a href="https://github.com/wannarun526">github.com/wannarun526</a></span>
       </div>
     </header>
 
     <section>
       <h2>簡介</h2>
       <p class="summary">
-        擁有 6 年經驗的全端軟體工程師,曾為銀行、金融科技與企業客戶開發並上線正式系統,目前專注於效能優化工程。
-        曾診斷並解決高併發下的競爭條件（race condition）、資料庫死鎖、N+1 查詢瓶頸與記憶體不足（OOM）問題,
-        多次將原本逾時的 API 優化至一秒以內回應。憑藉工程背景所培養的量測驅動、分析式思維,以及強烈的成長心態,
-        從零開始自學全端開發。熟悉 .NET、Node.js、Python,並搭配 GCP 與 Kubernetes 進行開發。
+        擁有 6 年正式系統開發經驗的軟體工程師,橫跨銀行、保險與數位支付系統,專精於效能優化與併發處理。
+        曾為新加坡最大的穩定幣發行商（XSGD）開發鏈下支付流程、為玉山銀行交付對外銀行系統,目前以獨立顧問身份
+        協助企業客戶解決正式環境的效能問題。具備診斷競爭條件（race condition）、資料庫死鎖、N+1 查詢瓶頸
+        以及負載下記憶體不足（OOM）問題的實績——多次將原本逾時的 API 優化至一秒以內回應。主要以 C#/.NET、
+        Node.js 與 Python,搭配 GCP 與 Kubernetes 進行開發。
       </p>
     </section>
 
     <section>
       <h2>技術能力</h2>
       <dl class="skills-grid">
-        <dt>程式語言</dt>
-        <dd>C# / .NET、TypeScript / JavaScript、Python、SQL</dd>
-        <dt>效能優化</dt>
-        <dd>併發控制、查詢優化、索引設計、快取機制、記憶體 / OOM 除錯、負載平衡、正式環境監控與事故診斷</dd>
+        <dt>效能與可靠性</dt>
+        <dd>併發控制（悲觀鎖、死鎖解決）、查詢優化與索引設計、快取策略、記憶體 / OOM 除錯、負載平衡、正式環境監控與事故診斷</dd>
         <dt>後端</dt>
-        <dd>.NET、NestJS（Node.js）、FastAPI（Python）、REST API、三層式架構、CI/CD</dd>
-        <dt>前端</dt>
-        <dd>Angular、React、Vue</dd>
+        <dd>C# / .NET、NestJS（Node.js）、FastAPI（Python）、REST API 設計、三層式架構、CI/CD</dd>
         <dt>資料庫</dt>
         <dd>SQL Server、MySQL、Redis</dd>
-        <dt>雲端 / 基礎架構</dt>
-        <dd>GCP（主要）、Kubernetes、Vertex AI、Azure、Docker、Git、Azure Pipelines</dd>
+        <dt>雲端與基礎架構</dt>
+        <dd>GCP（主要）、Kubernetes、Docker、Vertex AI、Azure、Azure Pipelines、Git</dd>
+        <dt>領域經驗</dt>
+        <dd>零售銀行、人壽保險、穩定幣發行與鏈下支付、大流量會員忠誠平台</dd>
+        <dt>前端</dt>
+        <dd>Angular、React、Vue <em>（次要專長;可承接全端工作）</em></dd>
       </dl>
     </section>
 
@@ -155,22 +156,48 @@
       <div class="entry">
         <div class="entry-head">
           <div>
-            <span class="entry-title">全端工程師（獨立接案）</span>
-            —
-            <span class="entry-org">自由接案</span>
+            <span class="entry-title">獨立軟體顧問 — 後端與效能</span>
           </div>
           <div class="entry-meta">2023 年 1 月 – 至今 · 遠距</div>
         </div>
-        <ul class="bullets">
-          <li>在會員數逾 <strong>10 萬人</strong>的平台（鼎新 DigiKnow）中,針對高併發積分兌換功能（尖峰每秒 5–10 次請求）採用悲觀併發控制,解決<strong>競爭條件與資料庫死鎖</strong>問題,消除資料不一致。</li>
-          <li>透過診斷 <strong>N+1 查詢</strong>、以可重複使用的快取重構資料存取方式、補齊缺漏的<strong>資料庫索引</strong>並精簡過度 join 的查詢,將逾時的 API 優化至<strong>一秒以內</strong>回應（DigiKnow、櫻花台灣）。</li>
-          <li>將大型後台資料匯出功能改為批次分頁處理,徹底解決<strong>記憶體不足（OOM）</strong>問題。</li>
-          <li>導入 <strong>Kubernetes 負載平衡</strong>與 GCP Cloud Logging 進行正式環境監控與事故診斷,提升系統可靠性與擴展性。</li>
-          <li>主導<strong>跨團隊調查</strong>,與基礎架構團隊及資料庫管理團隊合作診斷並修復正式站台的頁面載入緩慢問題（櫻花台灣）。</li>
-          <li>在 <strong>Vertex AI Agent Engine</strong> 上打造 <strong>AI 聊天機器人</strong>,採用工具 / 技能路由架構,以代理人自主選擇工具取代多次呼叫的編排方式,降低對 Azure OpenAI 的依賴（DigiKnow Chatbot）。</li>
-          <li>將正式上線的保險平台從 <strong>Angular 11 升級至 17</strong>,開發效率提升 80% 以上;並與 QA 團隊合作打造 AI 輔助自動化測試工具原型（台新人壽）。</li>
-          <li>獨立負責對外客戶的端到端交付流程——需求釐清、範疇界定、時程估算、雛型開發到正式上線,並在 5 個專案倉庫間主導內部教育訓練。</li>
-        </ul>
+        <p class="summary" style="margin-top:5px">
+          獨資工作室。受企業與金融服務客戶委託,診斷並修復正式環境的效能問題,並負責端到端的後端交付——
+          需求釐清、範疇界定、時程估算、實作到上線。以下為四項主要專案。
+        </p>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">鼎新電腦 — DigiKnow 就享知平台 <span style="color:var(--muted);font-weight:400">(ERP 供應商;逾 10 萬會員平台)</span></div>
+          <ul class="bullets">
+            <li>導入悲觀併發控制,解決積分兌換功能的資料不一致問題——該問題源自併發兌換時對共用庫存記錄的高度競用,造成<strong>競爭條件與資料庫死鎖</strong>。</li>
+            <li>透過診斷 <strong>N+1 查詢模式</strong>、以可重複使用的快取層重構資料存取、補齊缺漏的<strong>資料庫索引</strong>並精簡過度 join 的查詢,將逾時的 API 優化至<strong>一秒以內回應</strong>。</li>
+            <li>將大型後台資料匯出從單次擷取改為批次分頁處理,徹底解決<strong>記憶體不足（OOM）</strong>問題。</li>
+            <li>導入 <strong>Kubernetes 負載平衡</strong>與 GCP Cloud Logging 進行正式環境監控與事故診斷,提升系統可靠性與水平擴展能力。</li>
+            <li>在 <strong>Vertex AI Agent Engine</strong> 上以工具 / 技能路由架構打造面向客戶的 AI 助理,以代理人自主選擇工具取代多次呼叫的編排方式,降低對第三方 LLM 的依賴。</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">櫻花台灣 <span style="color:var(--muted);font-weight:400">(家電製造商;對外企業官網)</span></div>
+          <ul class="bullets">
+            <li>主導<strong>跨部門調查</strong>,與基礎架構團隊及資料庫管理團隊合作診斷並解決正式站台的頁面載入緩慢問題,追查橫跨應用程式、資料庫與基礎架構各層的瓶頸。</li>
+            <li>套用相同的查詢與快取優化手法,將逾時的端點回應時間壓到一秒以內。</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">台新人壽 <span style="color:var(--muted);font-weight:400">(人壽保險公司;正式保單平台)</span></div>
+          <ul class="bullets">
+            <li>將正式上線的保險平台跨六個主要框架版本升級（<strong>Angular 11 → 17</strong>）,清除累積的相依套件技術債,開發產能提升 80% 以上。</li>
+            <li>與 QA 團隊合作打造 AI 輔助自動化測試工具原型。</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">跨專案</div>
+          <ul class="bullets">
+            <li>於各專案中獨立負責對客戶的交付工作,並在五個專案倉庫間主導內部工程教育訓練。</li>
+          </ul>
+        </div>
       </div>
 
       <div class="entry">
@@ -183,9 +210,9 @@
           <div class="entry-meta">2022 年 4 月 – 2023 年 1 月 · 遠距</div>
         </div>
         <ul class="bullets">
-          <li>為<strong>新加坡最大的穩定幣發行商（XSGD）</strong>開發使用者介面與鏈下支付流程邏輯,該平台服務超過 <strong>10 萬名使用者、每日交易量逾 10 萬筆</strong>。</li>
-          <li>優化內部後台管理工具,減少維運團隊每日的人工作業量。</li>
-          <li>整合 <strong>MetaMask</strong> 錢包連接功能,大幅提升使用者的導入體驗與便利性。</li>
+          <li>為<strong>新加坡最大的穩定幣發行商 XSGD</strong> 開發鏈下支付流程邏輯與使用者介面,該平台服務超過 <strong>10 萬名使用者、每日交易量逾 10 萬筆</strong>。</li>
+          <li>優化內部維運工具,減少維運團隊每日的人工作業量。</li>
+          <li>整合 <strong>MetaMask</strong> 錢包連接功能,提升使用者導入轉換率。</li>
         </ul>
       </div>
 
@@ -196,13 +223,13 @@
             —
             <span class="entry-org">普鴻資訊</span>
           </div>
-          <div class="entry-meta">2020 年 11 月 – 2022 年 4 月 · 台灣</div>
+          <div class="entry-meta">2020 年 11 月 – 2022 年 4 月 · 台北,台灣</div>
         </div>
         <ul class="bullets">
-          <li>以全端工程師身份為<strong>玉山銀行</strong>開發對外銀行系統。</li>
-          <li>透過訂定完整的介面規格並搭配 <strong>mock 服務</strong>,加速多名開發者的並行開發作業。</li>
-          <li>以 <strong>CI/CD</strong>（Azure Pipelines）自動化部署流程,將部署錯誤率降至<strong>零</strong>。</li>
-          <li>主導開發頁面導覽驗證模組,確保使用者依序完成必要且經過驗證的操作步驟。</li>
+          <li>為<strong>玉山銀行</strong>交付對外的零售銀行系統。</li>
+          <li>透過訂定完整的介面規格並搭配 <strong>mock 服務</strong>,解除團隊並行開發的相依阻塞。</li>
+          <li>以 <strong>CI/CD</strong>（Azure Pipelines）自動化發布流程,將部署錯誤率降至<strong>零</strong>。</li>
+          <li>主導開發導覽驗證模組,強制使用者依序完成必要且經過驗證的操作步驟——此為銀行流程的法規要求。</li>
         </ul>
       </div>
 
@@ -213,10 +240,10 @@
             —
             <span class="entry-org">昕力科技（TPI Software）</span>
           </div>
-          <div class="entry-meta">2020 年 3 月 – 2020 年 11 月 · 台灣</div>
+          <div class="entry-meta">2020 年 3 月 – 2020 年 11 月 · 台北,台灣</div>
         </div>
         <ul class="bullets">
-          <li>轉職後的第一份軟體相關工作;在資深工程師指導下,為銀行系統開發全端功能。</li>
+          <li>第一份工程師工作;在資深工程師指導下,為銀行系統開發全端功能。</li>
         </ul>
       </div>
 
@@ -227,23 +254,10 @@
             —
             <span class="entry-org">林同棪工程顧問集團</span>
           </div>
-          <div class="entry-meta">2016 – 2018 · 台灣</div>
+          <div class="entry-meta">2016 – 2018 · 台北,台灣</div>
         </div>
         <ul class="bullets">
-          <li>運用量測與分析方法找出結構瓶頸並優化設計——此分析思維基礎至今仍應用於軟體效能優化工作中。</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <h2>職涯轉換與自學歷程</h2>
-      <div class="entry">
-        <div class="entry-head">
-          <div><span class="entry-title">自主轉職軟體工程之路</span></div>
-          <div class="entry-meta">2018 – 2020</div>
-        </div>
-        <ul class="bullets">
-          <li>主動從土木工程轉職至軟體工程;從零開始自學全端開發——從 UI 設計與前端開發,到後端三層式 API 架構與資料庫設計——同時為國際化的工程職涯做準備。</li>
+          <li>從事結構分析與設計優化。2018 年轉職至軟體工程領域。</li>
         </ul>
       </div>
     </section>
@@ -251,8 +265,8 @@
     <section>
       <h2>學歷</h2>
       <div class="edu-row">
-        <div><span class="deg">土木工程學系 學士</span> — 國立成功大學（NCKU）</div>
-        <div class="meta">2012 – 2016 · 台灣</div>
+        <div><span class="deg">土木工程學系 學士</span> — 國立成功大學（NCKU）,台灣</div>
+        <div class="meta">2012 – 2016</div>
       </div>
     </section>
 

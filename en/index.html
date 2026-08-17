@@ -112,43 +112,44 @@
 
     <header>
       <div class="name">Hung Yun Hsuan（Sean）</div>
-      <div class="role">Software Engineer · Performance &amp; Full-Stack Systems</div>
+      <div class="role">Software Engineer · Fintech and Payments</div>
       <div class="contact">
         <span>yunshanghong@gmail.com</span>
         <span>+886 918-990-5266</span>
         <span>Taiwan (open to relocation)</span>
-        <span><a href="https://github.com/wannarun526">https://github.com/wannarun526</a></span>
+        <span><a href="https://github.com/wannarun526">github.com/wannarun526</a></span>
       </div>
     </header>
 
     <section>
       <h2>Summary</h2>
       <p class="summary">
-        Full-stack software engineer with 6 years of experience shipping production systems for
-        banking, fintech, and enterprise clients, now focused on performance engineering. Diagnosed
-        and resolved high-concurrency race conditions, database deadlocks, N+1 query bottlenecks, and
-        out-of-memory failures — repeatedly cutting timing-out APIs to sub-second responses. Brings a
-        measurement-driven, analytical approach from an engineering background and a strong growth
-        mindset, having self-taught the full stack from scratch. Works across .NET, Node.js, and
-        Python with GCP and Kubernetes.
+        Software engineer with 6 years of production experience across banking, insurance, and
+        digital-payment systems, specialising in performance and concurrency work. Built off-chain
+        payment flows for Singapore's largest stablecoin issuer (XSGD), delivered external-facing
+        banking systems for E.SUN Bank, and now works as an independent consultant resolving
+        production performance failures for enterprise clients. Track record of diagnosing race
+        conditions, database deadlocks, N+1 query bottlenecks, and out-of-memory failures under
+        load — repeatedly cutting timing-out APIs to sub-second responses. Works primarily in
+        C#/.NET, Node.js, and Python on GCP and Kubernetes.
       </p>
     </section>
 
     <section>
       <h2>Technical Skills</h2>
       <dl class="skills-grid">
-        <dt>Languages</dt>
-        <dd>C# / .NET, TypeScript / JavaScript, Python, SQL</dd>
-        <dt>Performance</dt>
-        <dd>Concurrency control, query optimization, indexing, caching, memory/OOM debugging, load balancing, production monitoring &amp; incident diagnosis</dd>
+        <dt>Performance &amp; Reliability</dt>
+        <dd>Concurrency control (pessimistic locking, deadlock resolution), query optimisation and index design, caching strategy, memory/OOM debugging, load balancing, production monitoring and incident diagnosis</dd>
         <dt>Backend</dt>
-        <dd>.NET, NestJS (Node.js), FastAPI (Python), REST APIs, three-tier architecture, CI/CD</dd>
-        <dt>Frontend</dt>
-        <dd>Angular, React, Vue</dd>
+        <dd>C# / .NET, NestJS (Node.js), FastAPI (Python), REST API design, three-tier architecture, CI/CD</dd>
         <dt>Data</dt>
         <dd>SQL Server, MySQL, Redis</dd>
-        <dt>Cloud / Infra</dt>
-        <dd>GCP (primary), Kubernetes, Vertex AI, Azure, Docker, Git, Azure Pipelines</dd>
+        <dt>Cloud &amp; Infrastructure</dt>
+        <dd>GCP (primary), Kubernetes, Docker, Vertex AI, Azure, Azure Pipelines, Git</dd>
+        <dt>Domain</dt>
+        <dd>Retail banking, life insurance, stablecoin issuance and off-chain payments, high-volume loyalty platforms</dd>
+        <dt>Frontend</dt>
+        <dd>Angular, React, Vue <em>(secondary; available for full-stack ownership)</em></dd>
       </dl>
     </section>
 
@@ -158,22 +159,50 @@
       <div class="entry">
         <div class="entry-head">
           <div>
-            <span class="entry-title">Full-Stack Engineer (Independent)</span>
-            —
-            <span class="entry-org">Freelance</span>
+            <span class="entry-title">Independent Software Consultant — Backend &amp; Performance</span>
           </div>
           <div class="entry-meta">Jan 2023 – Present · Remote</div>
         </div>
-        <ul class="bullets">
-          <li>Resolved <strong>race conditions and database deadlocks</strong> in a high-concurrency points-redemption feature (peak 5–10 req/s) using pessimistic concurrency control, eliminating data inconsistency on a <strong>100K+ member</strong> loyalty platform (Digiwin DigiKnow).</li>
-          <li>Cut timing-out APIs to <strong>sub-1-second</strong> responses by diagnosing <strong>N+1 queries</strong> and restructuring data access with reusable caching, adding missing <strong>database indexes</strong>, and reducing over-joined queries (DigiKnow, Sakura Taiwan).</li>
-          <li>Eliminated <strong>out-of-memory failures</strong> in large admin data exports by converting to batched and paginated processing.</li>
-          <li>Improved reliability and scalability with <strong>Kubernetes load balancing</strong> and GCP Cloud Logging for production monitoring and incident diagnosis.</li>
-          <li>Led a <strong>cross-team investigation</strong> with infrastructure and DBA teams to diagnose and fix slow page loads on a production corporate site (Sakura Taiwan).</li>
-          <li>Architected an <strong>AI chatbot</strong> on <strong>Vertex AI Agent Engine</strong> with a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing dependency on Azure OpenAI (DigiKnow Chatbot).</li>
-          <li>Upgraded a production insurance platform from <strong>Angular 11 to 17</strong>, improving development efficiency by 80%+; partnered with QA to prototype an AI-assisted automated testing tool (Taishin Life).</li>
-          <li>Owned end-to-end delivery for external clients — requirements, scoping, estimation, prototyping, and production launch — and ran internal training across 5 repositories.</li>
-        </ul>
+        <p class="summary" style="margin-top:5px">
+          Sole proprietorship. Retained by enterprise and financial-services clients to diagnose
+          and remediate production performance failures, and to own backend delivery end to end —
+          requirements, scoping, estimation, implementation, and launch. Four principal engagements
+          below.
+        </p>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">Digiwin — DigiKnow <span style="color:var(--muted);font-weight:400">(ERP vendor; 100K+ member platform)</span></div>
+          <ul class="bullets">
+            <li>Eliminated data inconsistency in a points-redemption feature by introducing pessimistic concurrency control, resolving <strong>race conditions and database deadlocks</strong> caused by heavy contention on shared inventory records under concurrent redemption.</li>
+            <li>Cut timing-out APIs to <strong>sub-second responses</strong> by diagnosing <strong>N+1 query patterns</strong>, restructuring data access behind a reusable caching layer, adding missing <strong>database indexes</strong>, and simplifying over-joined queries.</li>
+            <li>Eliminated <strong>out-of-memory failures</strong> in large administrative data exports by converting single-pass extraction to batched, paginated processing.</li>
+            <li>Introduced <strong>Kubernetes load balancing</strong> and GCP Cloud Logging for production monitoring and incident diagnosis, improving reliability and horizontal scalability.</li>
+            <li>Architected a customer-facing AI assistant on <strong>Vertex AI Agent Engine</strong> using a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing third-party LLM dependency.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">Sakura Taiwan <span style="color:var(--muted);font-weight:400">(consumer appliance manufacturer; public corporate site)</span></div>
+          <ul class="bullets">
+            <li>Led a <strong>cross-functional investigation</strong> with infrastructure and DBA teams to diagnose and resolve slow page loads on the production site, tracing the bottleneck across application, database, and infrastructure layers.</li>
+            <li>Applied the same query and caching remediation to bring timing-out endpoints under one second.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">Taishin Life Insurance <span style="color:var(--muted);font-weight:400">(life insurer; production policy platform)</span></div>
+          <ul class="bullets">
+            <li>Modernised a live insurance platform across six major framework versions (<strong>Angular 11 → 17</strong>), clearing accumulated dependency debt and improving development throughput by over 80%.</li>
+            <li>Partnered with the QA function to prototype an AI-assisted automated testing tool.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:8px">
+          <div class="entry-org">Cross-engagement</div>
+          <ul class="bullets">
+            <li>Owned client-facing delivery independently across all engagements, and ran internal engineering training across five repositories.</li>
+          </ul>
+        </div>
       </div>
 
       <div class="entry">
@@ -186,9 +215,9 @@
           <div class="entry-meta">Apr 2022 – Jan 2023 · Remote</div>
         </div>
         <ul class="bullets">
-          <li>Built user-facing interfaces and off-chain payment-flow logic for <strong>Singapore's largest stablecoin issuer (XSGD)</strong>, on a platform serving <strong>100K+ users and 100K+ daily transactions</strong>.</li>
-          <li>Optimized internal admin tooling, reducing the operations team's daily manual workload.</li>
-          <li>Integrated <strong>MetaMask</strong> wallet connection, significantly improving user onboarding convenience.</li>
+          <li>Built off-chain payment-flow logic and user-facing interfaces for <strong>XSGD, Singapore's largest stablecoin issuer</strong>, on a platform serving <strong>100K+ users and 100K+ daily transactions</strong>.</li>
+          <li>Optimised internal operations tooling, reducing the operations team's daily manual workload.</li>
+          <li>Integrated <strong>MetaMask</strong> wallet connectivity, improving user onboarding conversion.</li>
         </ul>
       </div>
 
@@ -199,13 +228,13 @@
             —
             <span class="entry-org">Provision Information</span>
           </div>
-          <div class="entry-meta">Nov 2020 – Apr 2022 · Taiwan</div>
+          <div class="entry-meta">Nov 2020 – Apr 2022 · Taipei, Taiwan</div>
         </div>
         <ul class="bullets">
-          <li>Delivered external-facing banking systems for <strong>E.SUN Bank</strong> as a full-stack engineer.</li>
-          <li>Accelerated parallel multi-developer work by defining complete interface contracts with <strong>mock services</strong>.</li>
-          <li>Automated releases with <strong>CI/CD</strong> (Azure Pipelines), driving deployment error rate to <strong>zero</strong>.</li>
-          <li>Led development of a page-navigation verification module gating users through required, validated steps.</li>
+          <li>Delivered external-facing retail banking systems for <strong>E.SUN Bank</strong>.</li>
+          <li>Unblocked parallel development across the team by defining complete interface contracts backed by <strong>mock services</strong>.</li>
+          <li>Automated releases via <strong>CI/CD</strong> (Azure Pipelines), driving the deployment error rate to <strong>zero</strong>.</li>
+          <li>Led development of a navigation-verification module enforcing that users complete required, validated steps in sequence — a regulatory requirement for the banking flow.</li>
         </ul>
       </div>
 
@@ -216,10 +245,10 @@
             —
             <span class="entry-org">TPI Software</span>
           </div>
-          <div class="entry-meta">Mar 2020 – Nov 2020 · Taiwan</div>
+          <div class="entry-meta">Mar 2020 – Nov 2020 · Taipei, Taiwan</div>
         </div>
         <ul class="bullets">
-          <li>First software role after transitioning careers; delivered full-stack features for banking systems under senior mentorship.</li>
+          <li>First engineering role; delivered full-stack features for banking systems under senior mentorship.</li>
         </ul>
       </div>
 
@@ -228,25 +257,12 @@
           <div>
             <span class="entry-title">Civil Engineer</span>
             —
-            <span class="entry-org">T.Y.Lin International Group</span>
+            <span class="entry-org">T.Y. Lin International Group</span>
           </div>
-          <div class="entry-meta">2016 – 2018 · Taiwan</div>
+          <div class="entry-meta">2016 – 2018 · Taipei, Taiwan</div>
         </div>
         <ul class="bullets">
-          <li>Applied a measurement-and-analysis methodology to identify structural bottlenecks and optimize designs — the analytical foundation now applied to software performance work.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section>
-      <h2>Career Transition &amp; Self-Study</h2>
-      <div class="entry">
-        <div class="entry-head">
-          <div><span class="entry-title">Self-Directed Transition to Software Engineering</span></div>
-          <div class="entry-meta">2018 – 2020</div>
-        </div>
-        <ul class="bullets">
-          <li>Made a deliberate pivot from civil to software engineering; self-taught the full stack from scratch — UI design and front-end development through back-end three-tier API architecture and database design — while preparing for an international engineering career.</li>
+          <li>Structural analysis and design optimisation. Transitioned to software engineering in 2018.</li>
         </ul>
       </div>
     </section>
@@ -254,8 +270,8 @@
     <section>
       <h2>Education</h2>
       <div class="edu-row">
-        <div><span class="deg">B.S. in Civil Engineering</span> — National Cheng Kung University (NCKU)</div>
-        <div class="meta">2012 – 2016 · Taiwan</div>
+        <div><span class="deg">B.S. in Civil Engineering</span> — National Cheng Kung University (NCKU), Taiwan</div>
+        <div class="meta">2012 – 2016</div>
       </div>
     </section>
 
