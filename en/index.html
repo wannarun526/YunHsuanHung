@@ -63,7 +63,8 @@
   }
   .summary{ font-size:12.5px; color:#333; line-height:1.5; }
 
-  .entry{ margin-bottom:11px; page-break-inside:avoid; }
+  .entry{ margin-bottom:11px; }
+  .subentry{ margin-top:8px; }
   .entry:last-child{ margin-bottom:0; }
   .entry-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
   .entry-title{ font-size:13.5px; font-weight:700; }
@@ -100,8 +101,13 @@
     .page{ box-shadow:none; max-width:none; width:auto; padding:0; margin:0; }
     .fill{ background:transparent; color:var(--placeholder-ink); }
     a{ color:var(--ink) !important; text-decoration:none; }
-    h2{ page-break-after:avoid; }
-    .entry{ page-break-inside:avoid; }
+    h2{ break-after:avoid-page; }
+    .entry{ break-inside:auto; }
+    .entry-head{ break-after:avoid-page; }
+    .entry-org{ break-after:avoid-page; }
+    .subentry{ break-inside:avoid; }
+    ul.bullets li{ break-inside:avoid; }
+    .edu-row{ break-inside:avoid; }
   }
 </style>
 </head>
@@ -170,7 +176,7 @@
           below.
         </p>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">Digiwin — DigiKnow <span style="color:var(--muted);font-weight:400">(ERP vendor; 100K+ member platform)</span></div>
           <ul class="bullets">
             <li>Eliminated data inconsistency in a points-redemption feature by introducing pessimistic concurrency control, resolving <strong>race conditions and database deadlocks</strong> caused by heavy contention on shared inventory records under concurrent redemption.</li>
@@ -181,7 +187,7 @@
           </ul>
         </div>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">Sakura Taiwan <span style="color:var(--muted);font-weight:400">(consumer appliance manufacturer; public corporate site)</span></div>
           <ul class="bullets">
             <li>Led a <strong>cross-functional investigation</strong> with infrastructure and DBA teams to diagnose and resolve slow page loads on the production site, tracing the bottleneck across application, database, and infrastructure layers.</li>
@@ -189,7 +195,7 @@
           </ul>
         </div>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">Taishin Life Insurance <span style="color:var(--muted);font-weight:400">(life insurer; production policy platform)</span></div>
           <ul class="bullets">
             <li>Modernised a live insurance platform across six major framework versions (<strong>Angular 11 → 17</strong>), clearing accumulated dependency debt and improving development throughput by over 80%.</li>
@@ -197,7 +203,7 @@
           </ul>
         </div>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">Cross-engagement</div>
           <ul class="bullets">
             <li>Owned client-facing delivery independently across all engagements, and ran internal engineering training across five repositories.</li>
