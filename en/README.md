@@ -45,6 +45,7 @@ Sole proprietorship. Retained by enterprise and financial-services clients to di
 **Taishin Life Insurance** *(life insurer; production policy platform)*
 
 - Modernised a live insurance platform across six major framework versions (**Angular 11 → 17**), clearing accumulated dependency debt and improving development throughput by over 80%.
+- Maintained and enhanced the **Java / Maven** CMS admin backend behind the platform, delivering feature changes and defect fixes on the live system.
 - Partnered with the QA function to prototype an AI-assisted automated testing tool.
 
 **Cross-engagement**
