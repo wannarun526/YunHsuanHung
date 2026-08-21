@@ -63,7 +63,8 @@
   }
   .summary{ font-size:12.5px; color:#333; line-height:1.5; }
 
-  .entry{ margin-bottom:11px; page-break-inside:avoid; }
+  .entry{ margin-bottom:11px; }
+  .subentry{ margin-top:8px; }
   .entry:last-child{ margin-bottom:0; }
   .entry-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
   .entry-title{ font-size:13.5px; font-weight:700; }
@@ -100,8 +101,13 @@
     .page{ box-shadow:none; max-width:none; width:auto; padding:0; margin:0; }
     .fill{ background:transparent; color:var(--placeholder-ink); }
     a{ color:var(--ink) !important; text-decoration:none; }
-    h2{ page-break-after:avoid; }
-    .entry{ page-break-inside:avoid; }
+    h2{ break-after:avoid-page; }
+    .entry{ break-inside:auto; }
+    .entry-head{ break-after:avoid-page; }
+    .entry-org{ break-after:avoid-page; }
+    .subentry{ break-inside:avoid; }
+    ul.bullets li{ break-inside:avoid; }
+    .edu-row{ break-inside:avoid; }
   }
 </style>
 </head>
@@ -138,15 +144,15 @@
         <dt>效能與可靠性</dt>
         <dd>併發控制（悲觀鎖、死鎖解決）、查詢優化與索引設計、快取策略、記憶體 / OOM 除錯、負載平衡、正式環境監控與事故診斷</dd>
         <dt>後端</dt>
-        <dd>C# / .NET、NestJS（Node.js）、FastAPI（Python）、REST API 設計、三層式架構、CI/CD</dd>
+        <dd>C# / .NET、Java（Maven）、NestJS（Node.js）、FastAPI（Python）、REST API 設計、三層式架構、CI/CD</dd>
         <dt>資料庫</dt>
         <dd>SQL Server、MySQL、Redis</dd>
         <dt>雲端與基礎架構</dt>
         <dd>GCP（主要）、Kubernetes、Docker、Vertex AI、Azure、Azure Pipelines、Git</dd>
         <dt>領域經驗</dt>
         <dd>零售銀行、人壽保險、穩定幣發行與鏈下支付、大流量會員忠誠平台</dd>
-        <dt>前端</dt>
-        <dd>Angular、React、Vue <em>（次要專長;可承接全端工作）</em></dd>
+        <dt>前端與行動裝置</dt>
+        <dd>Angular、React、Vue、React Native（iOS / Android）</dd>
       </dl>
     </section>
 
@@ -165,18 +171,19 @@
           需求釐清、範疇界定、時程估算、實作到上線。以下為四項主要專案。
         </p>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">鼎新電腦 — DigiKnow 就享知平台 <span style="color:var(--muted);font-weight:400">(ERP 供應商;逾 10 萬會員平台)</span></div>
           <ul class="bullets">
             <li>導入悲觀併發控制,解決積分兌換功能的資料不一致問題——該問題源自併發兌換時對共用庫存記錄的高度競用,造成<strong>競爭條件與資料庫死鎖</strong>。</li>
             <li>透過診斷 <strong>N+1 查詢模式</strong>、以可重複使用的快取層重構資料存取、補齊缺漏的<strong>資料庫索引</strong>並精簡過度 join 的查詢,將逾時的 API 優化至<strong>一秒以內回應</strong>。</li>
             <li>將大型後台資料匯出從單次擷取改為批次分頁處理,徹底解決<strong>記憶體不足（OOM）</strong>問題。</li>
             <li>導入 <strong>Kubernetes 負載平衡</strong>與 GCP Cloud Logging 進行正式環境監控與事故診斷,提升系統可靠性與水平擴展能力。</li>
+            <li>以<strong>單一 React Native 程式碼庫同時交付 iOS 與 Android</strong> 的會員端行動應用,無需另組原生開發團隊即將平台延伸至行動裝置。</li>
             <li>在 <strong>Vertex AI Agent Engine</strong> 上以工具 / 技能路由架構打造面向客戶的 AI 助理,以代理人自主選擇工具取代多次呼叫的編排方式,降低對第三方 LLM 的依賴。</li>
           </ul>
         </div>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">櫻花台灣 <span style="color:var(--muted);font-weight:400">(家電製造商;對外企業官網)</span></div>
           <ul class="bullets">
             <li>主導<strong>跨部門調查</strong>,與基礎架構團隊及資料庫管理團隊合作診斷並解決正式站台的頁面載入緩慢問題,追查橫跨應用程式、資料庫與基礎架構各層的瓶頸。</li>
@@ -184,7 +191,7 @@
           </ul>
         </div>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">台新人壽 <span style="color:var(--muted);font-weight:400">(人壽保險公司;正式保單平台)</span></div>
           <ul class="bullets">
             <li>將正式上線的保險平台跨六個主要框架版本升級（<strong>Angular 11 → 17</strong>）,清除累積的相依套件技術債,開發產能提升 80% 以上。</li>
@@ -192,7 +199,7 @@
           </ul>
         </div>
 
-        <div style="margin-top:8px">
+        <div class="subentry">
           <div class="entry-org">跨專案</div>
           <ul class="bullets">
             <li>於各專案中獨立負責對客戶的交付工作,並在五個專案倉庫間主導內部工程教育訓練。</li>
