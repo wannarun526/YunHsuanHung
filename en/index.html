@@ -134,25 +134,29 @@
         independent studio that owns delivery from requirements and scoping through
         implementation, launch, and everything after it. Ships the whole product: React Native
         apps on iOS and Android, the NestJS and .NET services behind them, and the Kubernetes
-        and GCP infrastructure they run on. That work has mostly been in regulated, high-volume
+        and GCP infrastructure they run on. Builds with AI as part of the toolchain —
+        architected a customer-facing assistant on Vertex AI Agent Engine using a tool/skill
+        routing pattern, works day to day in Claude Code, and prototyped AI-assisted testing
+        with a client's QA function. That work has mostly been in regulated, high-volume
         environments — banking, insurance, and digital payments — including off-chain payment
         flows for XSGD, Singapore's largest stablecoin issuer, on a platform serving 100K+ users
-        and 100K+ daily transactions. Stays on the hook once features are live, diagnosing race
-        conditions, deadlocks, and N+1 bottlenecks under real load. Also architected a
-        customer-facing AI assistant on Vertex AI Agent Engine and ran internal engineering
-        training across five repositories.
+        and 100K+ daily transactions, where staying on the hook after launch means diagnosing
+        race conditions, deadlocks, and N+1 bottlenecks under real load. Ran internal
+        engineering training across five repositories.
       </p>
     </section>
 
     <section>
       <h2>Technical Skills</h2>
       <dl class="skills-grid">
+        <dt>AI Engineering</dt>
+        <dd>Claude Code and agentic development workflows, Vertex AI Agent Engine, tool/skill routing patterns, AI-assisted testing</dd>
         <dt>Mobile &amp; Frontend</dt>
         <dd>React Native (iOS/Android), Angular, React, Vue</dd>
         <dt>Backend</dt>
         <dd>C# / .NET, Java (Maven), NestJS (Node.js), FastAPI (Python), REST API design, three-tier architecture</dd>
         <dt>Cloud &amp; Infrastructure</dt>
-        <dd>GCP (primary), Kubernetes, Docker, Vertex AI, Azure, Azure Pipelines, CI/CD, Git</dd>
+        <dd>GCP (primary), Kubernetes, Docker, Azure, Azure Pipelines, CI/CD, Git</dd>
         <dt>Data</dt>
         <dd>SQL Server, MySQL, Redis</dd>
         <dt>Performance &amp; Reliability</dt>
@@ -184,12 +188,12 @@
         <div class="subentry">
           <div class="entry-org">Digiwin — DigiKnow <span style="color:var(--muted);font-weight:400">(ERP vendor; 100K+ member platform)</span></div>
           <ul class="bullets">
+            <li>Delivered the member-facing mobile app for <strong>iOS and Android from a single React Native codebase</strong>, extending the platform to mobile without a second native team.</li>
+            <li>Architected a customer-facing AI assistant on <strong>Vertex AI Agent Engine</strong> using a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing third-party LLM dependency.</li>
             <li>Eliminated data inconsistency in a points-redemption feature by introducing pessimistic concurrency control, resolving <strong>race conditions and database deadlocks</strong> caused by heavy contention on shared inventory records under concurrent redemption.</li>
             <li>Cut timing-out APIs to <strong>sub-second responses</strong> by diagnosing <strong>N+1 query patterns</strong>, restructuring data access behind a reusable caching layer, adding missing <strong>database indexes</strong>, and simplifying over-joined queries.</li>
             <li>Eliminated <strong>out-of-memory failures</strong> in large administrative data exports by converting single-pass extraction to batched, paginated processing.</li>
             <li>Introduced <strong>Kubernetes load balancing</strong> and GCP Cloud Logging for production monitoring and incident diagnosis, improving reliability and horizontal scalability.</li>
-            <li>Delivered the member-facing mobile app for <strong>iOS and Android from a single React Native codebase</strong>, extending the platform to mobile without a second native team.</li>
-            <li>Architected a customer-facing AI assistant on <strong>Vertex AI Agent Engine</strong> using a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing third-party LLM dependency.</li>
           </ul>
         </div>
 

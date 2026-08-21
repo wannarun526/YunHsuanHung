@@ -133,23 +133,26 @@
         擁有 6 年正式系統開發經驗的端到端產品工程師,目前以獨資工作室形式承接完整交付責任——
         從需求釐清、範疇界定,一路到實作、上線,以及上線之後的一切。交付範圍涵蓋整個產品:
         iOS 與 Android 上的 React Native 應用、其後方的 NestJS 與 .NET 服務,以及支撐它們運行的
-        Kubernetes 與 GCP 基礎架構。這些工作多半發生在高度監管、高流量的環境——銀行、保險與數位
-        支付——其中包含為新加坡最大的穩定幣發行商 XSGD 開發鏈下支付流程,該平台服務超過 10 萬名
-        使用者、每日交易量逾 10 萬筆。功能上線後持續負責到底,診斷真實負載下的競爭條件、死鎖與
-        N+1 瓶頸。另在 Vertex AI Agent Engine 上打造面向客戶的 AI 助理,並在五個專案倉庫間主導
-        內部工程教育訓練。
+        Kubernetes 與 GCP 基礎架構。將 AI 納入日常工具鏈:在 Vertex AI Agent Engine 上以工具 /
+        技能路由架構打造面向客戶的助理、日常開發以 Claude Code 進行,並與客戶的 QA 團隊合作打造
+        AI 輔助測試原型。這些工作多半發生在高度監管、高流量的環境——銀行、保險與數位支付——
+        其中包含為新加坡最大的穩定幣發行商 XSGD 開發鏈下支付流程,該平台服務超過 10 萬名使用者、
+        每日交易量逾 10 萬筆;功能上線後持續負責到底,診斷真實負載下的競爭條件、死鎖與 N+1 瓶頸。
+        並在五個專案倉庫間主導內部工程教育訓練。
       </p>
     </section>
 
     <section>
       <h2>技術能力</h2>
       <dl class="skills-grid">
+        <dt>AI 工程</dt>
+        <dd>Claude Code 與代理式開發流程、Vertex AI Agent Engine、工具 / 技能路由架構、AI 輔助測試</dd>
         <dt>行動裝置與前端</dt>
         <dd>React Native（iOS / Android）、Angular、React、Vue</dd>
         <dt>後端</dt>
         <dd>C# / .NET、Java（Maven）、NestJS（Node.js）、FastAPI（Python）、REST API 設計、三層式架構</dd>
         <dt>雲端與基礎架構</dt>
-        <dd>GCP（主要）、Kubernetes、Docker、Vertex AI、Azure、Azure Pipelines、CI/CD、Git</dd>
+        <dd>GCP（主要）、Kubernetes、Docker、Azure、Azure Pipelines、CI/CD、Git</dd>
         <dt>資料庫</dt>
         <dd>SQL Server、MySQL、Redis</dd>
         <dt>效能與可靠性</dt>
@@ -179,12 +182,12 @@
         <div class="subentry">
           <div class="entry-org">鼎新電腦 — DigiKnow 就享知平台 <span style="color:var(--muted);font-weight:400">(ERP 供應商;逾 10 萬會員平台)</span></div>
           <ul class="bullets">
+            <li>以<strong>單一 React Native 程式碼庫同時交付 iOS 與 Android</strong> 的會員端行動應用,無需另組原生開發團隊即將平台延伸至行動裝置。</li>
+            <li>在 <strong>Vertex AI Agent Engine</strong> 上以工具 / 技能路由架構打造面向客戶的 AI 助理,以代理人自主選擇工具取代多次呼叫的編排方式,降低對第三方 LLM 的依賴。</li>
             <li>導入悲觀併發控制,解決積分兌換功能的資料不一致問題——該問題源自併發兌換時對共用庫存記錄的高度競用,造成<strong>競爭條件與資料庫死鎖</strong>。</li>
             <li>透過診斷 <strong>N+1 查詢模式</strong>、以可重複使用的快取層重構資料存取、補齊缺漏的<strong>資料庫索引</strong>並精簡過度 join 的查詢,將逾時的 API 優化至<strong>一秒以內回應</strong>。</li>
             <li>將大型後台資料匯出從單次擷取改為批次分頁處理,徹底解決<strong>記憶體不足（OOM）</strong>問題。</li>
             <li>導入 <strong>Kubernetes 負載平衡</strong>與 GCP Cloud Logging 進行正式環境監控與事故診斷,提升系統可靠性與水平擴展能力。</li>
-            <li>以<strong>單一 React Native 程式碼庫同時交付 iOS 與 Android</strong> 的會員端行動應用,無需另組原生開發團隊即將平台延伸至行動裝置。</li>
-            <li>在 <strong>Vertex AI Agent Engine</strong> 上以工具 / 技能路由架構打造面向客戶的 AI 助理,以代理人自主選擇工具取代多次呼叫的編排方式,降低對第三方 LLM 的依賴。</li>
           </ul>
         </div>
 

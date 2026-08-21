@@ -8,15 +8,16 @@ yunshanghong@gmail.com · +886 918-990-5266 · Taiwan (open to relocation) · [g
 
 ## Summary
 
-End-to-end product engineer with 6 years of production experience, now running an independent studio that owns delivery from requirements and scoping through implementation, launch, and everything after it. Ships the whole product: React Native apps on iOS and Android, the NestJS and .NET services behind them, and the Kubernetes and GCP infrastructure they run on. That work has mostly been in regulated, high-volume environments — banking, insurance, and digital payments — including off-chain payment flows for XSGD, Singapore's largest stablecoin issuer, on a platform serving 100K+ users and 100K+ daily transactions. Stays on the hook once features are live, diagnosing race conditions, deadlocks, and N+1 bottlenecks under real load. Also architected a customer-facing AI assistant on Vertex AI Agent Engine and ran internal engineering training across five repositories.
+End-to-end product engineer with 6 years of production experience, now running an independent studio that owns delivery from requirements and scoping through implementation, launch, and everything after it. Ships the whole product: React Native apps on iOS and Android, the NestJS and .NET services behind them, and the Kubernetes and GCP infrastructure they run on. Builds with AI as part of the toolchain — architected a customer-facing assistant on Vertex AI Agent Engine using a tool/skill routing pattern, works day to day in Claude Code, and prototyped AI-assisted testing with a client's QA function. That work has mostly been in regulated, high-volume environments — banking, insurance, and digital payments — including off-chain payment flows for XSGD, Singapore's largest stablecoin issuer, on a platform serving 100K+ users and 100K+ daily transactions, where staying on the hook after launch means diagnosing race conditions, deadlocks, and N+1 bottlenecks under real load. Ran internal engineering training across five repositories.
 
 ## Technical Skills
 
 | | |
 |---|---|
+| **AI Engineering** | Claude Code and agentic development workflows, Vertex AI Agent Engine, tool/skill routing patterns, AI-assisted testing |
 | **Mobile & Frontend** | React Native (iOS/Android), Angular, React, Vue |
 | **Backend** | C# / .NET, Java (Maven), NestJS (Node.js), FastAPI (Python), REST API design, three-tier architecture |
-| **Cloud & Infrastructure** | GCP (primary), Kubernetes, Docker, Vertex AI, Azure, Azure Pipelines, CI/CD, Git |
+| **Cloud & Infrastructure** | GCP (primary), Kubernetes, Docker, Azure, Azure Pipelines, CI/CD, Git |
 | **Data** | SQL Server, MySQL, Redis |
 | **Performance & Reliability** | Concurrency control (pessimistic locking, deadlock resolution), query optimisation and index design, caching strategy, memory/OOM debugging, load balancing, production monitoring and incident diagnosis |
 | **Delivery** | Requirements gathering, scoping and estimation, independent client-facing ownership, internal engineering training |
@@ -31,12 +32,12 @@ Sole proprietorship. Retained by enterprise clients to own product delivery end 
 
 **Digiwin — DigiKnow** *(ERP vendor; 100K+ member platform)*
 
+- Delivered the member-facing mobile app for **iOS and Android from a single React Native codebase**, extending the platform to mobile without a second native team.
+- Architected a customer-facing AI assistant on **Vertex AI Agent Engine** using a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing third-party LLM dependency.
 - Eliminated data inconsistency in a points-redemption feature by introducing pessimistic concurrency control, resolving **race conditions and database deadlocks** caused by heavy contention on shared inventory records under concurrent redemption.
 - Cut timing-out APIs to **sub-second responses** by diagnosing **N+1 query patterns**, restructuring data access behind a reusable caching layer, adding missing **database indexes**, and simplifying over-joined queries.
 - Eliminated **out-of-memory failures** in large administrative data exports by converting single-pass extraction to batched, paginated processing.
 - Introduced **Kubernetes load balancing** and GCP Cloud Logging for production monitoring and incident diagnosis, improving reliability and horizontal scalability.
-- Delivered the member-facing mobile app for **iOS and Android from a single React Native codebase**, extending the platform to mobile without a second native team.
-- Architected a customer-facing AI assistant on **Vertex AI Agent Engine** using a tool/skill routing pattern, replacing multi-call orchestration with agent-driven tool selection and reducing third-party LLM dependency.
 
 **Sakura Taiwan** *(consumer appliance manufacturer; public corporate site)*
 
