@@ -1,6 +1,6 @@
 # Hung Yun Hsuan（Sean）
 
-**Software Engineer · Fintech and Payments**
+**Software Engineer · Mobile · Backend · Infrastructure**
 
 yunshanghong@gmail.com · +886 918-990-5266 · Taiwan (open to relocation) · [github.com/wannarun526](https://github.com/wannarun526)
 
@@ -8,25 +8,26 @@ yunshanghong@gmail.com · +886 918-990-5266 · Taiwan (open to relocation) · [g
 
 ## Summary
 
-Software engineer with 6 years of production experience across banking, insurance, and digital-payment systems, now running an independent studio that owns delivery end to end — requirements, scoping, estimation, implementation, and launch. Ships across the full stack: React Native apps on iOS and Android, the NestJS and .NET services behind them, and the Kubernetes and GCP infrastructure they run on. Built off-chain payment flows for XSGD, Singapore's largest stablecoin issuer, on a platform serving 100K+ users and 100K+ daily transactions, and architected a customer-facing AI assistant on Vertex AI Agent Engine. Stays on the hook once features are live — diagnosing race conditions, deadlocks, and N+1 bottlenecks under real load — and ran internal engineering training across five repositories.
+End-to-end product engineer with 6 years of production experience, now running an independent studio that owns delivery from requirements and scoping through implementation, launch, and everything after it. Ships the whole product: React Native apps on iOS and Android, the NestJS and .NET services behind them, and the Kubernetes and GCP infrastructure they run on. That work has mostly been in regulated, high-volume environments — banking, insurance, and digital payments — including off-chain payment flows for XSGD, Singapore's largest stablecoin issuer, on a platform serving 100K+ users and 100K+ daily transactions. Stays on the hook once features are live, diagnosing race conditions, deadlocks, and N+1 bottlenecks under real load. Also architected a customer-facing AI assistant on Vertex AI Agent Engine and ran internal engineering training across five repositories.
 
 ## Technical Skills
 
 | | |
 |---|---|
-| **Performance & Reliability** | Concurrency control (pessimistic locking, deadlock resolution), query optimisation and index design, caching strategy, memory/OOM debugging, load balancing, production monitoring and incident diagnosis |
-| **Backend** | C# / .NET, Java (Maven), NestJS (Node.js), FastAPI (Python), REST API design, three-tier architecture, CI/CD |
+| **Mobile & Frontend** | React Native (iOS/Android), Angular, React, Vue |
+| **Backend** | C# / .NET, Java (Maven), NestJS (Node.js), FastAPI (Python), REST API design, three-tier architecture |
+| **Cloud & Infrastructure** | GCP (primary), Kubernetes, Docker, Vertex AI, Azure, Azure Pipelines, CI/CD, Git |
 | **Data** | SQL Server, MySQL, Redis |
-| **Cloud & Infrastructure** | GCP (primary), Kubernetes, Docker, Vertex AI, Azure, Azure Pipelines, Git |
-| **Domain** | Retail banking, life insurance, stablecoin issuance and off-chain payments, high-volume loyalty platforms |
-| **Frontend & Mobile** | Angular, React, Vue, React Native (iOS/Android) |
+| **Performance & Reliability** | Concurrency control (pessimistic locking, deadlock resolution), query optimisation and index design, caching strategy, memory/OOM debugging, load balancing, production monitoring and incident diagnosis |
+| **Delivery** | Requirements gathering, scoping and estimation, independent client-facing ownership, internal engineering training |
+| **Scale & Domain** | Platforms serving 100K+ users and 100K+ daily transactions; regulated environments across retail banking, life insurance, and stablecoin issuance |
 
 ## Professional Experience
 
 ### Software Engineer
 *Jan 2023 – Present · Remote*
 
-Sole proprietorship. Retained by enterprise and financial-services clients to diagnose and remediate production performance failures, and to own backend delivery end to end — requirements, scoping, estimation, implementation, and launch. Four principal engagements below.
+Sole proprietorship. Retained by enterprise clients to own product delivery end to end across mobile, backend, and infrastructure — requirements, scoping, estimation, implementation, and launch — and to diagnose and remediate production failures once systems are live. Four principal engagements below.
 
 **Digiwin — DigiKnow** *(ERP vendor; 100K+ member platform)*
 
