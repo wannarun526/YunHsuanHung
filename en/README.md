@@ -8,7 +8,7 @@ yunshanghong@gmail.com · +886 918-990-5266 · Taiwan (open to relocation) · [g
 
 ## Summary
 
-Software engineer with 6 years of production experience across banking, insurance, and digital-payment systems, specialising in performance and concurrency work. Built off-chain payment flows for Singapore's largest stablecoin issuer (XSGD), delivered external-facing banking systems for E.SUN Bank, and now works as an independent consultant resolving production performance failures for enterprise clients. Track record of diagnosing race conditions, database deadlocks, N+1 query bottlenecks, and out-of-memory failures under load — repeatedly cutting timing-out APIs to sub-second responses. Works primarily in C#/.NET, Node.js, and Python on GCP and Kubernetes.
+Software engineer with 6 years of production experience across banking, insurance, and digital-payment systems, now working as an independent studio who owns delivery end to end — requirements, scoping, estimation, implementation, and launch. Ships across the full stack: React Native apps on iOS and Android, the NestJS and .NET services behind them, and the Kubernetes and GCP infrastructure they run on. Built off-chain payment flows for XSGD, Singapore's largest stablecoin issuer, on a platform serving 100K+ users and 100K+ daily transactions, and architected a customer-facing AI assistant on Vertex AI Agent Engine. Stays on the hook once features are live — diagnosing race conditions, deadlocks, and N+1 bottlenecks under real load — and ran internal engineering training across five repositories.
 
 ## Technical Skills
 
