@@ -45,13 +45,25 @@
 { "uuid": "a558af78-3593-4521-83ff-c39ef10f9cd5" }
 ```
 
+#### `reporter`（選填，三支 execute 共用）
+
+前三支 execute（`api-test` / `node-test` / `cms-smoking-test`）都接受一個**選填**的 `reporter` 欄位，
+會寫進報告的「觸發人」欄位。
+
+**請一律帶入觸發這次測試的 LINE 使用者姓名**（`displayName`，例如 `Yun Shan`）。
+群組訊息就是發話者的姓名，不是群組名稱。
+
+- 沒帶或帶空字串 → 報告的「觸發人」欄位**留白**
+- 報告常被貼進聊天室或存檔備查，事後最常被追問的就是「這份是誰跑的」，**不要省略**
+
 **POST /api/api-test/execute** — 第一層，純 HTTP 打後台／前台／預覽三區塊的固定 API 清單，不開瀏覽器，秒級完成。
 
 ```json
 {
   "adminDomain": "http://192.168.0.171:8080",
   "frontendDomain": "http://192.168.0.171/portal",
-  "previewDomain": "http://192.168.0.171:4000"
+  "previewDomain": "http://192.168.0.171:4000",
+  "reporter": "Yun Shan"
 }
 ```
 
@@ -63,7 +75,8 @@
 {
   "sites": [
     { "name": "http://192.168.0.171/portal", "url": "http://192.168.0.171/portal", "testNodeName": [] }
-  ]
+  ],
+  "reporter": "Yun Shan"
 }
 ```
 
@@ -79,7 +92,8 @@
   "sites": [
     { "name": "官網", "url": "http://192.168.0.171/portal/", "testNodeName": [] }
   ],
-  "testType": "smoking-test"
+  "testType": "smoking-test",
+  "reporter": "Yun Shan"
 }
 ```
 
@@ -163,7 +177,7 @@ zip 內含（依測試層級而異）：`report.html`、`report.json`、`console
       "description": "新光人壽/新新併 sit",
       "testType": "smoking-test",
       "config": {
-        "api-test":     { "adminDomain": "…", "frontendDomain": "…", "previewDomain": "…" },
+        "api-test":     { "adminDomain": "…", "frontendDomain": "…", "previewDomain": "…", "reporter": "{觸發者的 LINE 姓名}" },
         "node-test":    { "frontendUrls": ["…"] },
         "smoking-test": { "backendDomain": "…", "backendAccount": "…", "backendPassword": "…",
                           "sites": [ { "name": "官網", "url": "…", "testNodeName": [] } ] }
@@ -189,82 +203,43 @@ zip 內含（依測試層級而異）：`report.html`、`report.json`、`console
 - **有相似的** → 依序編號列出候選（把整筆 JSON 原樣附上），並回覆：
 
 ```
-查到 N 個「{使用者的關鍵字}」測試環境，請「回覆」本則訊息並填編號：
+請確認要測試的是環境
 1. { …第 1 筆完整 JSON… }
 2. { …第 2 筆完整 JSON… }
 ```
 
-清單訊息**開頭一定要帶上使用者的關鍵字**（如「新新併」），群組裡同時有多份清單時，使用者才分得出自己在回哪一份。
+### step 2 — 驗證使用者的選擇
 
-**送出後必須記下這則訊息的對應關係**：
+使用者的回答若不對應上述任一編號 → 回答 `查無相關測試設定`，**結束對話**。
 
-| 鍵 | 值 |
+以下用 `SELECTED` 代表選中那筆設定。**建立一個結果累積器 `RESULTS`（空清單）**，內容為：
+
+```
+{ 連結: "{層級名稱}報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}",
+  摘要: "該層的統計字串（分析完才有）" }
+```
+
+### 報告連結（所有回覆共用）
+
+**每打一次 execute，就在拿到 `uuid` 的當下立刻把連結記進 `RESULTS`** —— 不要等分析完才記。
+只要那支 execute 打出去了，使用者就有權拿到連結；逾時、中斷、分析失敗時更需要它。
+
+| 打了哪一支 execute | 回覆必須含這一行 |
 |---|---|
-| 這則清單訊息的 message ID | 該份候選清單（編號 → 設定 `id`／`name`） |
+| `POST {BASE_URL}/api/api-test/execute` | `API 基礎測試報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}` |
+| `POST {BASE_URL}/api/node-test/execute` | `節點測試報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}` |
+| `POST {BASE_URL}/api/cms-smoking-test/execute` | `冒煙測試報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}` |
 
-- message ID 取自送出訊息時 LINE API 回應的 `sentMessages[].id`。
-- **用 Map 保存，不要只留「最近一份清單」這種單一變數** —— 同一個群組可能同時有好幾份尚未回覆的清單。
-- 保留至少 **24 小時**；**有新清單時不要覆蓋或丟棄舊清單**（使用者很可能隔一段時間才回覆先前那則）。
+**任何一個「結束對話」的回覆，都要把 `RESULTS` 裡已記錄的連結全部列出**，一層一行、依執行順序。
+跑了幾層就有幾行 —— **不要只給最後一層的連結**（前面通過的層級也常需要回頭對照，例如節點測試失敗時要確認第一層的 API 本來就正常）。
 
-### step 2 — 驗證使用者的選擇（**必須是「回覆」該則清單訊息**）
-
-**只有當使用者用 LINE 的「回覆／引用」功能回覆 step 1 那則清單訊息時，才解析編號。**
-判斷依據是訊息事件的 `message.quotedMessageId`，**不是訊息送達的先後順序**。
-
-依 `quotedMessageId` 分四種情況處理：
-
-| 情況 | 處理 |
-|---|---|
-| 有 `quotedMessageId`，且對應到某份候選清單 | 用**那一份**清單解析編號（見下） |
-| 有 `quotedMessageId`，但對應的不是候選清單 | 忽略此訊息，不做任何事 |
-| **沒有** `quotedMessageId`（只送了裸數字） | **不要猜、不要套用最近一份清單**，回覆：<br>`請用「回覆」功能回覆要選的那則環境清單，並填上編號` |
-| 編號不在該份清單的範圍內 | 回答 `查無相關測試設定`，**結束對話** |
-
-編號有效時，取**被回覆那份清單**的對應設定為 `SELECTED`。
-
-> **為什麼一定要綁定被回覆的訊息**
->
-> 群組裡可能同時存在多份尚未回覆的清單。例如先查「新新併」列出 3 筆（1.DEV / 2.SIT / 3.UAT），接著又查「永豐金」列出 4 筆（1.DEV / 2.SIT / 3.SIT2 / 4.UAT）。
-> 此時使用者**回覆「新新併」那則**並填 `2`，必須跑 **新新併的 SIT**，而不是最近一份「永豐金」的 SIT。
-> 只看訊息文字是「2」而不看被引用的是哪一則，就會測到完全不同的客戶環境。
-
-以下用 `SELECTED` 代表選中那筆設定。**建立一個結果累積器 `RESULTS`（空清單）**，每跑完一層就把該層的結果放進去：
+範例（第一層通過、第二層有失敗而中止，共兩行連結）：
 
 ```
-{ 層級: "API 基礎測試" | "節點測試" | "冒煙測試",
-  uuid: "該層執行的 uuid",
-  摘要: "該層的統計字串" }
-```
+總計 176 個節點 — 成功 156、失敗 20、略過 0
 
-**`uuid` 一定要一起存** —— 每一層都會產出**自己獨立的一份報告**，結束對話時要把每一份的連結都給使用者。
-
-### 回報格式（共用；所有「結束對話」的地方都照這個格式）
-
-**把 `RESULTS` 裡所有已完成的層級全部列出，一層一段，不要只給最後一份報告：**
-
-```
-【{層級}】{摘要}
-報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}
-```
-
-- 依實際執行順序排列（API 基礎測試 → 節點測試 → 冒煙測試）。
-- **只有一份就只列一段；有幾份就列幾段。** 例如三層都跑到，就要給三個連結。
-- 各層的「摘要」寫法：
-
-| 層級 | 摘要格式 |
-|---|---|
-| API 基礎測試 | `總計 {n} 筆 — 成功 {ok}、失敗 {fail}`；有失敗時另起一行 `服務 {失敗項目1}, {失敗項目2} 異常` |
-| 節點測試 | `總計 {total} 個節點 — 成功 {ok}、失敗 {fail}、略過 {skipped}` |
-| 冒煙測試 | `總計 {total} 筆 — 成功 {ok}、跳過 {skipped}、不適用 {na}、頁面異常 {anomaly}` |
-
-完整範例（第一層通過、第二層有失敗而中止，共兩份報告）：
-
-```
-【API 基礎測試】總計 7 筆 — 成功 7、失敗 0
-報告連結: {BASE_URL}/cmsSmokingTest/report/8a44fbca-d6a9-461f-910f-556a7fa01437
-
-【節點測試】總計 175 個節點 — 成功 166、失敗 9、略過 0
-報告連結: {BASE_URL}/cmsSmokingTest/report/f717def0-3c91-4428-ad7c-23a4dea1b08e
+API 基礎測試報告連結: {BASE_URL}/cmsSmokingTest/report/8a44fbca-d6a9-461f-910f-556a7fa01437
+節點測試報告連結: {BASE_URL}/cmsSmokingTest/report/f717def0-3c91-4428-ad7c-23a4dea1b08e
 ```
 
 ### step 3 — 判斷是否跑第一層
@@ -280,7 +255,11 @@ POST {BASE_URL}/api/api-test/execute
 { "adminDomain": "…", "frontendDomain": "…", "previewDomain": "…" }
 ```
 
-取得回應的 `uuid`。
+取得回應的 `uuid`，**立刻**把這一行記進 `RESULTS`：
+
+```
+API 基礎測試報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}
+```
 
 ### step 5 — 輪詢報告
 
@@ -288,7 +267,7 @@ POST {BASE_URL}/api/api-test/execute
 
 - `409` → 還在跑，繼續等
 - `404` → 中止，回覆 `找不到執行紀錄 {uuid}`
-- 超過 **30 次**（約 30 分鐘）仍未完成 → 中止，先回覆 `{該層名稱} 逾時未完成`，再依「回報格式」把 `RESULTS` 裡**已完成的層級連同這一層的報告連結**一併列出（逾時那層的報告可能仍在產生中，連結照給）
+- 超過 **30 次**（約 30 分鐘）仍未完成 → 中止，回覆 `{該層名稱}逾時未完成`，並依「報告連結」把 `RESULTS` 內所有連結列出
 
 ### step 6 — 分析第一層結果
 
@@ -296,10 +275,8 @@ POST {BASE_URL}/api/api-test/execute
 
 檢查後台／前台／預覽三區塊，找出 `ok !== true` 的項目。
 
-**不論成敗，先把這一層的結果（含 `uuid`）寫進 `RESULTS`**，再判斷：
-
-- **有任一服務異常** → 依「回報格式」回報並**結束對話**。
-- **全部正常** → 繼續 **step 7**。
+- **有任一服務異常** → 回覆 `服務 {失敗項目1}, {失敗項目2} 異常`，並依「報告連結」列出 `RESULTS` 內所有連結，**結束對話**。
+- **全部正常** → 把摘要補進 `RESULTS`（連結在 step 4 已記），繼續 **step 7**。
 
 ### step 7 — 判斷是否跑節點測試
 
@@ -311,7 +288,14 @@ POST {BASE_URL}/api/api-test/execute
 
 ```
 POST {BASE_URL}/api/node-test/execute
-{ "sites": [ { "name": "http://192.168.0.171/portal", "url": "http://192.168.0.171/portal", "testNodeName": [] } ] }
+{ "sites": [ { "name": "http://192.168.0.171/portal", "url": "http://192.168.0.171/portal", "testNodeName": [] } ],
+  "reporter": "{觸發者的 LINE 姓名}" }
+```
+
+取得回應的 `uuid`，**立刻**把這一行記進 `RESULTS`：
+
+```
+節點測試報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}
 ```
 
 ### step 9 — 輪詢報告
@@ -322,14 +306,13 @@ POST {BASE_URL}/api/node-test/execute
 
 抓 `report.json`（見 §4.2）。
 
-**不論成敗，先把這一層的結果（含 `uuid`）寫進 `RESULTS`**，再判斷：
-
-- **有失敗節點**（`state === "fail"`）→ 依「回報格式」回報並**結束對話**（此時 `RESULTS` 裡通常已有第一層的報告，兩份連結都要給）。
-- **沒有失敗節點** → 繼續 **step 11**。
+- **有失敗節點**（`state === "fail"`）→ 回覆 `總計 {total} 個節點 — 成功 {ok}、失敗 {fail}、略過 {skipped}`，
+  並依「報告連結」列出 `RESULTS` 內**所有**連結（此時通常已有第一層與第二層兩行），**結束對話**。
+- **沒有失敗節點** → 把摘要補進 `RESULTS`，繼續 **step 11**。
 
 ### step 11 — 判斷是否跑第二層
 
-`SELECTED.config["smoking-test"]` 不存在 → 依「回報格式」把 `RESULTS` 內**所有**已完成層級的摘要與報告連結列出，**結束對話**。
+`SELECTED.config["smoking-test"]` 不存在 → 把 `RESULTS` 內已累積的摘要與**所有連結**回報給使用者，**結束對話**。
 （若 `RESULTS` 也是空的，代表這筆設定三個層級都沒有 → 回答 `此設定沒有任何可執行的測試層級`。）
 
 存在 → 進 **step 12**。
@@ -343,11 +326,18 @@ POST {BASE_URL}/api/cms-smoking-test/execute
 {
   "backendDomain": "…", "backendAccount": "…", "backendPassword": "…",
   "sites": [ { "name": "官網", "url": "…", "testNodeName": [] } ],
-  "testType": "smoking-test"
+  "testType": "smoking-test",
+  "reporter": "{觸發者的 LINE 姓名}"
 }
 ```
 
 > `sites[].testNodeName` 照設定裡的值原樣帶，不要自行填入節點名稱。空陣列代表測該站台所有既有節點。
+
+取得回應的 `uuid`，**立刻**把這一行記進 `RESULTS`：
+
+```
+冒煙測試報告連結: {BASE_URL}/cmsSmokingTest/report/{uuid}
+```
 
 ### step 13 — 輪詢報告
 
@@ -355,9 +345,13 @@ POST {BASE_URL}/api/cms-smoking-test/execute
 
 ### step 14 — 分析冒煙測試結果並回報
 
-抓 `report.json`（見 §4.3），把這一層的結果（含 `uuid`）寫進 `RESULTS`，然後依「回報格式」回報並**結束對話**。
+抓 `report.json`（見 §4.3），無論成功與否都回覆：
 
-三層都跑到時，這裡會一次給出**三份報告連結**。
+```
+總計 {total} 筆 — 成功 {ok}、跳過 {skipped}、不適用 {na}、頁面異常 {anomaly}
+```
+
+再依「報告連結」列出 `RESULTS` 內**所有**連結，**結束對話**。三層都跑到時這裡會有三行連結。
 
 ---
 
@@ -371,10 +365,41 @@ GET {BASE_URL}/cmsSmokingTest/report/{uuid}/report.json
 
 HTML 那支（`/cmsSmokingTest/report/{uuid}`）只用來當**給使用者點的連結**。
 
+> `api-test` 與 `node-test` 的 report.html **表格可點欄位標題排序**（再點一次反向），狀態欄升冪時失敗優先。回覆使用者時可順帶提一句，方便他們自己找問題。
+>
+> `node-test` 的表格另有「轉導後網址」與「失敗原因」兩欄，點「失敗原因」降冪可把問題最多的頁面排到最上面。
+
+### 4.0 `meta`（三種報告共有）
+
+三支 spec 的 `report.json` 最外層都有一個 `meta`，report.html 的標題下方也會顯示對應的表頭區塊：
+
+```json
+{
+  "meta": {
+    "reporter":   "Yun Shan",
+    "reportDate": "2026-08-28 14:30:12",
+    "startedAt":  "2026-08-28 14:29:45",
+    "finishedAt": "2026-08-28 14:30:12",
+    "durationMs": 27000,
+    "duration":   "27 秒"
+  },
+  "…": "各層級自己的欄位"
+}
+```
+
+| 欄位 | 報告上的標題 | 說明 |
+|---|---|---|
+| `reportDate` | 報告日期 | 報告產生的時間點 |
+| `startedAt` / `finishedAt` / `duration` | 測試期間 | 本輪測試的起訖與耗時 |
+| `reporter` | 觸發人 | 送出 execute 時帶的 `reporter`；沒帶時為空字串 |
+
+回報給使用者時可一併帶上 `meta.reporter` 與 `meta.duration`，讓人知道是誰在什麼時候跑的、跑了多久。
+
 ### 4.1 api-test
 
 ```json
 {
+  "meta": { "reporter": "Yun Shan", "reportDate": "…", "startedAt": "…", "finishedAt": "…", "duration": "3 秒" },
   "results": [
     { "block": "admin", "url": "/cms-api/SystemInfo", "fullUrl": "http://…/cms-api/SystemInfo",
       "status": 200, "ok": true, "elapsedMs": 120 },
@@ -392,19 +417,39 @@ HTML 那支（`/cmsSmokingTest/report/{uuid}`）只用來當**給使用者點的
 
 ```json
 {
+  "meta": { "reporter": "Yun Shan", "reportDate": "…", "startedAt": "…", "finishedAt": "…", "duration": "1 分 12 秒" },
   "uuid": "…", "cfg": { … },
   "summaries": [
     { "name": "官網", "url": "http://…/portal/", "fetchUrl": "http://…/portal/sitemap.json",
       "fetchError": null, "total": 175, "ok": 170, "fail": 3, "skipped": 2 }
   ],
   "results": [
-    { "site": "官網", "nodeName": "Home", "kind": "content", "level": 1,
-      "state": "ok", "url": "…", "status": 200, "bytes": 5821, "elapsedMs": 88 }
+    { "site": "官網", "nodeName": "DemoL2", "kind": "content", "level": 4,
+      "state": "fail", "url": "http://…/portal/1083",
+      "status": 200,
+      "finalUrl": "http://…/portal/error-page",
+      "redirected": true,
+      "networkErrors": ["500 http://…/portal/portal-api/Content/null"],
+      "htmlLength": 41822, "elapsedMs": 4102,
+      "failReasons": ["render 後被轉導至 http://…/portal/error-page",
+                      "網路異常 1 筆(500 http://…/portal/portal-api/Content/null)"] }
   ]
 }
 ```
 
-- `state`：`ok` / `fail` / `skipped`（`skipped` = 該節點在前台沒有對應頁面，未發出請求，不計成敗）
+**節點測試是用真的瀏覽器開啟每一頁並等 render 完成**（一批 20 個分頁），不是純 HTTP GET。失敗判定三條，任一成立即為失敗，`failReasons` 會列出實際踩到哪幾條：
+
+| # | 判定 | 對應欄位 |
+|---|---|---|
+| 1 | 主文件 HTTP status 非 200 | `status` |
+| 2 | render 後被轉導到別的頁（not-found / error-page） | `redirected` / `finalUrl` |
+| 3 | 頁面載入時有子資源回 4xx/5xx 或請求失敗 | `networkErrors` |
+
+- **回報失敗節點時直接引用 `failReasons`**，那是給人看的完整句子，不需要自己組。
+- 判定 2 比對的是 origin + pathname，**忽略 query 與 hash** —— SPA 常自動補上 `?areaId=&categoryId=` 這類預設參數，那是同一頁不是轉導。
+- 判定 3 的門檻是 4xx/5xx；3xx 不算（實測單頁可有 62 個 301，是常態）。`net::ERR_ABORTED` 也排除。
+- 外部連結型節點（`kind: "link"`）**只套用判定 1**：別人的站要不要轉導、他家第三方資源掛掉，不是我們的缺陷。
+- `state`：`ok` / `fail` / `skipped`（`skipped` = 該節點在前台沒有對應頁面，沒有開過瀏覽器，不計成敗）
 - step 10 的三個數字直接取 `summaries` 加總即可（多站台時要跨站加總）
 - `fetchError` 非 null 代表**整份 sitemap.json 沒抓到**（多半是前台 URL 填錯或站台掛了），此時該站台一個節點都沒測到，要特別提醒使用者
 
@@ -412,6 +457,7 @@ HTML 那支（`/cmsSmokingTest/report/{uuid}`）只用來當**給使用者點的
 
 ```json
 {
+  "meta": { "reporter": "Yun Shan", "reportDate": "…", "startedAt": "…", "finishedAt": "…", "duration": "24 分 8 秒" },
   "fatalError": null,
   "results": [
     { "site": "官網", "phase": "edit", "nodeName": "首頁", "status": "ok",
@@ -441,7 +487,6 @@ HTML 那支（`/cmsSmokingTest/report/{uuid}`）只用來當**給使用者點的
 - **三個層級共用同一個單執行緒佇列。** 前一個任務還在跑時，新任務會排在後面等，輪詢時間會比預期長。
 - **`POST .../execute` 回 202 不代表測試會成功**，只代表任務已入列。真正的成敗要看報告。
 - **404 與 409 的差別很重要**：409 是「還在跑／報告被清了」要繼續等，404 是「這個 uuid 不存在」要立刻停。把兩者混在一起會無限輪詢。
-- **編號一律以「被回覆的那則清單」為準**（`message.quotedMessageId`），不是最近一份清單。多份清單並存時弄錯會測到別的客戶環境，見 step 2。
-- **沒有引用訊息的裸數字不要猜**。寧可請使用者用「回覆」功能重講一次，也不要賭他指的是哪一份。
-- **每一層各自產出一份報告。** 跑了幾層就有幾個 uuid，結束對話時要把**每一份的連結都列出來**，不要只給最後一份 —— 前面通過的層級也常需要回頭查（例如節點測試失敗時，要對照第一層的 API 是不是本來就有問題）。
+- **`reporter` 一律要帶**（三支 execute 皆選填但不要省）。填觸發這次測試的 **LINE 使用者姓名**（群組訊息取發話者的 `displayName`，不是群組名稱）。沒帶的話報告上的「觸發人」會留白，事後查不到是誰跑的。
+- **打了哪一層，回覆就要有那一層的具名連結**（`API 基礎測試報告連結:` / `節點測試報告連結:` / `冒煙測試報告連結:`）。連結在拿到 `uuid` 的當下就要記，不是等分析完 —— 逾時或中斷時使用者一樣需要它。
 - **設定裡含明文後台密碼**（`config["smoking-test"].backendPassword`）。step 1 把整筆 JSON 列給使用者確認時，請把密碼遮蔽成 `***` 再輸出，不要把密碼貼進聊天室。
