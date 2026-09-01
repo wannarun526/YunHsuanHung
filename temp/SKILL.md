@@ -17,7 +17,7 @@ ToolHub 的 CMS 版型測試工具。三層測試共用同一組背景佇列與�
 
 - 頁面：`/cmsSmokingTest`（302 導向 `/CmsSmokingTest/index.html`）
 - 原始碼：[CmsSmokingTestController.java](../../../java/com/toolhubmaster/controller/CmsSmokingTestController.java)
-- `{BASE_URL}`：正式站 `https://toolhub.neux.com.tw`；本機開發 `http://localhost:8082`
+- `{BASE_URL}`：正式站 `http://192.168.150.47`；本機開發 `http://localhost:8082`
 
 ---
 
