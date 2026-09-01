@@ -1,11 +1,11 @@
 ---
 name: cms-smoking-test
-description: 透過 ToolHub 的 CMS 版型測試控制台 API（CmsSmokingTestController）查詢測試站台設定、觸發「API 基礎測試 / 節點測試 / 冒煙測試」三層測試、輪詢報告並彙整結果。當使用者提到 "smoking test"、"冒煙測試"、"API 基礎測試"、"節點測試"，或要求對某個環境（如「新新併 sit」）跑測試時使用。
+description: 透過 CMS 版型測試控制台 API（CmsSmokingTestController）查詢測試站台設定、觸發「API 基礎測試 / 節點測試 / 冒煙測試」三層測試、輪詢報告並彙整結果。當使用者提到 "smoking test"、"冒煙測試"、"API 基礎測試"、"節點測試"，或要求對某個環境（如「新新併 sit」）跑測試時使用。
 ---
 
 # CMS 版型測試控制台（CmsSmokingTest）
 
-ToolHub 的 CMS 版型測試工具。三層測試共用同一組背景佇列與報告機制：
+CMS 版型測試工具(原為 ToolHub 的 CmsSmokingTest,已獨立成單一服務)。三層測試共用同一組背景佇列與報告機制：
 
 | 層級 | 名稱 | 執行端點 | 需要後台帳密 | 做什麼 |
 |------|------|----------|--------------|--------|
@@ -16,7 +16,7 @@ ToolHub 的 CMS 版型測試工具。三層測試共用同一組背景佇列與�
 三個執行端點都是**非阻塞**：立即回 `202 Accepted` + `{"uuid":"..."}`，實際由背景單執行緒佇列依序跑 Playwright。報告要另外輪詢。
 
 - 頁面：`/cmsSmokingTest`（302 導向 `/CmsSmokingTest/index.html`）
-- 原始碼：[CmsSmokingTestController.java](../../../java/com/toolhubmaster/controller/CmsSmokingTestController.java)
+- 原始碼：[CmsSmokingTestController.java](../../../java/tw/com/neux/smoketest/controller/CmsSmokingTestController.java)
 - `{BASE_URL}`：正式站 `http://192.168.150.47`；本機開發 `http://localhost:8082`
 
 ---
