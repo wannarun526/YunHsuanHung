@@ -161,6 +161,10 @@
   }
   table.fit td{ font-size:18.5px; line-height:1.5; padding:13px 18px; border-bottom:1px solid var(--line); vertical-align:top; }
   table.fit td:first-child{ font-weight:700; width:34%; }
+  table.fit.dense td{ font-size:16.5px; padding:9px 16px; }
+  table.fit.dense th{ padding:0 16px 10px; }
+  table.fit.dense td:first-child{ width:27%; }
+  table.fit.dense td:first-child small{ display:block; font-size:13.5px; font-weight:400; color:var(--muted); margin-top:2px; }
 
   /* ---------- closing ---------- */
   .closing{ justify-content:center; align-items:center; text-align:center; background:var(--accent); color:#fff; }
@@ -464,18 +468,21 @@
 
     <!-- 11. 與職務的連結 -->
     <section class="slide">
-      <div class="kicker">Fit</div>
-      <h2>我能帶來什麼</h2>
-      <table class="fit">
-        <thead><tr><th>職務需要</th><th>我的經驗</th></tr></thead>
+      <div class="kicker">Fit · ERP 軟體工程師</div>
+      <h2 style="margin-bottom:22px">我能帶來什麼</h2>
+      <table class="fit dense">
+        <thead><tr><th>ERP 需要的</th><th>我做過的</th></tr></thead>
         <tbody>
-          <tr><td>系統分析與設計（SA / SD）</td><td>需求訪談、範疇界定、時程估算，獨立對客戶交付</td></tr>
-          <tr><td>處理系統 Issue 與 Change Request</td><td>正式環境診斷：死鎖、N+1、OOM；持續交付功能異動與缺陷修正</td></tr>
-          <tr><td>.NET / C#、Angular、SQL</td><td>C# / .NET 開發、Angular 11 → 17 升級、SQL Server 查詢優化與索引設計</td></tr>
-          <tr><td>測試與上線</td><td>與 QA 團隊合作；Azure Pipelines 自動化發布，部署錯誤率降到零</td></tr>
-          <tr><td>全球廠區 Rollout、海外出差</td><td>任職新加坡公司、遠距協作的經驗；可配合外派與出差</td></tr>
+          <tr><td>系統穩定，不能停<small>ERP 日常維運</small></td><td>正式環境的死鎖、N+1、OOM，都找出根本原因再修；接手鼎新、櫻花、人壽保單平台等既有系統，持續交付功能異動與缺陷修正</td></tr>
+          <tr><td>庫存與帳務資料正確<small>進銷存、應收對帳</small></td><td>多人同時兌換、搶同一筆庫存造成死鎖，導入<strong>悲觀鎖</strong>讓資料恢復一致；StraitsX 帳本<strong>對帳</strong>、重複事件冪等處理與重試</td></tr>
+          <tr><td>資料庫效能調校<small>月結、報表、大量資料</small></td><td>補齊索引、精簡過多 join、加入快取層，逾時 API 壓到<strong>一秒內</strong>；大量匯出改成分批分頁，解決記憶體不足</td></tr>
+          <tr><td>.NET 新專案、舊系統逐步汰換<small>ASP.NET Core / Web API</small></td><td>櫻花官網 <strong>ASP.NET Core MVC + MSSQL</strong>，從舊產品資料庫匯入；DigiKnow 以 NestJS API <strong>逐步取代舊 PHP API</strong>；Angular 11 → 17 跨六版升級</td></tr>
+          <tr><td>業務流程轉成系統需求<small>跨部門溝通、技術文件</small></td><td>依銀行法規設計玉山<strong>導覽驗證流程</strong>；主導櫻花跨部門效能調查；訂定完整介面規格，並在五個專案倉庫間主導內部教育訓練</td></tr>
         </tbody>
       </table>
+      <div class="also" style="margin-top:16px;padding:12px 20px;font-size:16px">
+        <b>上手方式：</b>先從既有模組的維運切入，對照資料表讀懂採購、庫存、銷售、帳務流程，讀懂的部分寫成文件 · 
+      </div>
       <div class="slide-foot"><span>洪昀璿（Sean）</span><span>11</span></div>
     </section>
 
