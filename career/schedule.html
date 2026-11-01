@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>韌體轉職計劃</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --ink:#1b1d21; --muted:#5d6470; --line:#dfe2e7;
+  --accent:#0b62c4; --accent-soft:#e6f0fb;
+  --p0:#8a5cf6; --lang-c:#5b7083; --lang-cpp:#00599c; --lang-rust:#b7410e; --p1:#0b62c4; --p2:#0f9d76; --p3:#d97706; --p4:#dc2626; --p5:#64748b;
+  --warn-bg:#fff6e0; --warn-ink:#7a5600; --ok-bg:#e7f6ef; --ok-ink:#0b6b4c;
+  --font:"PingFang TC","Noto Sans TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --card:#1b1e23; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+    --accent:#5aa2ff; --accent-soft:#1c2a3d;
+    --warn-bg:#3a2f12; --warn-ink:#f3cf73; --ok-bg:#12332a; --ok-ink:#7fe0b8;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --card:#1b1e23; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+  --accent:#5aa2ff; --accent-soft:#1c2a3d;
+  --warn-bg:#3a2f12; --warn-ink:#f3cf73; --ok-bg:#12332a; --ok-ink:#7fe0b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.65;font-size:15px;padding:32px 16px 80px}
+main{max-width:1040px;margin:0 auto}
+a{color:var(--accent)}
+code,kbd{font-family:var(--mono);font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+header.top{margin-bottom:28px}
+header.top h1{font-size:28px;line-height:1.25;letter-spacing:-.01em}
+header.top p.sub{color:var(--muted);margin-top:6px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{font-size:12.5px;border:1px solid var(--line);background:var(--card);padding:3px 10px;border-radius:999px;color:var(--muted)}
+.pill b{color:var(--ink)}
+nav.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-size:14px}
+nav.toc ol{display:flex;flex-wrap:wrap;gap:4px 18px;list-style:none;counter-reset:t}
+nav.toc li{counter-increment:t}
+nav.toc li::before{content:counter(t)". ";color:var(--muted)}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-bottom:20px}
+section h2{font-size:20px;margin-bottom:4px}
+section .lead{color:var(--muted);margin-bottom:16px;font-size:14px}
+h3{font-size:16px;margin:18px 0 8px}
+p+p{margin-top:8px}
+ul.plain{padding-left:20px}
+ul.plain li{margin:3px 0}
+.callout{border-radius:8px;padding:12px 16px;font-size:14px;margin:12px 0}
+.callout.warn{background:var(--warn-bg);color:var(--warn-ink)}
+.callout.ok{background:var(--ok-bg);color:var(--ok-ink)}
+.callout.info{background:var(--accent-soft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.box h4{font-size:14.5px;margin-bottom:6px}
+.box ul{padding-left:18px;font-size:14px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:999px;border:1px solid currentColor;margin-right:4px;vertical-align:1px}
+.tbl-wrap{overflow-x:auto;margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap}
+td.nowrap{white-space:nowrap}
+.lvl{font-family:var(--mono);letter-spacing:1px}
+/* Gantt */
+.gantt{display:grid;grid-template-columns:150px repeat(18,minmax(32px,1fr));font-size:12px;min-width:900px}
+.gantt .hd{color:var(--muted);text-align:center;padding:4px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.gantt .yr{grid-column:span 3;text-align:left;padding-left:4px;font-weight:600;color:var(--ink);border-bottom:none}
+.gantt .lab{padding:7px 8px 7px 0;font-weight:600;font-size:12.5px;border-bottom:1px dashed var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gantt .cell{border-bottom:1px dashed var(--line);border-left:1px solid var(--line);position:relative;min-height:32px}
+.gantt .bar{position:absolute;top:7px;bottom:7px;border-radius:5px;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;padding:0 6px;white-space:nowrap;overflow:hidden;z-index:1}
+.gantt .mile{position:absolute;top:8px;width:14px;height:14px;transform:rotate(45deg);border:2px solid var(--card);z-index:2}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+/* phases */
+.phase{border-left:4px solid var(--c);padding:4px 0 4px 18px;margin:22px 0 8px}
+.phase h3{margin:0 0 2px;font-size:17px}
+.phase .when{color:var(--muted);font-size:13px}
+.weeks{width:100%}
+.weeks td:first-child{white-space:nowrap;font-family:var(--mono);font-size:12.5px;color:var(--muted);width:110px}
+.deliver{background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:14px}
+.deliver b{color:var(--accent)}
+/* checklist */
+.check{list-style:none}
+.check li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.check li:last-child{border-bottom:none}
+.check input{margin-top:5px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+.check li.done span{color:var(--muted);text-decoration:line-through}
+.check .due{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;padding-left:10px}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 4px}
+.progress>div{height:100%;background:var(--accent);width:0;transition:width .2s}
+.small{font-size:13px;color:var(--muted)}
+.gate{display:grid;grid-template-columns:110px 1fr;gap:4px 14px;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gate .k{color:var(--muted);font-size:13px}
+footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px}
+.theme-btn{position:fixed;right:16px;bottom:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
+@media (max-width:760px){
+  body{padding:20px 16px 70px;font-size:14.5px}
+  section{padding:18px 16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .gate{grid-template-columns:1fr}
+  header.top h1{font-size:23px}
+}
+@media print{
+  body{background:#fff;padding:0}
+  section{break-inside:avoid-page;border:none;padding:10px 0}
+  nav.toc,.theme-btn{display:none}
+}
+</style>
+</head>
+<body>
+<main>
+
+<header class="top">
+  <h1>Sean 的轉職計劃：從全端／後端到 BIOS／Server Firmware</h1>
+  <p class="sub">參考 WanLing (Jenny) Ro 的路徑（ODM → BIOS 廠 → 晶片原廠），依我自己的學經歷調整成可執行的 18 個月時程。C 是主線，C++ 和 Rust 依序穿插進各階段。</p>
+  <div class="meta-row">
+    <span class="pill">起算日 <b>2026-10-05（週一）</b></span>
+    <span class="pill">第一份 firmware offer 目標 <b>2027-12</b>（緩衝到 2028-03）</span>
+    <span class="pill">學習投入 <b>每週 12–15 小時</b>（約 850 小時）</span>
+    <span class="pill">語言 <b>C 主線 ＋ C++ ＋ Rust</b></span>
+    <span class="pill">狀態 <b>階段 1：K&amp;R 第 2 章</b></span>
+  </div>
+  <div class="callout warn" style="margin-top:14px">⚠️ 這份檔案含朋友的職涯資訊和我的個人規劃。<code>career/</code> 已列在 <code>.git/info/exclude</code>，<b>不要 commit、不要放上 GitHub Pages</b>。</div>
+  <div class="callout info"><b>2026-10-26 改版：</b>加入 C++ 和 Rust（新增 §3 語言策略）。為了吸收多出來的 150–200 小時，每週時數不變，整體時程延後約 3 個月：offer 目標從 2027-09 改成 2027-12，最晚期限從 2027-12 改成 2028-03。</div>
+</header>
+
+<nav class="toc" aria-label="目錄">
+  <ol>
+    <li><a href="#why">結論先講</a></li>
+    <li><a href="#gap">我 vs. Jenny：落差分析</a></li>
+    <li><a href="#lang">語言策略</a></li>
+    <li><a href="#timeline">18 個月時程總覽</a></li>
+    <li><a href="#phases">分階段週計劃</a></li>
+    <li><a href="#gates">決策關卡</a></li>
+    <li><a href="#jobs">求職路線與目標公司</a></li>
+    <li><a href="#resume">履歷重新定位</a></li>
+    <li><a href="#interview">面試準備清單</a></li>
+    <li><a href="#lab">實驗環境與預算</a></li>
+    <li><a href="#parallel">並行事項怎麼處理</a></li>
+    <li><a href="#risks">風險與對策</a></li>
+    <li><a href="#tracker">進度追蹤</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section id="why">
+  <h2>1. 結論先講</h2>
+  <p class="lead">這條路走得通。但它不是「再學一個框架」，而是往下換一層抽象，要做好前 6 個月學得很慢的心理準備。</p>
+  <div class="grid3">
+    <div class="box">
+      <h4>為什麼走得通</h4>
+      <ul>
+        <li>Jenny 也是成大非資工（測量系）出身，證明 ODM 不卡學歷</li>
+        <li>我最強的「正式環境除錯」（deadlock、race、OOM、跨層追查）正好是 firmware 最看重的能力</li>
+        <li>Python、REST、Linux／K8s 能直接接上 BMC／Redfish／驗證自動化</li>
+        <li>對客戶交付的經驗，對應 Jenny 在 AMD 做的 Customer Engineer</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>最大的缺口</h4>
+      <ul>
+        <li><b>C 語言</b>和電腦架構（目前履歷上一行都沒有）；BMC 路線還需要現代 C++</li>
+        <li>x86 開機流程、UEFI／PI、ACPI、PCIe</li>
+        <li>沒碰過真實硬體（SPI flash、UART、燒錄、量測）</li>
+        <li>沒有 firmware 相關作品或開源貢獻可以給人看</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>策略</h4>
+      <ul>
+        <li><b>先走 A 橋接路線</b>（BMC／firmware tool／驗證自動化），用現有技能換到入場券</li>
+        <li>進 ODM 後 6–12 個月內轉到 BIOS team，接上 Jenny 的 B 路線</li>
+        <li>每個階段都要產出放得上 GitHub 的作品</li>
+        <li>語言：C 是主線，C++ 為 BMC 準備，Rust 是長期的差異化（見 §3）</li>
+        <li>保留應用層的收入來源（iHerb 等）當安全網，不要裸辭</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="gap">
+  <h2>2. 我 vs. Jenny：落差分析</h2>
+  <p class="lead">Jenny 是從 firmware 起步，我是帶著 6 年軟體經驗轉進來。所以我的第一跳會比她 2019 年那時高，但底層技術上一開始會落後她。</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Jenny 的經歷</th><th>那個職位需要的能力</th><th>我現在</th><th>怎麼補</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap"><b>Wistron</b><br>coreboot、TigerLake bring-up</td><td>C、x86 開機、coreboot 架構、看 schematic、debug log</td><td class="lvl">●○○○○</td><td>階段 1–2：C、OSDev、在 QEMU 跑 coreboot，再加上把 coreboot 燒進真機</td></tr>
+      <tr><td class="nowrap"><b>Insyde</b><br>UEFI OEM feature</td><td>PEI→HOB→DXE、UEFI variable、Setup（HII/VFR）、WMI（ACPI）</td><td class="lvl">○○○○○</td><td>階段 2：EDK II／OVMF、DXE driver、HII 表單、ACPI ASL</td></tr>
+      <tr><td class="nowrap"><b>AMD</b><br>Server BIOS Customer Engineer</td><td>Server 平台、RAS 錯誤注入、OpenSIL、<b>對客戶溝通、英文</b></td><td class="lvl">●●○○○</td><td>階段 3：RAS、PCIe AER、BMC。客戶溝通和英文（新加坡公司經驗）已經是強項</td></tr>
+      <tr><td class="nowrap"><b>NVIDIA</b><br>Enterprise firmware</td><td>GPU 伺服器系統整合、BMC/Redfish、大規模 fleet 更新</td><td class="lvl">●●○○○</td><td>K8s／GCP／正式環境維運的經驗，第 3–5 年再接上</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>可以直接帶過去的資產</h3>
+  <div class="grid2">
+    <div class="box"><h4>技術</h4><ul>
+      <li>併發、鎖、死鎖 → firmware 的 SMM／多核心 AP 初始化、mutex、spinlock</li>
+      <li>OOM、記憶體除錯 → 記憶體配置（PEI 的 HOB、DXE 的 pool）</li>
+      <li>FastAPI／Python → 驗證自動化、Redfish client、log 分析工具</li>
+      <li>REST API 設計 → Redfish 本身就是 REST + JSON schema</li>
+      <li>CI/CD、Docker → firmware build pipeline（EDK II 和 coreboot 的 CI 都容器化了）</li>
+    </ul></div>
+    <div class="box"><h4>軟實力</h4><ul>
+      <li>需求釐清、獨立面對客戶 → Customer Engineer／FAE 的核心工作</li>
+      <li>跨團隊（Infra／DBA）追查 → bring-up 時要跟 HW、EE、OS team 一起抓 bug</li>
+      <li>內部教育訓練 → 寫技術 blog、整理 debug 筆記</li>
+      <li>土木的結構分析 → 能讀 spec、有耐心處理厚重文件（UEFI spec 2,000+ 頁）</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="lang">
+  <h2>3. 語言策略：C、C++、Rust 各扮演什麼角色</h2>
+  <p class="lead">三種語言都學，但<b>地位不一樣</b>：C 是入場券，C++ 是 BMC 路線的實戰語言，Rust 是幾年後的差異化。時數依這個比重分配，不是平均分。</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>語言</th><th>在韌體圈用在哪裡</th><th>台灣職缺需求（2026 年）</th><th>在計劃裡的角色</th><th>時數比重</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag" style="color:var(--lang-c)">C</span></td><td>UEFI／EDK II、coreboot、U-Boot、Linux kernel 與 driver、MCU 韌體</td><td>BIOS、BMC、嵌入式職缺<b>幾乎都要求</b>，面試也必考 C 手寫題</td><td><b>主線</b>，貫穿全程，任何時候都不能停</td><td class="nowrap">約 55%</td></tr>
+      <tr><td><span class="tag" style="color:var(--lang-cpp)">C++</span></td><td>OpenBMC 的 userspace（bmcweb、phosphor-*、sdbusplus、entity-manager）、伺服器診斷與測試工具</td><td>BMC 職缺常寫「C/C++」（緯穎、新唐、Lattice 的 JD 都有）</td><td><b>第二語言</b>。階段 2 入門，階段 3 做 OpenBMC 時成為主力</td><td class="nowrap">約 25%</td></tr>
+      <tr><td><span class="tag" style="color:var(--lang-rust)">Rust</span></td><td>Rust for Linux、OCP Caliptra（伺服器的 root of trust）、Microsoft Patina（Rust 寫的 UEFI）、Oxide Hubris、嵌入式（embassy）、<code>uefi</code> crate</td><td>台灣 ODM <b>目前很少要求</b>；海外 hyperscaler 和晶片廠的職缺逐漸增加</td><td><b>差異化</b>。輕量但不中斷，每個階段都做一個小作品</td><td class="nowrap">約 20%</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>四個原則</h3>
+  <div class="grid2">
+    <div class="box"><h4>① 不同時開兩個語言的「入門期」</h4><ul>
+      <li><b>Rust 在階段 1 就開始</b>，跟 C 並行。它的語法跟 C 差很多，不容易混淆；而且 ownership 和 borrow checker 擋下的錯誤，正好就是 C 會默默放過的那些記憶體 bug，兩邊對照著學反而更清楚。</li>
+      <li><b>C++ 延到階段 2</b>，等 C 的指標和 struct 熟了再學。C++ 外表很像 C，太早混在一起，容易寫成「多了 class 的 C」，而面試要的是純 C。</li>
+    </ul></div>
+    <div class="box"><h4>② 同一個題目用三種語言各寫一次</h4><ul>
+      <li>例如 ring buffer：C 版自己管理記憶體和邊界，C++ 版用 template 加 RAII，Rust 版交給 ownership 保證安全。</li>
+      <li>這比三種語言各做不相干的練習更能看出差異，也是面試時很好的話題：「同一個問題，三種語言各怎麼處理記憶體安全」。</li>
+    </ul></div>
+    <div class="box"><h4>③ C 永遠是底線</h4><ul>
+      <li>每週至少一半的時間給 C，或給當階段的 C 主題（EDK II、bootloader）。</li>
+      <li>進度落後時，<b>先暫停 Rust，再縮減 C++</b>（縮到只學 OpenBMC 用得到的範圍），C 不動。</li>
+    </ul></div>
+    <div class="box"><h4>④ 固定的每週節奏</h4><ul>
+      <li><b>平日 4 晚 × 1.5 小時</b>：當階段的主線（階段 1、2 是 C，階段 3 是 C++ 加 OpenBMC）。</li>
+      <li><b>週六 5–6 小時</b>：前半主線，後半第二語言。</li>
+      <li><b>週日 1–2 小時</b>：Rust 輕量練習（Rustlings、小作品），或者休息。</li>
+    </ul></div>
+  </div>
+
+  <h3>各階段的語言比重</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>階段</th><th>C</th><th>C++</th><th>Rust</th><th>其他</th></tr></thead>
+    <tbody>
+      <tr><td>1 底層基礎（2026-10 → 2027-02）</td><td><b>80%</b>：K&amp;R、CS:APP、bootloader</td><td>—</td><td>20%：The Book、Rustlings、Writing an OS in Rust</td><td>NASM 組語</td></tr>
+      <tr><td>2 UEFI 核心（2027-02 → 2027-06）</td><td><b>60%</b>：EDK II、ACPI、coreboot</td><td>25%：A Tour of C++、C++ 版 ring buffer</td><td>15%：用 <code>uefi</code> crate 寫 UEFI app</td><td>ASL</td></tr>
+      <tr><td>3 Server 領域（2027-06 → 2027-10）</td><td>15%：RAS、kernel 相關</td><td><b>40%</b>：OpenBMC、sdbusplus、bmcweb</td><td>20%：Pico 2 上的嵌入式 Rust（embassy）</td><td>Python 25%：Redfish 工具</td></tr>
+      <tr><td>4 求職（2027-08 → 2028-01）</td><td><b>每天 30 分鐘</b>手寫題</td><td>每天 15 分鐘複習</td><td>維持，不再開新主題</td><td>面試準備</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout info"><b>學習資源：</b>
+    C++：《A Tour of C++》3rd ed.（Stroustrup，C++20，約 300 頁）、learncpp.com（免費）、C++ Core Guidelines。
+    Rust：<i>The Rust Programming Language</i>（官方「the Book」，免費線上版，也有社群翻譯的繁中版）、Rustlings、Google 的 Comprehensive Rust（免費，有 bare-metal 章節）、<i>Writing an OS in Rust</i>（os.phil-opp.com）、<i>The Embedded Rust Book</i>。
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="timeline">
+  <h2>4. 18 個月時程總覽</h2>
+  <p class="lead">2026-10 → 2028-03。階段之間會刻意重疊：前一階段收尾的同時，就先開始讀下一階段的內容。下方三條語言軌道顯示每段時間 C、C++、Rust 各在做什麼。</p>
+  <div class="tbl-wrap">
+  <div class="gantt" id="gantt"></div>
+  </div>
+  <div class="legend" id="legend"></div>
+  <div class="callout info" style="margin-top:14px">
+    <b>關鍵日期：</b>
+    10/18 決定轉不轉 ·
+    2027/02/07 完成 bootloader 和 Rust 入門，判斷要不要繼續 ·
+    2027/06/27 UEFI 作品（含 Rust 版）上 GitHub，開始零星投 A 路線 ·
+    2027/08 履歷改版 ·
+    2027/09 正式投遞 ·
+    2027/12 拿到 offer 的目標 ·
+    2028/03 最晚期限（過了就要重新評估）
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="phases">
+  <h2>5. 分階段週計劃</h2>
+  <p class="lead">假設平日晚上 1.5 小時 ×4 天，加上週六 5–6 小時，週日視情況做 1–2 小時 Rust 或休息（見 §3 的每週節奏）。接案忙的週數就順延，不要硬擠。表格裡 <span class="tag" style="color:var(--lang-cpp)">C++</span> <span class="tag" style="color:var(--lang-rust)">Rust</span> 標示的是當週的第二語言內容。</p>
+
+  <div class="phase" style="--c:var(--p0)">
+    <h3>階段 0　驗證</h3>
+    <div class="when">2026-10-05 → 2026-10-18（2 週）</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1 10/05–11</td><td>傳訊息約 Jenny（問題清單見下方）。在 Mac 上用 VMware Fusion 建好 ARM64 Ubuntu VM，並在 GCP 開一台啟用 nested virtualization 的 N2 VM（見 §10）。在 QEMU 用 OVMF 開進 UEFI Shell，並把 <code>DEBUG</code> log 從 debugcon 導出來。</td></tr>
+    <tr><td>W2 10/12–18</td><td>跟 Jenny 聊。在 104／LinkedIn 上 A、B、C 三條路線各收集 5 份 JD，把需求技能整理成一張表。盤點財務：如果薪水下降 20–30%，存款能撐幾個月。<b>10/18 決定：轉不轉、主線走哪條、地點策略。</b></td></tr>
+  </tbody></table>
+  <h3 style="font-size:14.5px">要問 Jenny 的問題</h3>
+  <ul class="plain small">
+    <li>當年非資工背景，Wistron 面試考了什麼？有沒有筆試？C 考到多深？</li>
+    <li>以我 6 年應用層的經驗，ODM 會把我當新人（年資歸零）還是可以談年資？薪資大概落在哪？</li>
+    <li>Server ODM 的 BMC／tool／validation team，內轉 BIOS team 的機會有多大？要待多久？</li>
+    <li>哪些公司或 team 接受南部遠端或混合辦公？台南有沒有可能的機會？</li>
+    <li>如果只能先學 3 件事，她會選哪 3 件？她在工作上碰過 C++ 或 Rust 嗎？</li>
+    <li>之後我作品做出來，能不能請她幫忙看履歷或內推（AMD／NVIDIA／前東家）？</li>
+  </ul>
+
+  <div class="phase" style="--c:var(--p1)">
+    <h3>階段 1　底層基礎：C 主線，Rust 入門</h3>
+    <div class="when">2026-10-19 → 2027-02-07（16 週，原本 12 週）</div>
+  </div>
+  <div class="callout info" style="margin-top:6px"><b>目前進度（10/26）：</b>K&amp;R 第 2 章，比原計劃落後大約 2 週。新時程已經把這段落後算進去了。</div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–7<br>10/19–12/06</td><td><b>C 語言</b>：K&amp;R 第 1–6 章，習題至少做一半。重點練指標、struct／union、bit 運算、<code>volatile</code>、對齊與 endianness。工具：gcc、Makefile、gdb、valgrind／ASan。<br>小作業：ring buffer、linked list、「暫存器 bitfield 解析器」，都要附 unit test。<br><span class="tag" style="color:var(--lang-rust)">Rust</span> 裝好 <code>rustup</code>，讀 the Book 第 1–6 章（ownership、struct、enum、<code>match</code>），同時做 Rustlings 對應的題目。</td></tr>
+    <tr><td>W8–12<br>12/07–01/10</td><td><b>CS:APP</b> 第 2、3 章（資料表示、x86-64 組語）→ 做 Data Lab、Bomb Lab。第 6 章（記憶體階層）和第 9 章（虛擬記憶體）→ 做 Malloc Lab 的簡化版。練到能在 gdb 裡逐行讀組語。<br><span class="tag" style="color:var(--lang-rust)">Rust</span> the Book 第 7–10 章（模組、集合、錯誤處理、泛型與 trait）。</td></tr>
+    <tr><td>W13–16<br>01/11–02/07</td><td><b>OSDev 開機流程</b>：reset vector、real mode、boot sector（NASM）、A20、GDT、切到 protected mode／long mode、E820 memory map、從 port <code>0x3F8</code> 輸出到 serial。用 <code>qemu -s -S</code> 接 gdb 除錯。寫第 1 篇 blog：「應用層工程師第一次寫 bootloader」。<br><span class="tag" style="color:var(--lang-rust)">Rust</span> 照 <i>Writing an OS in Rust</i> 的前幾篇做出 freestanding binary 和最小 kernel，跟 C 的 bootloader 對照著看。把 ring buffer 改寫成 Rust 版（三語對照的第二個版本）。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>交付：</b><code>qemu-x86-bootloader</code> repo（兩段式載入、切到 protected mode、印出 E820 memory map 到 serial，附 README 說明開機流程圖）、<code>ring-buffer-3lang</code> repo 的 C 和 Rust 版本，加上 1 篇 blog。</div>
+
+  <div class="phase" style="--c:var(--p2)">
+    <h3>階段 2　UEFI 核心（對應 Jenny 在 Insyde 的工作）：C 主線，C++ 入門</h3>
+    <div class="when">2027-02-08 → 2027-06-27（20 週，原本 16 週）</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–3</td><td>讀《Beyond BIOS》（3rd ed.）和 UEFI PI spec 的 SEC→PEI→DXE→BDS→TSL→RT 架構。從原始碼 build EDK II／OVMF，用 gdb 載入 symbol 去 debug DXE。<br><span class="tag" style="color:var(--lang-cpp)">C++</span> 開始讀《A Tour of C++》：基本型別、reference、class、建構和解構。</td></tr>
+    <tr><td>W4–7</td><td><b>UEFI Application</b>：寫一個 Shell app，dump memory map、用 <code>EFI_PCI_IO_PROTOCOL</code> 列舉 PCI 裝置、列出 ACPI tables。<br><span class="tag" style="color:var(--lang-cpp)">C++</span> RAII、copy 和 move、template 入門。</td></tr>
+    <tr><td>W8–11</td><td><b>DXE Driver</b>：自己定義一個 protocol 並 install 起來，讓 app 去 consume。練習讀寫 UEFI variable（NV／BS／RT 屬性）。用 HII／VFR 做一個 Setup 選單頁，存成 variable，然後讓 driver 讀回來控制行為。<br><span class="tag" style="color:var(--lang-cpp)">C++</span> STL 容器和演算法、<code>std::unique_ptr</code>／<code>std::shared_ptr</code>、lambda。</td></tr>
+    <tr><td>W12–13</td><td><b>ACPI</b>：用 <code>iasl -d</code> 反組譯 QEMU 的 DSDT／FADT／MADT。寫一個自訂 SSDT（含一個 <code>_DSM</code> 或 WMI 風格的 method），在 Linux 裡用 <code>acpidump</code> 驗證。<br><span class="tag" style="color:var(--lang-cpp)">C++</span> 寫 C++ 版 ring buffer：template 加 RAII，用 GoogleTest 寫測試，完成三語對照。</td></tr>
+    <tr><td>W14–15</td><td><b>PCIe</b>：config space、BAR sizing、enumeration、capability list、AER。用 <code>lspci -vvv</code>、<code>setpci</code>，並在 QEMU 掛不同的裝置（pcie-root-port、e1000e、nvme）來觀察差異。<br><span class="tag" style="color:var(--lang-cpp)">C++</span> 讀完《A Tour of C++》的後半：並行、<code>std::optional</code>／<code>std::variant</code>，以及 C++20 的 concepts。</td></tr>
+    <tr><td>W16–18</td><td><b>coreboot</b>：在 QEMU q35 上 build coreboot + edk2 payload，讀 <code>cbmem -c</code> log。<b>真機實作</b>：在 coreboot／Dasharo 支援的 x86 板子上，用 CH341A 先備份原廠 flash，再燒入自己 build 的 image，並接 UART 看 log（見 §10）。</td></tr>
+    <tr><td>W19–20</td><td><span class="tag" style="color:var(--lang-rust)">Rust</span> 用 <code>uefi</code> crate 和 <code>x86_64-unknown-uefi</code> target，把 W4–7 的 Shell app（memory map、PCI 列舉）用 Rust 重寫一次，在 OVMF 上執行。寫第 2 篇 blog：「同一個 UEFI app，用 C 和 Rust 各寫一次」。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>交付：</b><code>uefi-playground</code> repo（C 的 Shell app、DXE driver、HII Setup 頁、自訂 SSDT，以及 <code>rust/</code> 資料夾裡的 Rust 版 app）、coreboot 真機燒錄紀錄、<code>ring-buffer-3lang</code> 三個版本完整，加上 1 篇 blog。<br><b>6 月底（G2）：</b>作品夠拿出來了，開始零星投 A 路線來測水溫。</div>
+
+  <div class="phase" style="--c:var(--p3)">
+    <h3>階段 3　Server 領域（對應 Jenny 在 AMD 的工作）：C++ 主場</h3>
+    <div class="when">2027-06-07 → 2027-10-03（17 週，和階段 2 尾巴重疊）</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–4</td><td><b>OpenBMC</b>：用 Yocto build <code>romulus</code> 或 <code>ast2600-evb</code>，在 QEMU 上跑起來（build 很吃資源，用 GCP VM）。<span class="tag" style="color:var(--lang-cpp)">C++</span> 讀 bmcweb、phosphor-dbus-interfaces、sdbusplus 的原始碼，用 <code>busctl</code> 觀察 D-Bus 上的物件。</td></tr>
+    <tr><td>W5–8</td><td><span class="tag" style="color:var(--lang-cpp)">C++</span> <b>OpenBMC 感測器 daemon</b>：用 sdbusplus 寫一個 phosphor 風格的虛擬感測器，實作 <code>xyz.openbmc_project.Sensor.Value</code> 介面，用 meson 建置，再寫 bitbake recipe 把它放進 OpenBMC image。最後在 QEMU 裡從 Redfish 的 <code>/redfish/v1/Chassis/…/Sensors</code> 看到它的數值。</td></tr>
+    <tr><td>W9–10</td><td><b>IPMI 和 Redfish</b>：用 <code>ipmitool</code> 讀 SEL／SDR／sensor。讀 DMTF Redfish schema，把 Redfish-Mockup-Server 架起來。</td></tr>
+    <tr><td>W11–13</td><td><b>Python Redfish 工具</b>（我的主場）：做一個 CLI，功能有 inventory、sensor、SEL 匯出、電源控制、<code>UpdateService</code> 韌體更新，並支援 async 同時操作多台 BMC。測試對象是 mockup 和 OpenBMC QEMU，附 pytest 和 CI。</td></tr>
+    <tr><td>W14–15</td><td><b>RAS</b>：MCA／MCE、ECC 的 CE 和 UE、Linux EDAC、rasdaemon、APEI／EINJ 的概念；用 <code>aer-inject</code> 做 PCIe AER 錯誤注入。寫第 3 篇 blog。</td></tr>
+    <tr><td>W16–17</td><td><b>開源 patch</b>：挑一個 good-first-issue，或做文件修正，送出 patch 並走完 review 流程。候選：bmcweb（C++）、webui-vue（Vue，最快上手）、<code>uefi</code> crate（Rust）、edk2（C）。</td></tr>
+    <tr><td>整個階段</td><td><span class="tag" style="color:var(--lang-rust)">Rust</span> <b>嵌入式 Rust</b>（每週 2–3 小時）：在 Raspberry Pi Pico 2 上用 embassy 讀 I2C 溫度感測器，透過 UART 輸出數值。這就是一個「迷你 BMC 感測器」，可以跟上面的 C++ daemon 對照。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>交付：</b><code>openbmc-virtual-sensor</code>（C++，含 bitbake recipe）、<code>redfish-fleet-cli</code>（Python，附測試和 CI）、<code>pico-sensor-rs</code>（Rust），加上至少 1 個被 merge 或進入 review 的上游 patch，以及 1 篇 blog。</div>
+
+  <div class="phase" style="--c:var(--p4)">
+    <h3>階段 4　求職</h3>
+    <div class="when">2027-08 → 2028-01（offer 目標 2027-12，最晚 2028-03）</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>2027-08</td><td>開一個新 branch，做 firmware 版履歷 <code>firmware/en/index.html</code>、<code>firmware/zh-TW/index.html</code>（見 §8），更新 LinkedIn headline。請 Jenny 幫忙看。</td></tr>
+    <tr><td>2027-09</td><td><b>第一波：A 路線</b>，投緯穎、英業達、廣達、神達、鴻佰的 BMC／firmware tool／validation 職缺，主打 C++ 感測器 daemon 和 Python 工具。每天刷 C 手寫題 30 分鐘、複習 C++ 15 分鐘。</td></tr>
+    <tr><td>2027-10–11</td><td><b>第二波：B 和 C 路線</b>，投 ODM BIOS、Chromebook firmware、Insyde、AMI。把面試回饋整理成筆記，有缺口就回頭補。</td></tr>
+    <tr><td>2027-12</td><td>比較手上的 offer：看 team 有沒有機會內轉 BIOS、mentor 狀況、地點、薪資。目標是在這個月簽約。</td></tr>
+    <tr><td>2028-01–03</td><td>緩衝期。如果還沒拿到 offer，就檢討原因（作品？面試？地點？），決定要延長，還是先接受 validation 或測試職當跳板。</td></tr>
+  </tbody></table>
+
+  <div class="phase" style="--c:var(--p5)">
+    <h3>階段 5　升級（第 1–5 年）</h3>
+    <div class="when">2028 →</div>
+  </div>
+  <ul class="plain small">
+    <li><b>第 1 年（ODM）</b>：跟完一個完整平台 bring-up 週期（EVT→DVT→PVT），學會看 schematic、用 POST code 和 log 抓 bug。如果是從 A 路線進去，這一年要爭取內轉 BIOS team。</li>
+    <li><b>第 2–3 年（BIOS 廠或 ODM 資深）</b>：負責完整的 OEM feature（Setup、Secure Boot、Capsule update、WMI），累積對不同 BIOS 廠程式碼的熟悉度。</li>
+    <li><b>第 3–5 年（晶片原廠）</b>：AMD、Intel、NVIDIA、Ampere 的 Customer Engineer 或 FAE。到這一步，英文、客戶溝通、Server RAS 會變成我的差異化優勢，這也是 Jenny 第 3、4 跳的路線。如果那時 Rust 韌體（Caliptra、Patina 這類）已經更普及，持續累積的 Rust 經驗會是另一項加分。</li>
+  </ul>
+</section>
+
+
+<!-- 5 -->
+<section id="gates">
+  <h2>6. 決策關卡</h2>
+  <p class="lead">每個關卡都要「誠實地」問自己。停下來也是合理的結果，因為學到的底層知識對後端除錯一樣有用。</p>
+  <div class="gate"><div class="k">G0 · 10/18</div><div><b>要不要開始？</b>過關條件：跟 Jenny 聊完後，覺得這份工作的日常是我想要的；OVMF 開機那個週末我覺得好玩，不是痛苦；財務能承受起薪下降。<br>沒過的話：停在這裡，把重心放回 iHerb 等應用層機會。</div></div>
+  <div class="gate"><div class="k">G1 · 2027/02/07</div><div><b>繼續往 UEFI 走？</b>過關條件：bootloader 完成，K&amp;R 和 CS:APP 進度至少到 70%，the Book 讀到第 10 章，而且平均每週有 10 小時以上。<br>沒過的話：先檢查 C。<b>C 落後就暫停 Rust</b>，把時間補回 C。如果是興趣問題，就把 C 和系統知識當成後端加分項，停止轉職。</div></div>
+  <div class="gate"><div class="k">G2 · 2027/06/27</div><div><b>開始投履歷？</b>過關條件：<code>uefi-playground</code>（含 Rust 版）上線，能不看筆記講完 SEC→BDS 的流程，C++ 版 ring buffer 完成。<br>過關後：零星投 A 路線，用面試反應來校正後面的學習內容。<br>C++ 進度落後的話：階段 3 的 C++ 縮減到只學 OpenBMC 用得到的範圍。</div></div>
+  <div class="gate"><div class="k">G3 · 2027/12</div><div><b>接受哪個 offer？</b>排序：有 BIOS 內轉路徑的 team &gt; 直接進 BIOS team 但地點差 &gt; 只做純測試的職缺。不要只看薪水，第一份 firmware 工作的 mentor 和平台曝光度最重要。</div></div>
+  <div class="gate"><div class="k">G4 · 2028/03</div><div><b>最晚期限。</b>如果還沒拿到 offer，接受 validation 或 tool 職當跳板，或是暫停並重新評估。不要無限期延長。</div></div>
+</section>
+
+<!-- 6 -->
+<section id="jobs">
+  <h2>7. 求職路線與目標公司</h2>
+  <p class="lead">依落差從小到大排序。公司清單是起點，每家的實際職缺、地點和遠端政策要在階段 0 和階段 4 查證。</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>路線</th><th>職缺類型</th><th>目標公司</th><th>我的優勢</th><th>要補的</th><th>最早可投</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag" style="color:var(--p2)">A 優先</span></td><td>BMC firmware、firmware tool、validation automation、Server SW</td><td>緯穎、英業達、廣達（QCT）、神達、鴻佰</td><td>Python、Linux、REST、CI/CD、除錯</td><td>OpenBMC、Redfish、IPMI、C、<b>C++</b></td><td class="nowrap">2027-06 起</td></tr>
+      <tr><td><span class="tag" style="color:var(--p3)">B</span></td><td>ODM BIOS、Chromebook firmware（coreboot）</td><td>Wistron、Compal、Quanta、Pegatron、Inventec</td><td>除錯能力、跨團隊溝通</td><td>C、x86 開機、coreboot、看 schematic</td><td class="nowrap">2027-09 起</td></tr>
+      <tr><td><span class="tag" style="color:var(--p4)">C</span></td><td>BIOS 廠 UEFI 工程師</td><td>Insyde（系微）、AMI 台灣</td><td>軟體工程素養、對客戶交付</td><td>EDK II、HII、ACPI 要有實作</td><td class="nowrap">2027-10 起</td></tr>
+      <tr><td><span class="tag" style="color:var(--p5)">長期</span></td><td>Customer Engineer、FAE</td><td>AMD、Intel、NVIDIA、Ampere</td><td>英文、客戶溝通、高監管環境經驗</td><td>2–3 年 firmware 實戰；Rust 經驗可能是加分</td><td class="nowrap">2030 起</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>地點策略（G0 要決定）</h3>
+  <div class="grid3">
+    <div class="box"><h4>① 北上（職缺最多）</h4><ul><li>可以投的職缺最多，轉職速度最快</li><li>成本：房租、生活重心搬走</li><li>適合：G0 時已經確定要轉，而且能接受 1–2 年先待北部</li></ul></div>
+    <div class="box"><h4>② 高鐵通勤或週間租屋</h4><ul><li>台南↔桃園／新竹，週一到週五住北部、週末回台南</li><li>成本：交通費加短租</li><li>適合：家庭因素不能搬家，但又想要大部分的職缺</li></ul></div>
+    <div class="box"><h4>③ 只找混合或遠端</h4><ul><li>firmware 很常需要碰實體機台，遠端職缺很少</li><li>可以留意 BMC／tool 類職缺，或南部科學園區的 embedded 職缺</li><li>代價：轉職時間可能會再拉長 6 個月以上</li></ul></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="resume">
+  <h2>8. 履歷重新定位（2027-08 執行）</h2>
+  <p class="lead">定位從「端到端產品工程師」改成「<b>有 6 年正式系統除錯經驗、正在轉向系統韌體的工程師</b>」。開新 branch 做變體，不動現行的 <code>en/index.html</code>、<code>zh-TW/index.html</code>。</p>
+  <div class="grid3">
+    <div class="box"><h4>往前放</h4><ul>
+      <li>積分兌換的 deadlock 和 race condition（悲觀鎖）</li>
+      <li>OOM 改成批次分頁處理</li>
+      <li>跨應用、DB、Infra 層追查效能問題</li>
+      <li>Linux、K8s、GCP Cloud Logging 事故診斷</li>
+      <li>FastAPI、Python 自動化</li>
+      <li>Azure Pipelines 讓部署錯誤歸零</li>
+    </ul></div>
+    <div class="box"><h4>縮減</h4><ul>
+      <li>React Native、Angular、Vue 濃縮成一行</li>
+      <li>MetaMask、UI 轉換率相關描述</li>
+      <li>AI 助理只留「架構和工具路由」的部分</li>
+    </ul></div>
+    <div class="box"><h4>新增（完成之後才能寫）</h4><ul>
+      <li>「Firmware Projects」區塊：bootloader、uefi-playground（C＋Rust）、openbmc-virtual-sensor（C++）、redfish-fleet-cli、pico-sensor-rs、ring-buffer-3lang</li>
+      <li>開源貢獻，附 patch 連結</li>
+      <li>技能新增：C、<b>C++（C++20）</b>、<b>Rust</b>、x86 asm（讀）、EDK II、coreboot、ACPI、PCIe、OpenBMC、sdbusplus／D-Bus、Redfish、IPMI、gdb、QEMU</li>
+      <li>Blog 連結</li>
+    </ul></div>
+  </div>
+  <div class="callout warn">只寫實際做過的東西。面試官會挑履歷上的每個關鍵字往下問，寫了答不出來會比沒寫更傷。</div>
+</section>
+
+<!-- 8 -->
+<section id="interview">
+  <h2>9. 面試準備清單</h2>
+  <p class="lead">從階段 2 開始，每週花 1 小時，用「講給別人聽」的方式複習。</p>
+  <div class="grid2">
+    <div class="box"><h4>C 手寫題</h4><ul>
+      <li>指標和陣列、函式指標、<code>const</code>、<code>volatile</code>、<code>static</code></li>
+      <li>bit 操作：set／clear／toggle、數 1 的個數、反轉、判斷 2 的次方</li>
+      <li>endianness 判斷、struct padding 和 <code>#pragma pack</code></li>
+      <li>手寫 <code>memcpy</code>、<code>memmove</code>、<code>strcpy</code>、<code>atoi</code></li>
+      <li>linked list 反轉、ring buffer、自己寫一個簡單的 <code>malloc</code></li>
+      <li>巨集陷阱、<code>sizeof</code>、undefined behavior</li>
+    </ul></div>
+    <div class="box"><h4>開機流程和平台</h4><ul>
+      <li>從按下電源到 OS 載入，完整講一遍（reset vector → SEC → PEI → DXE → BDS → OS loader → ExitBootServices）</li>
+      <li>Cache-as-RAM、記憶體初始化（FSP／AGESA／OpenSIL 扮演的角色）</li>
+      <li>HOB、PPI、Protocol、Variable 的差別</li>
+      <li>SMM、Secure Boot、Capsule update、SPI flash layout</li>
+      <li>ACPI 主要 tables、S3／S4／S5 睡眠狀態</li>
+      <li>PCIe enumeration、BAR、MMIO 和 I/O port 的差別</li>
+    </ul></div>
+    <div class="box"><h4>Server 和 BMC</h4><ul>
+      <li>BMC 和 BIOS 怎麼溝通（KCS、IPMI、Redfish Host Interface）</li>
+      <li>SEL、SDR、sensor 怎麼運作</li>
+      <li>RAS：CE 和 UE、MCA bank、ECC、PCIe AER、錯誤注入</li>
+      <li>大規模韌體更新的風險（rollback、A/B image）</li>
+    </ul></div>
+    <div class="box"><h4>C++（BMC 職缺會問）</h4><ul>
+      <li>RAII、<code>unique_ptr</code> 和 <code>shared_ptr</code> 的差別</li>
+      <li>reference 和 pointer、<code>const</code> 的各種用法</li>
+      <li><code>virtual</code> 和 vtable、rule of 3／5、move semantics</li>
+      <li>STL 容器的時間複雜度、iterator 失效</li>
+      <li>嵌入式為什麼常關掉 exception 和 RTTI、避免 heap 配置</li>
+    </ul></div>
+    <div class="box"><h4>Rust（加分題）</h4><ul>
+      <li>ownership、borrowing、lifetime 在防什麼錯</li>
+      <li><code>Result</code>／<code>Option</code> 的錯誤處理，跟 C 的回傳碼比較</li>
+      <li><code>unsafe</code> 的用途、跟 C 透過 FFI 互通</li>
+      <li><code>no_std</code> 環境、為什麼韌體圈開始用 Rust</li>
+    </ul></div>
+    <div class="box"><h4>行為面試（用 STAR 準備 3 個故事）</h4><ul>
+      <li>「為什麼從應用層轉 firmware？」→ 從正式環境除錯一路往下追的經驗講起</li>
+      <li>最難的 bug：積分兌換的 deadlock</li>
+      <li>跨團隊合作：櫻花跟 Infra、DBA 一起追查</li>
+      <li>自學能力：這段時間的作品和 blog，以及三語對照的 ring buffer</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section id="lab">
+  <h2>10. 實驗環境與預算</h2>
+  <p class="lead">不買 x86 build 主機。日常學習在 Mac 上的 ARM64 VM 做，需要真正 x86 環境的時候再開 GCP VM。第一筆硬體支出延到階段 2 的 coreboot 真機。</p>
+  <div class="callout warn">我的 Mac 是 <b>Apple Silicon（arm64）</b>。VMware Fusion 在 M 系列晶片上<b>只能跑 ARM64 的 guest</b>，不能虛擬化 x86。UTM 雖然能用軟體模擬整台 x86，但大型 build 會慢到不實用。所以分成兩層：x86 的部分交給 QEMU 模擬或交叉編譯，吃效能的部分交給 GCP。</div>
+
+  <h3>兩層環境</h3>
+  <div class="grid2">
+    <div class="box">
+      <h4>① 日常：Mac 上的 VMware Fusion，裝 ARM64 Ubuntu 24.04</h4>
+      <ul>
+        <li>Fusion 個人使用免費；想要更輕量可以改用 OrbStack</li>
+        <li>VM 配置建議 4 vCPU、8GB RAM、80GB 磁碟</li>
+        <li>要裝的套件：<code>build-essential nasm gdb-multiarch qemu-system-x86 qemu-user-static binfmt-support gcc-x86-64-linux-gnu acpica-tools ovmf python3-venv g++ cmake meson ninja-build libgtest-dev</code>。Rust 用官方的 <code>rustup</code> 安裝，不要用 apt 版，之後再加 target：<code>rustup target add x86_64-unknown-uefi thumbv8m.main-none-eabihf</code></li>
+        <li>負責：K&amp;R 的 C、OSDev bootloader、EDK II 的交叉編譯（設定 <code>GCC5_X64_PREFIX=x86_64-linux-gnu-</code>，新版 edk2 改叫 <code>GCC_X64_PREFIX</code>）、coreboot（用 <code>make crossgcc-i386</code>）、C++ 和 Rust 的練習、Python Redfish 工具</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>② x86 的部分：GCP 上的 N2 VM，開啟 nested virtualization</h4>
+      <ul>
+        <li>一定要選 Intel 平台的 <b>N2</b> 系列。E2 不支援 nested virtualization，就沒有 <code>/dev/kvm</code> 可以用</li>
+        <li>建立時加上 <code>--enable-nested-virtualization</code>，裝好後確認 <code>/dev/kvm</code> 存在。這樣 QEMU 就能用 <code>-enable-kvm</code>，跑 OVMF 和 coreboot 幾乎跟真機一樣快</li>
+        <li>日常實驗用 <b>Spot</b>（<code>--provisioning-model=SPOT</code>），用完就關</li>
+        <li>負責：CS:APP 的 Bomb Lab、OVMF 和 DXE 的 gdb 除錯（KVM 加速）、OpenBMC 的 Yocto build</li>
+        <li>建立 VM 的同時就設好帳單<b>預算警示</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>哪個項目在哪裡做</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>計劃項目</th><th>Fusion ARM64 VM</th><th>GCP N2 x86 VM</th><th>備註</th></tr></thead>
+    <tbody>
+      <tr><td>K&amp;R 的 C 練習</td><td>✅ 主要</td><td>—</td><td>C 跟 CPU 架構無關</td></tr>
+      <tr><td>CS:APP 第 3 章、Bomb Lab</td><td>⚠️ 可以但彆扭</td><td>✅ 主要</td><td>Bomb Lab 是 x86-64 執行檔；在 ARM 上要用 <code>qemu-x86_64</code> 搭配 <code>gdb-multiarch</code> 才能除錯</td></tr>
+      <tr><td>OSDev bootloader</td><td>✅ 主要</td><td>—</td><td>bootloader 很小，用 QEMU 模擬也不會覺得慢</td></tr>
+      <tr><td>EDK II／OVMF 的 build</td><td>✅ 用交叉編譯</td><td>✅ 原生 build</td><td>在 Fusion 裡開進 OVMF 大約要十幾秒，可以接受</td></tr>
+      <tr><td>OVMF 和 DXE 的 gdb 除錯</td><td>⚠️ 很慢</td><td>✅ 主要</td><td>有 KVM 加速，反覆重開才不會等太久</td></tr>
+      <tr><td>coreboot on QEMU</td><td>✅ 主要</td><td>選用</td><td>crossgcc 第一次 build 工具鏈會花比較久</td></tr>
+      <tr><td>OpenBMC 的 Yocto build</td><td>❌</td><td>✅ 主要</td><td>要 8 vCPU 以上和 200GB 磁碟。Spot 可能被中途回收，所以 <code>sstate-cache</code> 要放在 persistent disk，或改用一般 VM</td></tr>
+      <tr><td>C++ 練習、Rust（含 UEFI target）</td><td>✅ 主要</td><td>—</td><td>Rust UEFI app 編譯完一樣丟給 QEMU 的 OVMF 執行</td></tr>
+      <tr><td>燒錄 SPI flash（CH341A）</td><td>✅ 用 USB 直通</td><td>—</td><td>macOS 也能直接用 <code>brew install flashrom</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>要買的東西（全部在階段 2 以後）</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>項目</th><th>用途</th><th>建議</th><th>何時</th><th>預算（約）</th></tr></thead>
+    <tbody>
+      <tr><td>GCP 用量</td><td>x86 實驗、Yocto build</td><td>Spot VM 用完就關，再設好預算警示</td><td>階段 0 起</td><td>依使用時數，以帳單為準</td></tr>
+      <tr><td>coreboot 支援的 x86 板</td><td>真機燒錄、UART log；燒完之後也能當 x86 Linux 測試機</td><td>Dasharo 或 coreboot 官方支援清單上的機型（例如 Protectli VP 系列，或清單上的舊款 ThinkPad）。買之前先確認型號在清單上</td><td>階段 2 W14</td><td>NT$3,000–12,000</td></tr>
+      <tr><td>CH341A 加 SOIC8 夾子</td><td>備份和燒錄 SPI flash</td><td>選有 3.3V 修正版的（避免 5V 燒壞 flash）</td><td>階段 2</td><td>NT$300–600</td></tr>
+      <tr><td>USB-UART（3.3V）</td><td>看 serial log</td><td>CP2102 或 FT232</td><td>階段 2</td><td>NT$150–400</td></tr>
+      <tr><td>Raspberry Pi Pico 2 加 I2C 溫度感測器</td><td>嵌入式 Rust（embassy）</td><td>Pico 2（RP2350）搭配 SHT31 或 BMP280 模組；建議加一個 Raspberry Pi Debug Probe，用 <code>probe-rs</code> 燒錄和除錯</td><td>階段 3</td><td>NT$600–1,200</td></tr>
+      <tr><td>邏輯分析儀（8ch）</td><td>看 SPI、I2C 波形</td><td>入門款搭配 sigrok／PulseView</td><td>選配</td><td>NT$300–500</td></tr>
+      <tr><td>書</td><td>—</td><td>K&amp;R《The C Programming Language》、CS:APP 3e、《Beyond BIOS》3e、《A Tour of C++》3e；免費的有 Intel SDM Vol.3、UEFI／PI／ACPI spec、Rust 的 the Book</td><td>階段 1–2</td><td>NT$5,000–7,500</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="small">價格是粗估，購買前以實際報價為準。真機燒錄一定要<b>先備份原廠 flash</b>，並且準備可以救回來的手段（例如外部燒錄器），再動手。</p>
+  <h3>免費資源</h3>
+  <ul class="plain small">
+    <li>TianoCore EDK II 官方 wiki 和 <code>edk2/OvmfPkg</code>、<code>MdeModulePkg</code> 的原始碼</li>
+    <li>coreboot 官方文件（Getting started、QEMU 教學）、Dasharo 文件</li>
+    <li>OSDev Wiki（Bare Bones、Rolling Your Own Bootloader）</li>
+    <li>OpenBMC docs repo、DMTF Redfish 規格和 Redfish-Mockup-Server</li>
+    <li>CS:APP 官網的 lab 下載（Data、Bomb、Malloc lab）</li>
+    <li>Linux kernel 文件：EDAC、PCIe AER、ACPI／APEI</li>
+    <li>C++：learncpp.com、C++ Core Guidelines、sdbusplus 和 bmcweb 的原始碼</li>
+    <li>Rust：the Book、Rustlings、Comprehensive Rust、<i>Writing an OS in Rust</i>、<i>The Embedded Rust Book</i>、<code>uefi</code> crate 文件、embassy 文件</li>
+  </ul>
+</section>
+
+<!-- 10 -->
+<section id="parallel">
+  <h2>11. 並行事項怎麼處理</h2>
+  <div class="grid3">
+    <div class="box"><h4>iHerb 等應用層面試</h4><ul>
+      <li><b>繼續進行，不衝突。</b>遠端後端職是最好的安全網，能支撐這 18 個月的轉職期。</li>
+      <li>如果拿到 offer：接受，但新工作頭 3 個月把學習時間降到每週 8 小時，整體時程順延大約 2 個月。</li>
+      <li>面試時不用提轉職計劃。</li>
+    </ul></div>
+    <div class="box"><h4>成大 AI 與資訊系統在職專班</h4><ul>
+      <li>對 ODM 和 BIOS 廠幫助不大；對晶片原廠（第 3–5 年）的 HR 篩選有一點幫助，因為非資工學士加上碩士比較好過關。</li>
+      <li>建議：<b>2027 年先不報</b>，專心做韌體作品。等進 firmware 圈後，再看要不要念計算機架構或嵌入式相關的碩專。</li>
+      <li>如果還是想念，要先查報名期程，以及能不能選修計算機組織或嵌入式系統的課。</li>
+    </ul></div>
+    <div class="box"><h4>現有接案（獨資工作室）</h4><ul>
+      <li>階段 1–3 期間維持收入，但新案子不要接超過 70% 的工時。</li>
+      <li>專案告一段落時，安排一次「學習衝刺週」。</li>
+      <li>2027-09 開始投履歷後，不再接長期的新案。</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="risks">
+  <h2>12. 風險與對策</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>風險</th><th>可能性</th><th>對策</th></tr></thead>
+    <tbody>
+      <tr><td>起薪可能比現在低（ODM 可能把我當 junior）</td><td>高</td><td>A 路線比較能談年資；用作品和除錯經驗爭取 mid-level。G0 先算好財務底線。</td></tr>
+      <tr><td>接案忙，學習時間被吃掉</td><td>高</td><td>固定每週六的時段；每月 1 號檢查進度，落後超過 2 週就砍掉選修內容，不要拖延主線。</td></tr>
+      <tr><td>同時學三種語言，結果樣樣通、樣樣鬆</td><td>高</td><td>守住 §3 的原則：C 每週至少一半時間；兩個語言不同時入門；落後時先停 Rust，再縮 C++，C 不動。G1、G2 都會檢查 C 的進度。</td></tr>
+      <tr><td>時程延後 3 個月，收入和年資的機會成本變高</td><td>中</td><td>階段 2 結束（2027-06）就開始零星投 A 路線，不必等到全部學完。應用層的收入來源維持到拿到 offer 為止。</td></tr>
+      <tr><td>台南的職缺很少</td><td>高</td><td>G0 就決定地點策略，不要拖到階段 4 才面對。</td></tr>
+      <tr><td>學到一半發現不喜歡</td><td>中</td><td>G0 和 G1 就是為這個設計的；學到的 C 和系統知識對後端一樣有價值，不算白費。</td></tr>
+      <tr><td>沒有硬體背景，看不懂 schematic</td><td>中</td><td>階段 2 的真機實作加上邏輯分析儀；進 ODM 後請 EE 同事帶。面試時誠實說明，強調學習速度。</td></tr>
+      <tr><td>非資工學歷被 HR 擋下</td><td>中低（ODM）／中（原廠）</td><td>GitHub 作品、開源 patch、Jenny 內推。原廠是第 3 年以後的事，到時候有實戰經歷就能補。</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="tracker">
+  <h2>13. 進度追蹤</h2>
+  <p class="lead">勾選狀態只存在這台電腦的瀏覽器裡（localStorage），換瀏覽器或清除資料就會消失。</p>
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+  <p class="small" id="count"></p>
+
+  <h3>階段 0 · 驗證</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="p0-1"><span>傳訊息約 Jenny 聊</span><span class="due">10/07</span></li>
+    <li><input type="checkbox" data-id="p0-vm"><span>VMware Fusion 裝好 ARM64 Ubuntu 24.04，並裝好 §10 列的套件（<code>qemu-system-x86</code>、<code>gcc-x86-64-linux-gnu</code>、<code>gdb-multiarch</code>…）</span><span class="due">10/08</span></li>
+    <li><input type="checkbox" data-id="p0-gcp"><span>GCP 開好 N2 Spot VM（加上 <code>--enable-nested-virtualization</code>），確認有 <code>/dev/kvm</code>，並設好預算警示</span><span class="due">10/10</span></li>
+    <li><input type="checkbox" data-id="p0-3"><span>在 Fusion VM 用 Ubuntu 的 <code>ovmf</code> 套件開進 UEFI Shell，拿到 debugcon log；再到 GCP 用 <code>-enable-kvm</code> 跑一次，比較兩邊的速度</span><span class="due">10/11</span></li>
+    <li><input type="checkbox" data-id="p0-4"><span>A、B、C 路線各收集 5 份 JD，整理成技能表</span><span class="due">10/15</span></li>
+    <li><input type="checkbox" data-id="p0-5"><span>跟 Jenny 聊完，整理筆記</span><span class="due">10/17</span></li>
+    <li><input type="checkbox" data-id="p0-6"><span>財務盤點：薪水下降時的底線和能撐的月數</span><span class="due">10/17</span></li>
+    <li><input type="checkbox" data-id="p0-7"><span><b>G0 決定</b>：轉不轉、走 A、B 還是 C、地點策略、在職專班要不要念</span><span class="due">10/18</span></li>
+  </ul>
+
+  <h3>階段 1 · 底層基礎（C 主線，Rust 入門）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="p1-1"><span>K&amp;R 第 1–6 章，加上習題</span><span class="due">12/06</span></li>
+    <li><input type="checkbox" data-id="p1-2"><span>C 小作業（ring buffer、linked list、bitfield 解析器），附 unit test</span><span class="due">12/06</span></li>
+    <li><input type="checkbox" data-id="p1-r1"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> 裝好 rustup；the Book 第 1–6 章，加上 Rustlings 對應題目</span><span class="due">12/06</span></li>
+    <li><input type="checkbox" data-id="p1-3"><span>CS:APP 第 2、3 章，完成 Data Lab 和 Bomb Lab</span><span class="due">12/24</span></li>
+    <li><input type="checkbox" data-id="p1-4"><span>CS:APP 第 6、9 章</span><span class="due">01/10</span></li>
+    <li><input type="checkbox" data-id="p1-r2"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> the Book 第 7–10 章</span><span class="due">01/10</span></li>
+    <li><input type="checkbox" data-id="p1-5"><span>boot sector → protected mode → 從 serial 輸出</span><span class="due">01/24</span></li>
+    <li><input type="checkbox" data-id="p1-6"><span>完成 <code>qemu-x86-bootloader</code>（含 E820）並上 GitHub</span><span class="due">02/07</span></li>
+    <li><input type="checkbox" data-id="p1-r3"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> <i>Writing an OS in Rust</i> 前幾篇（freestanding binary、最小 kernel），以及 Rust 版 ring buffer</span><span class="due">02/07</span></li>
+    <li><input type="checkbox" data-id="p1-7"><span>Blog 第 1 篇；<b>G1 檢查</b></span><span class="due">02/07</span></li>
+  </ul>
+
+  <h3>階段 2 · UEFI 核心（C 主線，C++ 入門）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="p2-1"><span>讀完《Beyond BIOS》，從原始碼 build OVMF 並用 gdb 除錯</span><span class="due">02/28</span></li>
+    <li><input type="checkbox" data-id="p2-2"><span>UEFI Shell app（memory map、PCI、ACPI dump）</span><span class="due">03/28</span></li>
+    <li><input type="checkbox" data-id="p2-c1"><span><span class="tag" style="color:var(--lang-cpp)">C++</span>《A Tour of C++》前半：class、RAII、copy／move、template</span><span class="due">03/28</span></li>
+    <li><input type="checkbox" data-id="p2-3"><span>DXE driver、自訂 protocol、UEFI variable</span><span class="due">04/25</span></li>
+    <li><input type="checkbox" data-id="p2-4"><span>HII／VFR Setup 頁</span><span class="due">04/25</span></li>
+    <li><input type="checkbox" data-id="p2-5"><span>自訂 SSDT，並在 Linux 用 acpidump 驗證</span><span class="due">05/09</span></li>
+    <li><input type="checkbox" data-id="p2-c2"><span><span class="tag" style="color:var(--lang-cpp)">C++</span> C++ 版 ring buffer（template、RAII、GoogleTest），<code>ring-buffer-3lang</code> 三個版本完成</span><span class="due">05/09</span></li>
+    <li><input type="checkbox" data-id="p2-6"><span>PCIe config space 和 AER 筆記</span><span class="due">05/23</span></li>
+    <li><input type="checkbox" data-id="p2-c3"><span><span class="tag" style="color:var(--lang-cpp)">C++</span>《A Tour of C++》後半：STL、smart pointer、並行、concepts</span><span class="due">05/23</span></li>
+    <li><input type="checkbox" data-id="p2-7"><span>在 QEMU q35 上跑 coreboot 加 edk2 payload</span><span class="due">06/01</span></li>
+    <li><input type="checkbox" data-id="p2-8"><span>真機：先備份原廠 flash，再燒入 coreboot 並看 UART log</span><span class="due">06/13</span></li>
+    <li><input type="checkbox" data-id="p2-r1"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> 用 <code>uefi</code> crate 重寫 Shell app，在 OVMF 上執行</span><span class="due">06/27</span></li>
+    <li><input type="checkbox" data-id="p2-9"><span><code>uefi-playground</code>（C＋Rust）上 GitHub，加上 blog 第 2 篇（G2）</span><span class="due">06/27</span></li>
+  </ul>
+
+  <h3>階段 3 · Server 領域（C++ 主場）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="p3-1"><span>OpenBMC 用 Yocto build 完，在 QEMU 上跑起來</span><span class="due">06/27</span></li>
+    <li><input type="checkbox" data-id="p3-c1"><span><span class="tag" style="color:var(--lang-cpp)">C++</span> 讀懂 sdbusplus 和 bmcweb 的架構，用 <code>busctl</code> 觀察 D-Bus</span><span class="due">07/04</span></li>
+    <li><input type="checkbox" data-id="p3-c2"><span><span class="tag" style="color:var(--lang-cpp)">C++</span> <code>openbmc-virtual-sensor</code>：sdbusplus daemon 加 bitbake recipe，從 Redfish 看得到數值</span><span class="due">08/01</span></li>
+    <li><input type="checkbox" data-id="p3-2"><span>用 ipmitool 讀 SEL、SDR、sensor；把 Redfish mockup 架起來</span><span class="due">08/15</span></li>
+    <li><input type="checkbox" data-id="p3-3"><span><code>redfish-fleet-cli</code>，附 pytest 和 CI</span><span class="due">09/05</span></li>
+    <li><input type="checkbox" data-id="p3-r1"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> <code>pico-sensor-rs</code>：Pico 2 加 embassy 讀 I2C 感測器，從 UART 輸出</span><span class="due">09/19</span></li>
+    <li><input type="checkbox" data-id="p3-4"><span>RAS 和 AER 錯誤注入實驗，加上 blog 第 3 篇</span><span class="due">09/19</span></li>
+    <li><input type="checkbox" data-id="p3-5"><span>送出第一個上游 patch</span><span class="due">10/03</span></li>
+  </ul>
+
+  <h3>階段 4 · 求職</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="p4-1"><span>firmware 版履歷（中英文，放在新 branch），請 Jenny 看過</span><span class="due">08/31</span></li>
+    <li><input type="checkbox" data-id="p4-2"><span>更新 LinkedIn headline 和 Featured 作品</span><span class="due">08/31</span></li>
+    <li><input type="checkbox" data-id="p4-3"><span>第一波 A 路線：投 10 家以上</span><span class="due">09/30</span></li>
+    <li><input type="checkbox" data-id="p4-4"><span>C 手寫題：刷滿 50 題；C++ 常考題複習一輪</span><span class="due">10/31</span></li>
+    <li><input type="checkbox" data-id="p4-5"><span>第二波 B、C 路線</span><span class="due">11/30</span></li>
+    <li><input type="checkbox" data-id="p4-6"><span><b>簽下第一份 firmware offer</b>（G3）</span><span class="due">12/31</span></li>
+  </ul>
+</section>
+
+<footer>最後更新 2026-10-26（加入 C++、Rust，時程延後 3 個月）· 私人規劃文件，不公開</footer>
+</main>
+
+<button class="theme-btn" id="themeBtn" type="button">切換深淺色</button>
+
+<script>
+(function(){
+  // ---- Gantt ----
+  // months index: 0 = 2026-10 ... 17 = 2028-03; s/e are fractional month positions
+  var N = 18;
+  var months = ["10","11","12","1","2","3","4","5","6","7","8","9","10","11","12","1","2","3"];
+  var rows = [
+    {lab:"0 驗證",        segs:[{c:"--p0", s:0.13, e:0.6,  t:"驗證"}]},
+    {lab:"1 底層基礎",    segs:[{c:"--p1", s:0.6,  e:4.25, t:"C · CS:APP · OSDev"}]},
+    {lab:"2 UEFI 核心",   segs:[{c:"--p2", s:4.25, e:8.9,  t:"EDK II · ACPI · PCIe · coreboot"}]},
+    {lab:"3 Server 領域", segs:[{c:"--p3", s:8.2,  e:12.1, t:"OpenBMC · Redfish · RAS"}]},
+    {lab:"4 求職",        segs:[{c:"--p4", s:10.0, e:15.0, t:"履歷 → A → B/C → offer"}]},
+    {lab:"   緩衝",       segs:[{c:"--p5", s:15.0, e:18.0, t:"緩衝"}]},
+    {lab:"語言 · C",      segs:[{c:"--lang-c", s:0.6, e:4.25, t:"主力 80%"}, {c:"--lang-c", s:4.25, e:8.9, t:"EDK II 60%"}, {c:"--lang-c", s:8.9, e:15.0, t:"RAS · 每天手寫題"}]},
+    {lab:"語言 · C++",    segs:[{c:"--lang-cpp", s:4.25, e:8.9, t:"Tour of C++ 25%"}, {c:"--lang-cpp", s:8.9, e:12.1, t:"OpenBMC 主場 40%"}, {c:"--lang-cpp", s:12.1, e:15.0, t:"面試複習"}]},
+    {lab:"語言 · Rust",   segs:[{c:"--lang-rust", s:0.6, e:4.25, t:"the Book · Rustlings"}, {c:"--lang-rust", s:4.25, e:8.9, t:"uefi crate"}, {c:"--lang-rust", s:8.9, e:12.1, t:"embassy"}]}
+  ];
+  var miles = [
+    {m:0.58, c:"--p0", t:"G0 決定"},
+    {m:4.25, c:"--p1", t:"G1"},
+    {m:8.9,  c:"--p2", t:"G2 開始投"},
+    {m:14.9, c:"--p4", t:"G3 offer"},
+    {m:17.9, c:"--p5", t:"G4 最晚"}
+  ];
+  var g = document.getElementById("gantt");
+  if(!g) return;
+  var html = '<div class="hd"></div><div class="hd yr" style="grid-column:span 3">2026</div><div class="hd yr" style="grid-column:span 12">2027</div><div class="hd yr" style="grid-column:span 3">2028</div>';
+  html += '<div class="hd"></div>';
+  months.forEach(function(m){ html += '<div class="hd">'+m+'月</div>'; });
+  function rowHtml(label, inner){
+    var h = '<div class="lab">'+label+'</div>';
+    for(var i=0;i<N;i++){ h += '<div class="cell">'+(inner[i]||"")+'</div>'; }
+    return h;
+  }
+  rows.forEach(function(r){
+    var inner = {};
+    r.segs.forEach(function(sg){
+      var first = Math.floor(sg.s);
+      var left = (sg.s-first)*100;
+      var width = (sg.e-sg.s)*100;
+      // bar anchored in first cell, overflowing to the right (cells are equal width); small gap between segments
+      inner[first] = (inner[first]||"") + '<div class="bar" style="left:'+left+'%;width:calc('+width+'% + '+Math.floor(sg.e-sg.s)+'px - 2px);background:var('+sg.c+')" title="'+sg.t+'">'+sg.t+'</div>';
+    });
+    html += rowHtml(r.lab, inner);
+  });
+  var mi = {};
+  miles.forEach(function(m){
+    var i = Math.min(N-1, Math.floor(m.m));
+    mi[i] = (mi[i]||"") + '<div class="mile" title="'+m.t+'" style="left:calc('+((m.m-i)*100)+'% - 7px);background:var('+m.c+')"></div>';
+  });
+  html += rowHtml("◆ 決策關卡", mi);
+  g.innerHTML = html;
+  // allow bars to overflow cells
+  g.querySelectorAll(".cell").forEach(function(c){ c.style.overflow="visible"; });
+
+  var lg = document.getElementById("legend");
+  lg.innerHTML = rows.slice(0,5).map(function(r){ return '<span><i style="background:var('+r.segs[0].c+')"></i>'+r.lab.trim()+'</span>'; }).join("") +
+    '<span><i style="background:var(--lang-c)"></i>C</span><span><i style="background:var(--lang-cpp)"></i>C++</span><span><i style="background:var(--lang-rust)"></i>Rust</span>' +
+    '<span>◆ G0 10/18 · G1 2/7 · G2 6/27 · G3 12月 · G4 2028/3</span>';
+
+  // ---- Checklist (localStorage, best-effort) ----
+  var KEY = "fw-career-checklist-v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ state = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.check input[type=checkbox]'));
+  function refresh(){
+    var done = 0;
+    boxes.forEach(function(b){
+      b.parentNode.classList.toggle("done", b.checked);
+      if(b.checked) done++;
+    });
+    document.getElementById("bar").style.width = (boxes.length ? done/boxes.length*100 : 0) + "%";
+    document.getElementById("count").textContent = "已完成 " + done + " / " + boxes.length + " 項";
+  }
+  boxes.forEach(function(b){
+    b.checked = !!state[b.dataset.id];
+    b.addEventListener("change", function(){
+      state[b.dataset.id] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+      refresh();
+    });
+  });
+  refresh();
+
+  // ---- Theme toggle ----
+  var root = document.documentElement;
+  try { var t = localStorage.getItem("fw-career-theme"); if(t) root.setAttribute("data-theme", t); } catch(e){}
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var next = cur === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("fw-career-theme", next); } catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

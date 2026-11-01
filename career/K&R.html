@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>K&amp;R 讀書筆記</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --ink:#1b1d21; --muted:#5d6470; --line:#dfe2e7;
+  --accent:#0b62c4; --accent-soft:#e6f0fb;
+  --code-bg:#f6f8fa; --code-ink:#1f2328;
+  --warn-bg:#fff6e0; --warn-ink:#7a5600; --ok-bg:#e7f6ef; --ok-ink:#0b6b4c;
+  --font:"PingFang TC","Noto Sans TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --card:#1b1e23; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+    --accent:#5aa2ff; --accent-soft:#1c2a3d; --code-bg:#14171b; --code-ink:#dfe3e8;
+    --warn-bg:#3a2f12; --warn-ink:#f3cf73; --ok-bg:#12332a; --ok-ink:#7fe0b8;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --card:#1b1e23; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+  --accent:#5aa2ff; --accent-soft:#1c2a3d; --code-bg:#14171b; --code-ink:#dfe3e8;
+  --warn-bg:#3a2f12; --warn-ink:#f3cf73; --ok-bg:#12332a; --ok-ink:#7fe0b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.7;font-size:15px;padding:32px 16px 80px}
+main{max-width:900px;margin:0 auto}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+pre{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.55;margin:10px 0}
+pre code{background:none;padding:0;font-size:inherit}
+pre .c{color:var(--muted)}
+header.top{margin-bottom:22px}
+header.top h1{font-size:27px;line-height:1.3}
+header.top p{color:var(--muted);margin-top:6px}
+.back{font-size:13px;display:inline-block;margin-bottom:10px}
+nav.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:14px}
+nav.toc ol{list-style:none;display:flex;flex-wrap:wrap;gap:4px 16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px}
+section h2{font-size:19px;margin-bottom:4px}
+section h2 .no{color:var(--accent);font-family:var(--mono);margin-right:6px}
+.lead{color:var(--muted);font-size:14px;margin-bottom:12px}
+h3{font-size:15.5px;margin:16px 0 6px}
+p+p{margin-top:8px}
+ul.plain{padding-left:20px}
+ul.plain li{margin:3px 0}
+.callout{border-radius:8px;padding:11px 15px;font-size:14px;margin:12px 0}
+.callout.warn{background:var(--warn-bg);color:var(--warn-ink)}
+.callout.ok{background:var(--ok-bg);color:var(--ok-ink)}
+.callout.info{background:var(--accent-soft)}
+.callout code{background:rgba(127,127,127,.15)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap}
+.fw{border-left:3px solid var(--accent);padding:6px 0 6px 12px;margin:12px 0;font-size:14px}
+.fw b{color:var(--accent)}
+.check{list-style:none}
+.check li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.check li:last-child{border-bottom:none}
+.check input{margin-top:5px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+.check li.done span{color:var(--muted);text-decoration:line-through}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:0 7px;border-radius:999px;border:1px solid currentColor;margin-left:6px;color:var(--accent);vertical-align:1px}
+details{border:1px solid var(--line);border-radius:8px;padding:9px 13px;margin:8px 0;font-size:14px}
+details summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:6px}
+.small{font-size:13px;color:var(--muted)}
+.chapters{position:sticky;top:0;z-index:5;display:flex;gap:6px;background:var(--bg);padding:8px 0 12px;margin-bottom:6px}
+.chapters a{flex:none;text-decoration:none;color:var(--muted);border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 16px;font-size:14px;font-weight:600}
+.chapters a[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+section,.chapter{scroll-margin-top:64px}
+.chapter{display:none}
+.chapter.active{display:block}
+.chapter-head{margin:4px 0 14px}
+.chapter-head .ch-title{font-size:22px;line-height:1.35}
+.chapter-head p{color:var(--muted);margin-top:6px}
+footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px}
+.theme-btn{position:fixed;right:16px;bottom:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
+@media (max-width:760px){
+  body{padding:20px 16px 70px;font-size:14.5px}
+  section{padding:18px 16px}
+  header.top h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<main>
+
+<header class="top">
+  <a class="back" href="schedule.html">← 回轉職計劃</a>
+  <h1>K&amp;R 讀書筆記</h1>
+  <p>《The C Programming Language》2nd ed. 逐章導讀。這份筆記是我自己整理的重點和範例，<b>不是原書內容</b>，讀的時候要搭配原書。範例程式都是另外寫的，跟書上的不同。</p>
+</header>
+
+<nav class="chapters" aria-label="章節">
+  <a href="#ch1" data-ch="ch1">第一章</a>
+  <a href="#ch2" data-ch="ch2">第二章</a>
+  <a href="#ch3" data-ch="ch3">第三章</a>
+</nav>
+
+<div class="chapter" id="ch1" data-label="第一章">
+
+<div class="chapter-head">
+  <h2 class="ch-title">第一章：A Tutorial Introduction</h2>
+  <p>第 1 章用十個小節快速帶過 C 的全貌，細節留到第 2–6 章再展開。</p>
+</div>
+
+<div class="callout info">
+  <b>對應計劃：</b>階段 1 W1（2026-10-19 起）· <b>預估時間：</b>6–8 小時（閱讀 3 小時，習題 3–5 小時）· <b>環境：</b>Fusion 裡的 ARM64 Ubuntu，用 <code>gcc</code> 就好
+</div>
+
+<nav class="toc" aria-label="目錄">
+  <ol>
+    <li><a href="#s0">0. 怎麼編譯執行</a></li>
+    <li><a href="#s1">1.1 Hello</a></li>
+    <li><a href="#s2">1.2 變數與運算</a></li>
+    <li><a href="#s3">1.3–1.4 for 與常數</a></li>
+    <li><a href="#s5">1.5 字元 I/O</a></li>
+    <li><a href="#s6">1.6 陣列</a></li>
+    <li><a href="#s7">1.7–1.8 函式與傳值</a></li>
+    <li><a href="#s9">1.9 字元陣列（字串）</a></li>
+    <li><a href="#s10">1.10 外部變數與範圍</a></li>
+    <li><a href="#cmp">與 JS／C# 對照</a></li>
+    <li><a href="#ex">習題建議</a></li>
+    <li><a href="#quiz">自我檢查</a></li>
+  </ol>
+</nav>
+
+<!-- 0 -->
+<section id="s0">
+  <h2><span class="no">0</span>開始前：怎麼編譯和執行</h2>
+  <p class="lead">C 沒有 runtime 或直譯器，要先編譯成機器碼才能執行。這跟 Node.js 或 Python 最大的不同。</p>
+<pre><code><span class="c"># 裝好編譯器（只需要一次）</span>
+sudo apt install build-essential gdb
+
+<span class="c"># 編譯：-Wall -Wextra 開啟警告；-g 加除錯資訊，之後用 gdb 時需要</span>
+gcc -Wall -Wextra -g hello.c -o hello
+
+<span class="c"># 執行</span>
+./hello
+
+<span class="c"># 把檔案內容當作輸入（1.5 節以後會一直用到）</span>
+./count &lt; some.txt</code></pre>
+  <div class="callout warn">一開始就養成習慣：<b>把每個警告都當成錯誤處理</b>。C 編譯器會放行很多危險的寫法，警告常常就是 bug。可以加上 <code>-Werror</code>，讓編譯器遇到警告就直接失敗。</div>
+  <p>互動執行時，輸入結束要按 <code>Ctrl-D</code>，這就是 1.5 節會講到的「EOF」。</p>
+</section>
+
+<!-- 1.1 -->
+<section id="s1">
+  <h2><span class="no">1.1</span>Getting Started：第一個程式</h2>
+  <p class="lead">重點不是印出文字，而是認識一個 C 程式最小的骨架。</p>
+<pre><code>#include &lt;stdio.h&gt;      <span class="c">// 引入標準輸入輸出的宣告（printf 在這裡）</span>
+
+int main(void)         <span class="c">// 程式從 main 開始執行，回傳 int 給作業系統</span>
+{
+    printf("hi, firmware\n");   <span class="c">// \n 是換行，printf 不會自動換行</span>
+    return 0;          <span class="c">// 0 = 成功；非 0 = 失敗（shell 的 $? 看得到）</span>
+}</code></pre>
+  <ul class="plain">
+    <li><code>#include</code> 是<b>前置處理器</b>指令，編譯前會把標頭檔的內容直接貼進來。它不是 JS 的 <code>import</code>，沒有模組系統。</li>
+    <li>每個敘述用 <code>;</code> 結尾，區塊用 <code>{ }</code> 包起來。</li>
+    <li><b>跳脫字元</b>：<code>\n</code> 換行、<code>\t</code> tab、<code>\\</code> 反斜線、<code>\"</code> 雙引號。</li>
+    <li>雙引號 <code>"..."</code> 是字串，單引號 <code>'a'</code> 是單一字元，兩者在 C 裡是完全不同的東西。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>UEFI 程式的入口不是 <code>main</code>，而是 <code>UefiMain(ImageHandle, SystemTable)</code>，也沒有 <code>printf</code>，要改用 <code>Print()</code>。不過「入口函式、回傳狀態碼」這個概念完全相同。</div>
+</section>
+
+<!-- 1.2 -->
+<section id="s2">
+  <h2><span class="no">1.2</span>Variables and Arithmetic Expressions</h2>
+  <p class="lead">書上用換算表來介紹變數、<code>while</code> 迴圈和 <code>printf</code> 的格式化輸出。這裡改用「公里換英里」示範同樣的觀念。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int km;                    <span class="c">// 變數必須先宣告型別才能用</span>
+    float miles;
+
+    km = 0;
+    while (km &lt;= 50) {
+        miles = km * 0.621371f;
+        printf("%3d km = %6.2f mi\n", km, miles);
+        km = km + 10;
+    }
+    return 0;
+}</code></pre>
+  <h3>這一節的重點</h3>
+  <ul class="plain">
+    <li><b>型別是固定的</b>：<code>int</code> 整數、<code>float</code>／<code>double</code> 浮點數、<code>char</code> 字元。宣告之後就不能換成別的型別。</li>
+    <li><b><code>printf</code> 格式</b>：<code>%d</code> 是整數，<code>%f</code> 是浮點數。<code>%3d</code> 表示至少佔 3 格並靠右對齊，<code>%6.2f</code> 表示總寬 6 格、小數 2 位。</li>
+  </ul>
+  <div class="callout warn"><b>⚠ 整數除法陷阱（第一章最重要的坑）</b><br>
+  <code>5 / 9</code> 的結果是 <b>0</b>，因為兩個整數相除，小數部分會直接捨去。<br>
+  要得到小數，至少一邊要是浮點數，例如 <code>5.0 / 9</code>。<br>
+  JS 裡 <code>5/9</code> 會得到 0.555…，所以這個坑特別容易踩到。</div>
+  <div class="fw"><b>韌體連結：</b>韌體裡幾乎不用浮點數，因為開機早期浮點運算單元可能還沒初始化。實務上都用整數搭配位移來處理，所以整數除法和捨去的行為要非常熟。</div>
+</section>
+
+<!-- 1.3-1.4 -->
+<section id="s3">
+  <h2><span class="no">1.3–1.4</span>for 敘述與符號常數</h2>
+  <p class="lead">用 <code>for</code> 改寫上面的迴圈，再用 <code>#define</code> 把寫死的數字換成有名字的常數。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define KM_START   0
+#define KM_END     50
+#define KM_STEP    10
+#define KM_TO_MILE 0.621371f
+
+int main(void)
+{
+    for (int km = KM_START; km &lt;= KM_END; km += KM_STEP)
+        printf("%3d km = %6.2f mi\n", km, km * KM_TO_MILE);
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><code>for (初始; 條件; 每輪結束後)</code>，跟 JS 一樣。</li>
+    <li><code>#define NAME 值</code> 是<b>純文字替換</b>：前置處理器在編譯前把 <code>KM_END</code> 換成 <code>50</code>。它沒有型別，也不佔記憶體。行尾<b>不加分號</b>，加了分號也會一起被替換進去。</li>
+    <li>慣例是常數名稱全部大寫。</li>
+    <li>K&amp;R 是 C89 標準，迴圈變數要在 <code>for</code> 前面宣告。上面把 <code>int km</code> 寫在 <code>for</code> 裡面是 C99 之後的寫法，現代的 gcc 預設就支援。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>韌體程式碼裡的 <code>#define</code> 多到數不完，例如 <code>#define PCI_VENDOR_ID_OFFSET 0x00</code>、<code>#define BIT3 0x08</code>。EDK II 也大量用巨集來定義暫存器位址和旗標。</div>
+</section>
+
+<!-- 1.5 -->
+<section id="s5">
+  <h2><span class="no">1.5</span>Character Input and Output</h2>
+  <p class="lead">這是第一章份量最重的一節：用 <code>getchar()</code> 和 <code>putchar()</code> 一次處理一個字元，寫出複製、計數、數行、數字數四個小工具。</p>
+
+  <h3>核心慣用寫法：一直讀到 EOF</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c;                              <span class="c">// ⚠ 用 int，不是 char！</span>
+
+    while ((c = getchar()) != EOF)      <span class="c">// 讀一個字元，順便判斷是否結束</span>
+        putchar(c);
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><b>為什麼 <code>c</code> 是 <code>int</code></b>：<code>EOF</code>（end of file）是一個特殊值，通常是 -1。它必須跟所有正常字元都不一樣，所以要用比 <code>char</code> 更大的型別來裝。</li>
+    <li><b>賦值本身是一個運算式</b>：<code>(c = getchar())</code> 的值就是剛讀到的字元，所以可以直接拿來跟 <code>EOF</code> 比較。</li>
+  </ul>
+  <div class="callout warn"><b>⚠ 括號不能省</b>：<code>c = getchar() != EOF</code> 會先算 <code>!=</code>，所以 <code>c</code> 只會得到 0 或 1。運算子優先順序是第 2 章的主題，這裡先記住「賦值要加括號」。</div>
+
+  <h3>計數：字元、行數、tab</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c;
+    long chars = 0, lines = 0, tabs = 0;
+
+    while ((c = getchar()) != EOF) {
+        ++chars;
+        if (c == '\n') ++lines;     <span class="c">// 'x' 是字元常數，本質就是一個整數（ASCII 碼）</span>
+        if (c == '\t') ++tabs;
+    }
+    printf("chars=%ld lines=%ld tabs=%ld\n", chars, lines, tabs);
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><code>'\n'</code> 的值是整數 10。在 C 裡<b>字元就是小整數</b>，可以直接比較，也可以做加減，例如 <code>c - '0'</code> 能把字元 <code>'7'</code> 轉成數字 7。</li>
+    <li><code>++x</code> 是遞增，<code>long</code> 是範圍比較大的整數，印出時用 <code>%ld</code>。</li>
+    <li>要區分 <code>==</code>（比較）和 <code>=</code>（賦值）。把 <code>if (c = '\n')</code> 寫錯成賦值，條件會永遠成立。開啟 <code>-Wall</code> 時編譯器會警告。</li>
+  </ul>
+
+  <h3>數字數：用一個「狀態」變數</h3>
+  <p>書上的字數統計是個小型<b>狀態機</b>：記住自己目前在單字裡面還是外面，從外面進到裡面時就把字數加一。</p>
+<pre><code>int c, in_word = 0;
+long words = 0;
+
+while ((c = getchar()) != EOF) {
+    if (c == ' ' || c == '\n' || c == '\t')
+        in_word = 0;                  <span class="c">// 遇到空白，離開單字</span>
+    else if (!in_word) {
+        in_word = 1;                  <span class="c">// 從外面進入單字的那一刻才計數</span>
+        ++words;
+    }
+}</code></pre>
+  <ul class="plain">
+    <li><code>||</code> 是 OR，<code>&amp;&amp;</code> 是 AND，兩者都會<b>短路求值</b>，跟 JS 一樣。</li>
+    <li>C89 沒有 <code>bool</code> 型別，用 <code>int</code> 表示：0 是假，非 0 就是真。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>「每次讀一個字元，用狀態變數決定下一步」正是韌體解析 UART 序列輸入、處理 debug console 指令的方式。狀態機也是韌體最常見的設計模式之一。</div>
+</section>
+
+<!-- 1.6 -->
+<section id="s6">
+  <h2><span class="no">1.6</span>Arrays</h2>
+  <p class="lead">用陣列一次統計很多種類別。書上統計的是數字、空白和其他字元，這裡改成統計十六進位數字。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int c;
+    int hex[16];                        <span class="c">// 固定大小，宣告後不能變長</span>
+
+    for (int i = 0; i &lt; 16; ++i)
+        hex[i] = 0;                     <span class="c">// ⚠ 區域陣列不會自動清 0，一定要自己初始化</span>
+
+    while ((c = getchar()) != EOF) {
+        if (c &gt;= '0' &amp;&amp; c &lt;= '9')
+            ++hex[c - '0'];             <span class="c">// 用字元算出陣列索引</span>
+        else if (c &gt;= 'a' &amp;&amp; c &lt;= 'f')
+            ++hex[c - 'a' + 10];
+    }
+    for (int i = 0; i &lt; 16; ++i)
+        printf("%X: %d\n", i, hex[i]);  <span class="c">// %X 以大寫十六進位印出</span>
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li>陣列<b>大小固定</b>，索引從 0 開始。C 不像 JS 的 array 可以 <code>push</code>。</li>
+    <li><b>C 不檢查越界</b>：寫入 <code>hex[16]</code> 不會報錯，而是默默蓋掉旁邊的記憶體。這是 C 最危險的特性之一，也是很多資安漏洞的根源。</li>
+    <li>沒初始化的區域變數裡面是<b>垃圾值</b>，也就是那塊記憶體原本殘留的內容，不會是 0。</li>
+    <li><code>if … else if … else</code> 是多路分支，跟 JS 一樣。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>韌體裡沒有可以自動長大的陣列，也通常沒有 <code>malloc</code>（後端的 heap 在這裡很稀缺）。資料結構大多是固定大小的陣列或 buffer，越界寫入可能讓整台機器開不了機。</div>
+</section>
+
+<!-- 1.7-1.8 -->
+<section id="s7">
+  <h2><span class="no">1.7–1.8</span>Functions 與 Call by Value</h2>
+  <p class="lead">把邏輯包成函式，並理解 C 的參數<b>一律傳值</b>。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int clamp(int x, int lo, int hi);       <span class="c">// 函式原型（prototype）：先宣告，定義寫在後面</span>
+void try_swap(int a, int b);
+
+int main(void)
+{
+    printf("%d\n", clamp(150, 0, 100)); <span class="c">// 100</span>
+
+    int x = 1, y = 2;
+    try_swap(x, y);
+    printf("x=%d y=%d\n", x, y);        <span class="c">// 還是 x=1 y=2！</span>
+    return 0;
+}
+
+int clamp(int x, int lo, int hi)
+{
+    if (x &lt; lo) return lo;
+    if (x &gt; hi) return hi;
+    return x;
+}
+
+void try_swap(int a, int b)             <span class="c">// a、b 只是複本，改了不影響呼叫端</span>
+{
+    int tmp = a;
+    a = b;
+    b = tmp;
+}</code></pre>
+  <ul class="plain">
+    <li><b>函式原型</b>：C 編譯器由上往下讀，呼叫函式之前必須先看過它的宣告。原型通常放在 <code>.h</code> 標頭檔裡。</li>
+    <li><code>void</code> 代表沒有回傳值。</li>
+    <li><b>傳值（call by value）</b>：參數是一份複本，所以上面的 <code>try_swap</code> 換不了。真的要交換，必須把變數的<b>位址</b>傳進去，這要等到第 5 章的指標。</li>
+    <li><b>例外是陣列</b>：把陣列當參數傳時，傳過去的是它開頭的位址，所以函式可以修改呼叫端陣列的內容。這是第 5 章的伏筆。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>UEFI API 幾乎全靠「傳指標進去，讓函式把結果寫回來」，回傳值只拿來表示狀態（<code>EFI_STATUS</code>）。例如 <code>gBS-&gt;LocateProtocol(&amp;Guid, NULL, (VOID **)&amp;Proto)</code>。只要理解了傳值，就能理解為什麼要這樣寫。</div>
+</section>
+
+<!-- 1.9 -->
+<section id="s9">
+  <h2><span class="no">1.9</span>Character Arrays：C 的「字串」</h2>
+  <p class="lead">C 沒有 string 型別。字串就是一個 <code>char</code> 陣列，最後放一個 <code>'\0'</code>（值為 0）當作結束記號。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+#define MAX_LINE 256
+
+int read_line(char buf[], int max);     <span class="c">// 回傳讀到的長度，0 代表 EOF</span>
+
+int main(void)
+{
+    char line[MAX_LINE];
+    int len;
+
+    while ((len = read_line(line, MAX_LINE)) &gt; 0)
+        printf("[%3d] %s", len, line);  <span class="c">// %s 會一直印，直到遇到 '\0'</span>
+    return 0;
+}
+
+int read_line(char buf[], int max)
+{
+    int c, i = 0;
+
+    while (i &lt; max - 1 &amp;&amp; (c = getchar()) != EOF &amp;&amp; c != '\n')
+        buf[i++] = c;                   <span class="c">// 保留最後一格給 '\0'</span>
+    if (c == '\n')
+        buf[i++] = c;
+    buf[i] = '\0';                      <span class="c">// ⚠ 沒有這行，%s 會一路印到記憶體深處</span>
+    return i;
+}</code></pre>
+  <ul class="plain">
+    <li><code>"abc"</code> 在記憶體裡實際上是 4 個 byte：<code>'a' 'b' 'c' '\0'</code>。所以 buffer 大小要比內容多一格。</li>
+    <li>C 的字串<b>不知道自己有多長</b>，要從頭數到 <code>'\0'</code> 才知道。這就是 <code>strlen</code> 的做法。</li>
+    <li><code>max - 1</code> 的檢查是在防止<b>緩衝區溢位</b>。少了它，輸入一行很長的文字就會寫出陣列的邊界。</li>
+    <li>書上這一節的自訂函式叫 <code>getline</code>，會跟現代 glibc 裡的同名函式衝突，所以這裡改名叫 <code>read_line</code>。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>UEFI 的字串是 UCS-2 寬字元（<code>CHAR16</code>），字串常數要寫成 <code>L"Hello"</code>，但同樣以 0 結尾。BIOS Setup 畫面的字串、UEFI variable 的名稱，用的都是這套規則。</div>
+</section>
+
+<!-- 1.10 -->
+<section id="s10">
+  <h2><span class="no">1.10</span>External Variables and Scope</h2>
+  <p class="lead">函式內的變數只活在那個函式裡。宣告在所有函式外面的變數是<b>外部變數</b>（也就是全域變數），所有函式都能存取。</p>
+<pre><code><span class="c">/* counter.c */</span>
+int g_error_count = 0;          <span class="c">// 定義（definition）：真的配置記憶體，只能有一處</span>
+
+void report_error(void) { ++g_error_count; }
+
+<span class="c">/* main.c */</span>
+#include &lt;stdio.h&gt;
+extern int g_error_count;       <span class="c">// 宣告（declaration）：「這個變數在別的檔案裡」</span>
+void report_error(void);
+
+int main(void)
+{
+    report_error();
+    report_error();
+    printf("%d\n", g_error_count);  <span class="c">// 2</span>
+    return 0;
+}</code></pre>
+<pre><code><span class="c"># 多個檔案一起編譯</span>
+gcc -Wall main.c counter.c -o app</code></pre>
+  <ul class="plain">
+    <li><b>自動變數（automatic）</b>：函式內的區域變數，函式回傳後就消失，每次呼叫重新建立。</li>
+    <li><b>外部變數</b>：整個程式執行期間都存在，可以跨函式、跨檔案共用。</li>
+    <li><b>定義和宣告的差別</b>：定義會配置記憶體，整個程式只能有一處；宣告只是告訴編譯器「它存在」，可以有很多處。<code>extern</code> 是宣告。這個區分在 C 裡非常重要，到第 4 章會講得更詳細。</li>
+    <li>書上也提醒：全域變數方便，但會讓程式之間的相依關係變得難以追蹤，要節制使用。這跟後端避免全域狀態的道理一樣。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>EDK II 有一批大家都會用的全域變數：<code>gBS</code>（Boot Services）、<code>gRT</code>（Runtime Services）、<code>gST</code>（System Table）。它們都是用 <code>extern</code> 宣告在標頭檔裡，而且一開始就會碰到。</div>
+</section>
+
+<!-- compare -->
+<section id="cmp">
+  <h2>與 JS／C# 對照：第一章最需要調整的觀念</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>主題</th><th>JS／C#</th><th>C</th></tr></thead>
+    <tbody>
+      <tr><td>執行方式</td><td>runtime 或 VM 直接跑</td><td>先編譯成機器碼，再執行</td></tr>
+      <tr><td>整數除法</td><td>JS：<code>5/9 = 0.55…</code></td><td><code>5/9 = 0</code>，小數直接捨去</td></tr>
+      <tr><td>字串</td><td>內建 string 型別，知道自己的長度</td><td><code>char</code> 陣列加上結尾的 <code>'\0'</code>，長度要自己數</td></tr>
+      <tr><td>字元</td><td>長度為 1 的字串</td><td>就是一個小整數，可以拿來運算</td></tr>
+      <tr><td>陣列</td><td>可以動態變長，越界時 JS 得到 undefined、C# 拋例外</td><td>大小固定，<b>越界不會報錯</b>，直接寫壞別的記憶體</td></tr>
+      <tr><td>沒初始化的變數</td><td>JS 是 undefined，C# 有預設值</td><td>區域變數裡是垃圾值</td></tr>
+      <tr><td>布林</td><td><code>true</code>／<code>false</code></td><td>C89 用 0 和非 0（C99 之後有 <code>&lt;stdbool.h&gt;</code>）</td></tr>
+      <tr><td>參數傳遞</td><td>物件傳參考</td><td><b>一律傳值</b>，要讓函式改呼叫端的變數，就傳位址（第 5 章）</td></tr>
+      <tr><td>模組</td><td><code>import</code>／<code>using</code></td><td><code>#include</code> 只是把標頭檔的文字貼進來，再加上 <code>extern</code> 宣告</td></tr>
+      <tr><td>錯誤處理</td><td>例外（exception）</td><td>沒有例外機制，靠回傳值，例如 <code>EOF</code> 或 UEFI 的 <code>EFI_STATUS</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- exercises -->
+<section id="ex">
+  <h2>習題建議（第一章共 24 題）</h2>
+  <p class="lead">不用全部做完。下面挑的題目優先練韌體會用到的能力：字元處理、狀態機、緩衝區邊界。題號對照原書，題目描述是我自己的簡述，詳細內容請看書。</p>
+  <ul class="check">
+    <li><input type="checkbox" data-id="kr1-1"><span><b>1-1、1-2</b>：故意把 hello 程式改壞，看編譯器的錯誤訊息長什麼樣子<span class="tag">暖身</span></span></li>
+    <li><input type="checkbox" data-id="kr1-6"><span><b>1-6、1-7</b>：驗證 <code>getchar() != EOF</code> 的值，並印出 <code>EOF</code> 實際是多少<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr1-8"><span><b>1-8、1-9</b>：計算空白、tab、換行的數量；把連續空白壓縮成一個<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr1-10"><span><b>1-10</b>：把看不見的字元（tab、退格、反斜線）用跳脫寫法印出來<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr1-12"><span><b>1-12</b>：每行只輸出一個單字，練習狀態機<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr1-13"><span><b>1-13</b>：畫出單字長度的直方圖（橫的或直的）<span class="tag">推薦</span></span></li>
+    <li><input type="checkbox" data-id="kr1-15"><span><b>1-15</b>：把換算表改寫成函式<span class="tag">推薦</span></span></li>
+    <li><input type="checkbox" data-id="kr1-16"><span><b>1-16、1-17</b>：處理任意長度的行，並找出超過指定長度的行<span class="tag">必做，練緩衝區邊界</span></span></li>
+    <li><input type="checkbox" data-id="kr1-18"><span><b>1-18、1-19</b>：去掉行尾空白；寫一個反轉字串的函式<span class="tag">必做，練 '\0'</span></span></li>
+    <li><input type="checkbox" data-id="kr1-20"><span><b>1-20、1-21</b>：detab／entab，tab 和空白互相轉換<span class="tag">推薦</span></span></li>
+    <li><input type="checkbox" data-id="kr1-23"><span><b>1-23</b>：刪除 C 原始碼裡的註解，這是較完整的狀態機題（要處理字串裡的 <code>/*</code>）<span class="tag">挑戰</span></span></li>
+    <li><input type="checkbox" data-id="kr1-24"><span><b>1-24</b>：檢查括號、引號有沒有成對<span class="tag">選做</span></span></li>
+  </ul>
+  <div class="callout ok"><b>做法建議：</b>每題各放一個 <code>.c</code> 檔到 GitHub repo（例如 <code>kr-exercises/ch1/</code>），每題附 1–2 個測試輸入檔，用 <code>./prog &lt; test.txt</code> 驗證。做完再對照 clc-wiki 的社群解答。這個 repo 也可以當成階段 1 的作品證明。</div>
+</section>
+
+<!-- quiz -->
+<section id="quiz">
+  <h2>自我檢查</h2>
+  <p class="lead">先自己回答再點開答案。全部答得出來，就可以進第 2 章。</p>
+  <details><summary>1. <code>int x = 7 / 2;</code> 和 <code>float y = 7 / 2;</code> 的值各是多少？</summary>兩個都是 3（y 是 3.0）。<code>7 / 2</code> 兩邊都是整數，所以先做整數除法得到 3，之後才轉成 float。要得到 3.5，得寫 <code>7.0 / 2</code>。</details>
+  <details><summary>2. 為什麼 <code>getchar()</code> 的結果要存在 <code>int</code>，不能存在 <code>char</code>？</summary>因為 <code>EOF</code> 必須和所有合法字元都不同，通常是 -1。<code>char</code> 的範圍裝不下「所有字元再加上 EOF」，用 <code>char</code> 可能會把某個正常字元誤判成 EOF，或者永遠等不到 EOF。</details>
+  <details><summary>3. <code>char s[5] = "hello";</code> 有什麼問題？</summary>"hello" 需要 6 個 byte，因為後面還有一個 <code>'\0'</code>。陣列只有 5 格，結尾的 <code>'\0'</code> 放不進去，之後用 <code>%s</code> 印出或呼叫 <code>strlen</code> 時，會一路讀到陣列外面的記憶體。</details>
+  <details><summary>4. 寫一個 <code>void add_one(int n) { n = n + 1; }</code>，呼叫 <code>add_one(x)</code> 之後 x 會變嗎？</summary>不會。C 一律傳值，<code>n</code> 只是 x 的複本。要讓函式改到 x，必須傳 <code>&amp;x</code>，函式參數改成 <code>int *n</code>，這是第 5 章的內容。</details>
+  <details><summary>5. <code>#define SIZE 10;</code>（結尾有分號）會出什麼問題？</summary><code>#define</code> 是純文字替換，分號也會被一起貼上。例如 <code>int a[SIZE];</code> 會變成 <code>int a[10;];</code>，造成編譯錯誤；放在運算式裡的話，可能產生更難察覺的 bug。</details>
+  <details><summary>6. 外部變數的「定義」和「宣告」差在哪？</summary>定義會配置記憶體，整個程式只能有一處，例如 <code>int g = 0;</code>。宣告只是告訴編譯器「這個變數存在、型別是什麼」，可以出現很多次，例如 <code>extern int g;</code>。</details>
+  <details><summary>7. 寫入 <code>arr[10]</code>（陣列只有 10 格）時，C 會怎麼處理？</summary>不會報錯，也不會拋出例外，而是直接寫進陣列後面的記憶體。結果可能看起來正常，也可能蓋掉其他變數，或讓程式崩潰。這種行為叫 undefined behavior。開發時可以用 <code>gcc -fsanitize=address</code> 抓這類錯誤。</details>
+</section>
+
+</div><!-- /ch1 -->
+
+<div class="chapter" id="ch2" data-label="第二章">
+
+<div class="chapter-head">
+  <h2 class="ch-title">第二章：Types, Operators, and Expressions</h2>
+  <p>第一章是快速導覽，第二章開始講細節：<b>資料有哪些型別、各佔多大、運算子怎麼運作、型別之間怎麼轉換</b>。<br>對韌體來說，這是最直接有用的一章。暫存器是固定寬度的無號整數，設定硬體就是做位元運算，而很多難抓的 bug 都來自隱性轉型和運算子優先順序。</p>
+</div>
+
+<div class="callout info">
+  <b>對應計劃：</b>階段 1 W2（2026-10-26 起）· <b>預估時間：</b>8–10 小時（閱讀 3–4 小時，習題 5–6 小時）· <b>重點小節：</b>2.2、2.7、2.9、2.12
+</div>
+
+<nav class="toc" aria-label="第二章目錄">
+  <ol>
+    <li><a href="#c2-s1">2.1–2.2 名稱與型別大小</a></li>
+    <li><a href="#c2-s3">2.3 常數</a></li>
+    <li><a href="#c2-s4">2.4 宣告與 const</a></li>
+    <li><a href="#c2-s5">2.5–2.6 算術、關係、邏輯</a></li>
+    <li><a href="#c2-s7">2.7 型別轉換</a></li>
+    <li><a href="#c2-s8">2.8 ++ 與 --</a></li>
+    <li><a href="#c2-s9">2.9 位元運算</a></li>
+    <li><a href="#c2-s10">2.10–2.11 複合賦值與 ?:</a></li>
+    <li><a href="#c2-s12">2.12 優先順序與求值順序</a></li>
+    <li><a href="#c2-cmp">與 JS／C# 對照</a></li>
+    <li><a href="#c2-ex">習題建議</a></li>
+    <li><a href="#c2-quiz">自我檢查</a></li>
+  </ol>
+</nav>
+
+<!-- 2.1-2.2 -->
+<section id="c2-s1">
+  <h2><span class="no">2.1–2.2</span>變數名稱、資料型別與大小</h2>
+  <p class="lead">C 的整數型別<b>大小不是固定的</b>，標準只規定最小範圍，實際大小由編譯器和 CPU 決定。這是寫韌體前一定要先搞懂的事。</p>
+  <h3>變數名稱（2.1）</h3>
+  <ul class="plain">
+    <li>名稱由字母、數字、底線組成，不能以數字開頭，而且大小寫有別。</li>
+    <li>不要用底線開頭的名稱，那些保留給函式庫和編譯器使用。</li>
+    <li>慣例是變數用小寫，常數（<code>#define</code>）用全大寫。</li>
+  </ul>
+  <h3>基本型別（2.2）</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>型別</th><th>標準保證</th><th>常見大小（x86-64／ARM64 Linux）</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>char</code></td><td>至少 8 bit</td><td>1 byte</td><td>字元、單一 byte。<b>有沒有號由平台決定</b></td></tr>
+      <tr><td><code>short</code></td><td>至少 16 bit</td><td>2 bytes</td><td>小範圍整數</td></tr>
+      <tr><td><code>int</code></td><td>至少 16 bit</td><td>4 bytes</td><td>CPU 最自然的整數大小</td></tr>
+      <tr><td><code>long</code></td><td>至少 32 bit</td><td>8 bytes（Windows 是 4）</td><td>大範圍整數</td></tr>
+      <tr><td><code>float</code>／<code>double</code></td><td>由實作決定</td><td>4／8 bytes</td><td>浮點數（韌體少用）</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul class="plain">
+    <li><code>signed</code>（有號）可以存負數。<code>unsigned</code>（無號）只存 0 以上的數，範圍是有號的兩倍，而且<b>溢位時會繞回 0</b>，這是標準保證的行為。</li>
+    <li><b>有號整數溢位是 undefined behavior</b>：結果不保證，編譯器最佳化時甚至可能假設它不會發生。</li>
+    <li>各型別的實際範圍定義在 <code>&lt;limits.h&gt;</code>（例如 <code>INT_MAX</code>），浮點數的定義在 <code>&lt;float.h&gt;</code>。</li>
+  </ul>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;stdint.h&gt;
+
+int main(void)
+{
+    printf("char  %zu byte,  %d ~ %d\n", sizeof(char), CHAR_MIN, CHAR_MAX);
+    printf("int   %zu bytes, %d ~ %d\n", sizeof(int), INT_MIN, INT_MAX);
+    printf("long  %zu bytes\n", sizeof(long));
+    printf("unsigned int max = %u\n", UINT_MAX);
+
+    unsigned int u = UINT_MAX;
+    u = u + 1;                                <span class="c">// 無號溢位：保證繞回 0</span>
+    printf("UINT_MAX + 1 = %u\n", u);
+
+    uint32_t reg = 0xDEADBEEF;                <span class="c">// 固定 32 bit，到哪個平台都一樣</span>
+    printf("reg = 0x%08X (%zu bytes)\n", (unsigned)reg, sizeof reg);
+    return 0;
+}</code></pre>
+  <p class="small">在 x86-64 Ubuntu 上，<code>CHAR_MIN</code> 是 -128；在 Fusion 的 ARM64 Ubuntu 上是 0，因為 ARM64 Linux 的 <code>char</code> 預設是無號的。（但 Mac 本機雖然也是 ARM64，macOS 卻規定 <code>char</code> 有號，所以會是 -128。決定這件事的是平台的 ABI，不只是 CPU。）兩台機器都跑一次，就能親眼看到「由平台決定」是什麼意思。</p>
+  <div class="fw"><b>韌體連結：</b>韌體程式碼<b>不會直接用 <code>int</code>、<code>long</code> 來表示暫存器</b>，因為大小會隨平台改變。一般 C 程式用 <code>&lt;stdint.h&gt;</code> 的 <code>uint8_t</code>、<code>uint32_t</code>、<code>uint64_t</code>。EDK II 有自己的一套：<code>UINT8</code>、<code>UINT32</code>、<code>UINT64</code>，還有 <code>UINTN</code>（跟 CPU 原生寬度一樣，64 位元機器上就是 64 bit）。K&amp;R 是 1988 年的書，那時候還沒有 <code>stdint.h</code>，C99 才加進標準。</div>
+</section>
+
+<!-- 2.3 -->
+<section id="c2-s3">
+  <h2><span class="no">2.3</span>常數</h2>
+  <p class="lead">同一個數字有很多種寫法，韌體裡最常用的是十六進位。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+enum power_state { S0, S3 = 3, S4, S5 };     <span class="c">// S0=0, S3=3, S4=4, S5=5</span>
+
+int main(void)
+{
+    unsigned int a = 255;          <span class="c">// 十進位</span>
+    unsigned int b = 0xFF;         <span class="c">// 十六進位：0x 開頭</span>
+    unsigned int c = 0377;         <span class="c">// ⚠ 八進位：0 開頭！不是 377</span>
+    printf("%u %u %u\n", a, b, c);             <span class="c">// 255 255 255</span>
+
+    unsigned long big = 4000000000UL;          <span class="c">// U = unsigned，L = long</span>
+    printf("%lu\n", big);
+
+    char nl = '\n', esc = '\x1B', nul = '\0';  <span class="c">// 字元常數：跳脫寫法、十六進位寫法</span>
+    printf("%d %d %d\n", nl, esc, nul);        <span class="c">// 10 27 0</span>
+
+    printf("%s\n", "split " "string");         <span class="c">// 相鄰字串常數會在編譯時自動接起來</span>
+    printf("sleep state = %d\n", S3);
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><b>整數常數</b>：<code>0x</code> 開頭是十六進位，<b><code>0</code> 開頭是八進位</b>，所以 <code>010</code> 等於 8。這個設計常讓人踩坑，例如寫 <code>int code = 0123;</code> 的時候。</li>
+    <li><b>後綴</b>：<code>U</code> 表示 unsigned，<code>L</code> 表示 long，<code>UL</code> 兩者都是。寫大數字或做位元運算時，加上 <code>U</code> 可以避免有號數的問題。</li>
+    <li><b>字元常數</b>：<code>'A'</code> 的值是 65。除了 <code>'\n'</code> 這類跳脫字元，也可以用 <code>'\x41'</code>（十六進位）或 <code>'\101'</code>（八進位）直接寫出數值。</li>
+    <li><b>字串常數</b>：<code>"abc"</code> 會自動在最後加上 <code>'\0'</code>，所以 <code>"x"</code>（2 bytes）和 <code>'x'</code>（一個整數）是兩回事。</li>
+    <li><b>列舉 <code>enum</code></b>：一組有名字的整數常數。沒有指定值時從 0 開始，每個加 1；中途指定值後，從那個值繼續往下加。跟 <code>#define</code> 比起來，<code>enum</code> 在 debugger 裡看得到名字。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>翻開任何韌體原始碼，滿滿都是 <code>0x</code>，例如 <code>#define PCI_COMMAND_OFFSET 0x04</code>、<code>MmioWrite32(0xFED00000, 0x1)</code>。I/O port、記憶體位址、暫存器值幾乎都用十六進位表示，因為一個十六進位數字剛好對應 4 個 bit，很容易換算成二進位。</div>
+</section>
+
+<!-- 2.4 -->
+<section id="c2-s4">
+  <h2><span class="no">2.4</span>宣告與 const</h2>
+<pre><code>int count = 0, limit = 100;        <span class="c">// 宣告時就初始化</span>
+const double ratio = 0.62;         <span class="c">// const：之後不能再修改</span>
+const char banner[] = "BOOT";      <span class="c">// 陣列大小由初始值決定（5，含 '\0'）</span>
+
+int length(const char s[]);        <span class="c">// 承諾這個函式不會改動 s 的內容</span></code></pre>
+  <ul class="plain">
+    <li>變數可以在宣告時初始化。<b>外部變數和 <code>static</code> 變數沒有初始化時會自動是 0</b>，但函式內的區域變數不會（第一章提過的垃圾值）。</li>
+    <li><code>const</code> 表示「這個值不應該被修改」，修改時編譯器會報錯。用在函式參數上，可以讓呼叫端知道函式不會改它傳進去的陣列。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>跟 <code>const</code> 同一類的修飾詞還有 <code>volatile</code>，K&amp;R 只在附錄稍微提到，但韌體很常用。<code>volatile</code> 告訴編譯器：「這個值隨時可能被硬體改掉，每次都要真的去讀，不要用快取的舊值」。讀寫硬體暫存器時一定要加。</div>
+</section>
+
+<!-- 2.5-2.6 -->
+<section id="c2-s5">
+  <h2><span class="no">2.5–2.6</span>算術、關係與邏輯運算子</h2>
+<pre><code>int a = 17, b = 5;
+a / b;           <span class="c">// 3   整數除法，小數捨去</span>
+a % b;           <span class="c">// 2   餘數（只能用在整數）</span>
+-17 / 5;         <span class="c">// -3  C99 起規定往 0 的方向捨去</span>
+-17 % 5;         <span class="c">// -2  餘數的正負號跟被除數一樣</span>
+
+(a &gt; b) + (a == b);    <span class="c">// 1   比較結果就是 int：成立是 1，不成立是 0</span>
+!a;                    <span class="c">// 0   a 不是 0，所以 !a 是 0</span>
+(b != 0 &amp;&amp; a / b &gt; 2); <span class="c">// &amp;&amp; 短路：b 是 0 就不會做除法</span></code></pre>
+  <ul class="plain">
+    <li><code>%</code> 取餘數。常見用途：判斷奇偶（<code>n % 2</code>）、環狀 buffer 的索引繞回（<code>(i + 1) % SIZE</code>）、判斷是否對齊。</li>
+    <li>關係運算子（<code>&gt; &gt;= &lt; &lt;= == !=</code>）和邏輯運算子（<code>&amp;&amp; || !</code>）的結果都是 <code>int</code> 的 0 或 1，不是布林型別。</li>
+    <li><code>&amp;&amp;</code> 和 <code>||</code> 會從左算到右，一確定結果就停下來。所以「先檢查、再使用」的寫法是安全的，例如 <code>i &lt; max &amp;&amp; buf[i] != '\0'</code>。</li>
+  </ul>
+
+  <h3>實驗：如果把 <code>b</code> 改成 0？</h3>
+  <p>只有 <code>a / b</code> 和 <code>a % b</code> 兩行會出問題：<b>整數除以 0 是 undefined behavior</b>，標準沒有規定結果。其他幾行照常運作，最後一行正好示範了「先檢查再除」為什麼安全。下面是 <code>int a = 17, b = 0;</code> 在 Mac 上實測的結果（程式在 <code>C/ch2/div0.c</code>）：</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>運算式</th><th>ARM64，<code>-O0</code></th><th>ARM64，<code>-O2</code></th><th>x86-64（Rosetta）</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td><code>a / b</code></td><td><code>0</code></td><td><code>45400448</code></td><td><b>程式崩潰</b></td><td>⚠ undefined behavior</td></tr>
+      <tr><td><code>a % b</code></td><td><code>17</code></td><td><code>45400448</code></td><td>（上一行就已經崩潰）</td><td>⚠ undefined behavior</td></tr>
+      <tr><td><code>-17 / 5</code>、<code>-17 % 5</code></td><td><code>-3</code>、<code>-2</code></td><td>同左</td><td>—</td><td>跟 b 無關，結果不變</td></tr>
+      <tr><td><code>(a &gt; b) + (a == b)</code></td><td><code>1</code></td><td><code>1</code></td><td>—</td><td>17 &gt; 0 是 1，17 == 0 是 0</td></tr>
+      <tr><td><code>!a</code></td><td><code>0</code></td><td><code>0</code></td><td>—</td><td>跟 b 無關</td></tr>
+      <tr><td><code>(b != 0 &amp;&amp; a / b &gt; 2)</code></td><td><code>0</code></td><td><code>0</code></td><td>—</td><td>✅ <code>b != 0</code> 不成立，<code>&amp;&amp;</code> 短路，<b>除法根本沒執行</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>同一份程式碼，在三種情況下得到三種結果，這就是 undefined behavior 的意思：</p>
+  <ul class="plain">
+    <li><b>ARM64 沒開最佳化：看起來沒事。</b>ARM 的除法指令遇到除以 0 時，硬體規定直接回傳 0，不會報錯；<code>%</code> 是用 <code>a - (a/b)*b</code> 算的，所以得到 17。bug 被藏起來，是最危險的情況。</li>
+    <li><b>ARM64 開 <code>-O2</code>：印出亂數。</b>編譯器假設程式不會發生 undefined behavior，可以隨意產生程式碼，結果就是記憶體裡剩下的某個值。</li>
+    <li><b>x86-64：程式崩潰</b>，exit code 136（128 + 8，也就是 SIGFPE）。x86 的除法指令遇到除以 0 會觸發硬體例外，Linux 上會顯示 <code>Floating point exception</code>，雖然這其實是整數除法。</li>
+  </ul>
+  <div class="callout warn"><b>⚠ 編譯器不會警告</b>，<code>-Wall -Wextra</code> 都沒有反應，因為 <code>b</code> 是變數，編譯時看不出它會是 0。要用 <b>UndefinedBehaviorSanitizer</b> 在執行時抓：
+<pre><code>gcc -std=c11 -g -fsanitize=undefined div0.c -o div0 &amp;&amp; ./div0
+<span class="c"># div0.c:5:41: runtime error: division by zero</span></code></pre>
+  用 <code>serve.sh</code> 的話預設就會開啟：<code>./serve.sh ch2/div0.c</code>。</div>
+  <p class="small">對照：浮點數除以 0 不一樣。<code>17.0 / b</code> 會得到 <code>inf</code>（無限大），這是 IEEE 754 明確定義的結果，<b>不是</b> undefined behavior。</p>
+  <div class="fw"><b>韌體連結：</b>韌體裡的除數常常來自硬體暫存器或感測器讀值，例如用頻率算週期、用計數算平均。硬體還沒準備好、讀到 0 的時候，在 x86 平台上就是整台機器開機時當掉。所以<b>任何除法之前，都要先確認除數不是 0</b>，就像上面最後一行那樣。</div>
+  <div class="fw"><b>韌體連結：</b>判斷位址有沒有對齊時，通常不用 <code>%</code>，而是用位元運算：<code>(addr &amp; 0xFFF) == 0</code> 就表示對齊 4 KB。原因是 <code>%</code> 要做除法，比較慢；而且大小剛好是 2 的次方時，兩種寫法結果相同。</div>
+</section>
+
+<!-- 2.7 -->
+<section id="c2-s7">
+  <h2><span class="no">2.7</span>型別轉換</h2>
+  <p class="lead">不同型別的值放在一起運算時，C 會<b>自動</b>轉型，而且不會提醒你。這是最容易出現隱藏 bug 的一節。</p>
+  <h3>自動轉換的基本規則</h3>
+  <ul class="plain">
+    <li><b>整數提升</b>：比 <code>int</code> 小的型別（<code>char</code>、<code>short</code>）在運算前會先轉成 <code>int</code>。</li>
+    <li><b>往「比較大」的型別靠攏</b>：<code>int</code> 和 <code>double</code> 運算時，<code>int</code> 會先轉成 <code>double</code>；<code>int</code> 和 <code>long</code> 運算時，會轉成 <code>long</code>。</li>
+    <li><b>有號和無號混在一起時，有號數會被轉成無號</b>，這是最大的坑，看下面的例子。</li>
+    <li><b>大轉小會被截斷</b>：把 <code>int</code> 存進 <code>char</code>，只會留下最低的 8 bit。</li>
+  </ul>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int neg = -1;
+    unsigned int one = 1;
+    if (neg &lt; one)                       <span class="c">// ⚠ -1 被轉成 unsigned，變成 4294967295</span>
+        printf("expected\n");
+    else
+        printf("surprise: -1 &gt;= 1u\n");  <span class="c">// 實際會印這行（-Wextra 會警告）</span>
+
+    int big = 300;
+    unsigned char small = big;           <span class="c">// 截斷：300 = 0x12C，只留下 0x2C</span>
+    printf("%d\n", small);               <span class="c">// 44</span>
+
+    int total = 7, n = 2;
+    double avg1 = total / n;             <span class="c">// 3.0：先做整數除法，才轉 double</span>
+    double avg2 = (double)total / n;     <span class="c">// 3.5：強制轉型（cast）</span>
+    printf("%.1f %.1f\n", avg1, avg2);
+
+    char digit = '7';
+    int value = digit - '0';             <span class="c">// 字元轉數字：'7' - '0' = 7</span>
+    printf("%d\n", value);
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><b>強制轉型（cast）</b>：<code>(type)運算式</code>，明確告訴編譯器要轉成什麼型別。</li>
+    <li><b>字元和數字互轉</b>：<code>c - '0'</code>，或判斷大小寫的 <code>c &gt;= 'a' &amp;&amp; c &lt;= 'z'</code>，依賴的是字元的編碼順序。標準函式庫 <code>&lt;ctype.h&gt;</code> 也有現成的 <code>isdigit</code>、<code>isupper</code>、<code>tolower</code> 可以用。</li>
+    <li><b><code>char</code> 有沒有號由平台決定</b>：把 <code>char</code> 裡大於 127 的值轉成 <code>int</code>，在 x86 上會變成負數，在 ARM 上不會。所以處理二進位資料時要明確用 <code>unsigned char</code> 或 <code>uint8_t</code>。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>韌體裡到處都是「把 64 bit 位址轉成 32 bit」或「從 byte 陣列組出 32 bit 整數」這類操作，例如 <code>(UINT32)(Address &amp; 0xFFFFFFFF)</code>。截斷和符號延伸（sign extension）出錯時，通常不會當機，而是讀到錯誤的位址，這種 bug 非常難查。</div>
+</section>
+
+<!-- 2.8 -->
+<section id="c2-s8">
+  <h2><span class="no">2.8</span>遞增與遞減運算子</h2>
+<pre><code>int n = 5, x;
+x = n++;     <span class="c">// 後置：先取值再加 1 → x = 5，n = 6</span>
+x = ++n;     <span class="c">// 前置：先加 1 再取值 → x = 7，n = 7</span></code></pre>
+  <p>單獨寫 <code>n++;</code> 和 <code>++n;</code> 的效果一樣。只有在運算式中使用它的值時才有差別。最常見的慣用寫法是<b>一邊讀、一邊寫</b>：</p>
+<pre><code><span class="c">/* 就地刪除字串中的所有空白：i 負責讀，j 負責寫 */</span>
+void strip_spaces(char s[])
+{
+    int i, j;
+    for (i = j = 0; s[i] != '\0'; i++)
+        if (s[i] != ' ')
+            s[j++] = s[i];      <span class="c">// 寫入 s[j] 之後，j 才加 1</span>
+    s[j] = '\0';                <span class="c">// 記得補上結尾</span>
+}</code></pre>
+  <div class="callout warn"><b>⚠ 同一個運算式裡不要對同一個變數 <code>++</code> 兩次</b>，也不要一邊 <code>++</code> 一邊讀它。例如 <code>i = i++;</code> 或 <code>a[i] = i++;</code> 都是 undefined behavior，不同編譯器的結果可能不同（見 2.12）。</div>
+  <div class="fw"><b>韌體連結：</b><code>*dst++ = *src++</code> 這種寫法（第 5 章會學到）是韌體裡複製 buffer 最常見的樣子，所以前置和後置的差別要非常熟。</div>
+</section>
+
+<!-- 2.9 -->
+<section id="c2-s9">
+  <h2><span class="no">2.9</span>位元運算子 ⭐</h2>
+  <p class="lead">對韌體工程師來說，這是<b>整本書最重要的一節</b>。設定硬體幾乎就等於讀寫暫存器裡的某幾個 bit。</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>運算子</th><th>名稱</th><th>範例（8 bit）</th><th>常見用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>&amp;</code></td><td>AND</td><td><code>1100 1010 &amp; 0000 1111 = 0000 1010</code></td><td>取出某幾個 bit（遮罩）、清掉 bit</td></tr>
+      <tr><td><code>|</code></td><td>OR</td><td><code>1100 0000 | 0000 0101 = 1100 0101</code></td><td>把 bit 設成 1</td></tr>
+      <tr><td><code>^</code></td><td>XOR</td><td><code>1100 1010 ^ 0000 1111 = 1100 0101</code></td><td>翻轉 bit、比較差異</td></tr>
+      <tr><td><code>~</code></td><td>NOT（補數）</td><td><code>~0000 1111 = 1111 0000</code></td><td>做出「除了這幾個 bit 以外」的遮罩</td></tr>
+      <tr><td><code>&lt;&lt;</code></td><td>左移</td><td><code>0000 0001 &lt;&lt; 3 = 0000 1000</code></td><td>做出第 n 個 bit 的遮罩；乘以 2ⁿ</td></tr>
+      <tr><td><code>&gt;&gt;</code></td><td>右移</td><td><code>1000 0000 &gt;&gt; 4 = 0000 1000</code></td><td>把某段 bit 移到最右邊再取出；除以 2ⁿ</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout warn"><b>⚠ 不要把 <code>&amp;</code> 和 <code>&amp;&amp;</code> 搞混</b>：<code>6 &amp; 1</code> 是 0（逐位元 AND），<code>6 &amp;&amp; 1</code> 是 1（兩邊都不是 0）。</div>
+
+  <h3>四個基本操作：設定、清除、翻轉、測試</h3>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+
+#define BIT(n)  (1u &lt;&lt; (n))          <span class="c">// 第 n 個 bit 的遮罩；用 1u 而不是 1</span>
+
+<span class="c">/* 假想的控制暫存器：bit0 = 啟用，bit3 = 中斷，bit[7:4] = 速度等級 */</span>
+#define CTRL_ENABLE      BIT(0)
+#define CTRL_IRQ         BIT(3)
+#define CTRL_SPEED_SHIFT 4
+#define CTRL_SPEED_MASK  (0xFu &lt;&lt; CTRL_SPEED_SHIFT)
+
+static void print_bin8(uint8_t v)
+{
+    for (int i = 7; i &gt;= 0; i--)
+        putchar((v &amp; BIT(i)) ? '1' : '0');
+    putchar('\n');
+}
+
+int main(void)
+{
+    uint8_t ctrl = 0;
+
+    ctrl |= CTRL_ENABLE;                  <span class="c">// 設定：OR 上遮罩</span>
+    ctrl |= CTRL_IRQ;
+    print_bin8(ctrl);                     <span class="c">// 00001001</span>
+
+    ctrl &amp;= (uint8_t)~CTRL_IRQ;           <span class="c">// 清除：AND 上「反轉後的遮罩」</span>
+    print_bin8(ctrl);                     <span class="c">// 00000001</span>
+
+    ctrl ^= CTRL_ENABLE;                  <span class="c">// 翻轉：XOR 遮罩</span>
+    print_bin8(ctrl);                     <span class="c">// 00000000</span>
+
+    if ((ctrl &amp; CTRL_ENABLE) == 0)        <span class="c">// 測試：AND 後看是不是 0（括號不能少）</span>
+        printf("disabled\n");
+
+    <span class="c">/* 寫入一個多 bit 欄位：先清掉舊值，再放入新值 */</span>
+    unsigned speed = 5;
+    ctrl = (ctrl &amp; ~CTRL_SPEED_MASK) | ((speed &lt;&lt; CTRL_SPEED_SHIFT) &amp; CTRL_SPEED_MASK);
+    print_bin8(ctrl);                     <span class="c">// 01010000</span>
+
+    <span class="c">/* 讀出多 bit 欄位：先遮罩，再右移 */</span>
+    printf("speed = %u\n", (ctrl &amp; CTRL_SPEED_MASK) &gt;&gt; CTRL_SPEED_SHIFT);  <span class="c">// 5</span>
+    return 0;
+}</code></pre>
+
+  <h3>逐行解析：這段程式在做什麼</h3>
+  <p>它在模擬<b>韌體最常做的一件事：讀寫硬體暫存器裡的某幾個 bit</b>。先假想一個 8 bit 的控制暫存器，再示範設定、清除、翻轉、測試，以及讀寫多 bit 欄位。</p>
+
+  <h3>① 假想的暫存器長這樣</h3>
+<pre><code>bit:    7   6   5   4   3   2   1   0
+      ┌───┬───┬───┬───┬───┬───┬───┬───┐
+      │ speed（4 bit）│IRQ│ - │ - │EN │
+      └───┴───┴───┴───┴───┴───┴───┴───┘</code></pre>
+  <p>bit 0 是 <b>ENABLE</b>（啟用），bit 3 是 <b>IRQ</b>（中斷），bit 7–4 是 <b>SPEED</b>（速度等級，4 個 bit，可以存 0–15）。真實的硬體規格書（datasheet）就是用這種表格描述每個暫存器的。</p>
+
+  <h3>疑問 1：那 bit 1 跟 bit 2 是做什麼的？</h3>
+  <p>在這個假想的暫存器裡，bit 1 和 bit 2 <b>沒有任何用途</b>，圖上畫成 <code>-</code> 就是這個意思。不過這種「沒用到的 bit」在真實硬體裡非常普遍，規格書裡叫 <b>Reserved（保留位）</b>，而且有一套處理規則：</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Bit</th><th>名稱</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>7:4</td><td>SPEED</td><td>速度等級</td></tr>
+      <tr><td>3</td><td>IRQ_EN</td><td>中斷啟用</td></tr>
+      <tr><td><b>2:1</b></td><td><b>Reserved</b></td><td><b>讀取值不保證；寫入時必須保持原值</b></td></tr>
+      <tr><td>0</td><td>EN</td><td>啟用</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul class="plain">
+    <li>常見的兩種標示（PCIe 規格的用語）：<b>RsvdP</b>（Reserved, Preserve）表示寫入時<b>要保留原本讀到的值</b>；<b>RsvdZ</b>（Reserved, Zero）表示寫入時<b>一律寫 0</b>。</li>
+    <li>保留的原因：<b>留給未來的晶片版本擴充</b>（新一代可能把 bit 1 定義成新功能，舊韌體不能亂改它），或者是<b>廠商內部測試用</b>（亂寫可能造成無法預期的行為）。</li>
+  </ul>
+  <p><b>這就是為什麼要用 <code>|=</code>、<code>&amp;=</code>，而不是直接賦值。</b>假設暫存器目前是 <code>0000 0110</code>（bit 1、2 是 1，硬體有它自己的用途），你想打開 ENABLE：</p>
+<pre><code>ctrl = CTRL_ENABLE;      <span class="c">// ❌ 結果是 0000 0001：bit 1、2 被清成 0 了</span>
+ctrl |= CTRL_ENABLE;     <span class="c">// ✅ 結果是 0000 0111：只改 bit 0，bit 1、2 保持原樣</span></code></pre>
+  <p><code>|=</code>、<code>&amp;= ~</code>、<code>^=</code> 都會先讀出原本的值，只改遮罩指定的 bit，再寫回去。這叫 <b>read-modify-write（讀－改－寫）</b>，會自動保留所有沒碰到的 bit，包括保留位。後面 ⑤ 寫入 SPEED 欄位的公式也一樣：<code>ctrl &amp; ~CTRL_SPEED_MASK</code> 只清掉 bit 7–4，bit 3–0（包含 bit 1、2）原封不動地帶過去。</p>
+  <p><b>真實例子：PCIe 的 Command 暫存器</b>（config space offset <code>0x04</code>，16 bit），是韌體最常碰到的暫存器之一：</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Bit</th><th>名稱</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>I/O Space Enable</td></tr>
+      <tr><td>1</td><td>Memory Space Enable</td></tr>
+      <tr><td>2</td><td>Bus Master Enable</td></tr>
+      <tr><td>3–9</td><td>其他控制位（Special Cycles、Parity Error Response、SERR# Enable 等）</td></tr>
+      <tr><td>10</td><td>Interrupt Disable</td></tr>
+      <tr><td><b>15:11</b></td><td><b>Reserved</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>BIOS 要讓一張 PCIe 卡可以存取記憶體時，寫法跟這一節的範例一模一樣：</p>
+<pre><code>cmd = PciRead16(dev, 0x04);
+cmd |= BIT(1) | BIT(2);          <span class="c">// 打開 Memory Space 和 Bus Master</span>
+PciWrite16(dev, 0x04, cmd);      <span class="c">// 其他 bit（包含保留位）都保持原值寫回</span></code></pre>
+  <div class="callout ok"><b>小練習：</b>把 bit 1、2 定義成一個 2 bit 的「模式」欄位（0–3），照 SPEED 的寫法自己寫一次讀和寫，並驗證設定 MODE 時，SPEED 和 ENABLE 都不會被改到。
+<pre><code>#define CTRL_MODE_SHIFT 1
+#define CTRL_MODE_MASK  (0x3u &lt;&lt; CTRL_MODE_SHIFT)   <span class="c">// 0000 0110</span></code></pre></div>
+
+  <h3>疑問 2：IRQ 的全名是什麼？</h3>
+  <p>IRQ 是 <b>Interrupt Request</b>，中文叫「<b>中斷請求</b>」。硬體裝置有事情要 CPU 處理時（網卡收到封包、鍵盤被按下、磁碟讀完資料），就發出一個中斷請求。CPU 會<b>暫停</b>手上的工作，先去執行對應的處理程式（interrupt handler），處理完再回到原本的工作。</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>方式</th><th>硬體世界</th><th>後端世界的類比</th></tr></thead>
+    <tbody>
+      <tr><td><b>輪詢（polling）</b></td><td>CPU 一直去讀裝置的狀態暫存器：「好了沒？好了沒？」</td><td>前端每秒打一次 API 問結果</td></tr>
+      <tr><td><b>中斷（interrupt）</b></td><td>裝置做完了主動通知 CPU</td><td>Webhook：事情發生時由對方主動呼叫你</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>中斷的好處是 CPU 不用一直空轉去問；代價是處理程式要寫得很小心。它會在任何時間點打斷正在執行的程式，所以會有後端常見的那類 race condition 問題。</p>
+  <p><b>在這個範例裡</b>，<code>CTRL_IRQ</code>（bit 3）可以理解成「<b>中斷啟用</b>」開關：設成 1 時，裝置有事情會發出中斷；設成 0 時不發中斷，CPU 要自己輪詢狀態。真實的暫存器常命名得更明確，例如 <code>IRQ_EN</code>、<code>INT_ENABLE</code>，或像 PCIe Command 暫存器的 bit 10，反過來叫 <b>Interrupt Disable</b>（設成 1 是關閉中斷）。</p>
+  <p><b>韌體圈會碰到的相關名詞：</b></p>
+  <ul class="plain">
+    <li><b>IRQ 編號</b>：早期 PC 用 IRQ 0–15 區分裝置，例如 IRQ 0 是計時器、IRQ 1 是鍵盤。Linux 的 <code>/proc/interrupts</code> 還看得到這些編號。</li>
+    <li><b>PIC／APIC</b>：把各裝置的中斷集中起來送給 CPU 的中斷控制器。PIC 是舊式的，現代 x86 用 APIC。</li>
+    <li><b>MSI／MSI-X</b>：PCIe 裝置現在的中斷方式，用「寫入一個特定的記憶體位址」取代實體的中斷線。</li>
+    <li><b>ACPI 的 <code>_PRT</code></b>：BIOS 透過 ACPI table 告訴作業系統「哪個 PCI 裝置接到哪條中斷線」，屬於階段 2 ACPI 主題的內容。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b><b>UEFI 韌體本身幾乎不用裝置中斷。</b>UEFI 規格只用計時器中斷，其他裝置 driver 都是用輪詢加上計時器事件來運作；等作業系統開機之後，才會全面改用中斷。所以階段 2 寫 UEFI driver 時主要會寫輪詢，中斷處理要到 Linux driver 或 BMC 韌體時才會碰到。</div>
+
+  <h3>② 巨集：把 bit 位置變成「遮罩」</h3>
+  <p><code>BIT(n)</code> 把 1 往左移 n 格，做出「只有第 n 個 bit 是 1」的數字，這就是<b>遮罩（mask）</b>：</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>巨集</th><th>計算</th><th>二進位</th></tr></thead>
+    <tbody>
+      <tr><td><code>CTRL_ENABLE</code> = <code>BIT(0)</code></td><td><code>1 &lt;&lt; 0</code></td><td><code>0000 0001</code></td></tr>
+      <tr><td><code>CTRL_IRQ</code> = <code>BIT(3)</code></td><td><code>1 &lt;&lt; 3</code></td><td><code>0000 1000</code></td></tr>
+      <tr><td><code>CTRL_SPEED_MASK</code></td><td><code>0xF &lt;&lt; 4</code></td><td><code>1111 0000</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <ul class="plain">
+    <li><b>為什麼寫 <code>1u</code> 不寫 <code>1</code></b>：<code>1</code> 是有號的 <code>int</code>，<code>1 &lt;&lt; 31</code> 會移進正負號位元，是 undefined behavior。<code>u</code> 代表無號數，位移的結果有明確定義。</li>
+    <li><b>為什麼 <code>(n)</code> 要加括號</b>：巨集是純文字替換。參數一律加括號，展開後才不會被周圍運算子的優先順序打亂，這是保險的習慣。</li>
+    <li><code>CTRL_SPEED_SHIFT 4</code> 記錄「速度欄位從第 4 個 bit 開始」，讀和寫的時候都會用到。</li>
+  </ul>
+
+  <h3>③ <code>print_bin8</code>：把 8 bit 印成 0 和 1</h3>
+  <p>從最高位（bit 7）檢查到最低位（bit 0）：<code>v &amp; BIT(i)</code> 只留下第 i 個 bit，結果不是 0 就印 <code>'1'</code>，是 0 就印 <code>'0'</code>。這就是習題建議裡提到的 <code>print_bin()</code> 小工具。</p>
+
+  <h3>④ 主程式逐步追蹤</h3>
+  <p><b>設定 bit：<code>|=</code>（OR）</b>。OR 的規則是「有 1 就是 1」，所以只會打開遮罩上的那個 bit，<b>其他 bit 不受影響</b>。</p>
+<pre><code>ctrl          0000 0000
+| CTRL_ENABLE 0000 0001
+= ctrl        0000 0001
+| CTRL_IRQ    0000 1000
+= ctrl        0000 1001   <span class="c">← 印出 00001001</span></code></pre>
+
+  <p><b>清除 bit：<code>&amp;= ~遮罩</code>（AND 上反轉後的遮罩）</b>。AND 的規則是「兩邊都 1 才是 1」。反轉後的遮罩只有 bit 3 是 0，所以只有 bit 3 被清掉，其他 bit 保持原樣。</p>
+<pre><code>~CTRL_IRQ     1111 0111   <span class="c">← 先把遮罩反轉：除了 bit 3 全是 1</span>
+ctrl          0000 1001
+&amp; ~CTRL_IRQ   1111 0111
+= ctrl        0000 0001   <span class="c">← 印出 00000001</span></code></pre>
+  <p class="small"><code>(uint8_t)</code> 這個 cast 的原因：<code>~CTRL_IRQ</code> 其實是 32 bit 的無號數 <code>0xFFFFFFF7</code>，比 <code>uint8_t</code> 大。先轉成 8 bit 再運算，意思比較清楚，也避免開啟較嚴格的警告選項時被編譯器提醒。</p>
+
+  <p><b>翻轉 bit：<code>^=</code>（XOR）</b>。XOR 的規則是「不同才是 1」。遮罩上是 1 的位置會被翻轉，其他位置不變；再做一次就會翻回來。</p>
+<pre><code>ctrl          0000 0001
+^ CTRL_ENABLE 0000 0001
+= ctrl        0000 0000   <span class="c">← 印出 00000000</span></code></pre>
+
+  <p><b>測試 bit：<code>(ctrl &amp; 遮罩) == 0</code></b>。<code>ctrl &amp; CTRL_ENABLE</code> 只留下 bit 0，結果是 0 代表沒啟用，所以印出 <code>disabled</code>。<b>括號不能少</b>：<code>==</code> 的優先順序比 <code>&amp;</code> 高，寫成 <code>ctrl &amp; CTRL_ENABLE == 0</code> 會變成 <code>ctrl &amp; 0</code>，結果永遠是 0（見 2.12 的陷阱 1）。</p>
+
+  <h3>⑤ 寫入多 bit 欄位：先清舊值，再放新值</h3>
+  <p>把 <code>ctrl = (ctrl &amp; ~CTRL_SPEED_MASK) | ((speed &lt;&lt; CTRL_SPEED_SHIFT) &amp; CTRL_SPEED_MASK);</code> 拆成三步看（speed = 5，二進位 <code>0101</code>）：</p>
+<pre><code><span class="c">步驟 A：清掉速度欄位的舊值</span>
+  ctrl               0000 0000
+  &amp; ~SPEED_MASK      0000 1111
+  =                  0000 0000
+
+<span class="c">步驟 B：把新值移到欄位的位置，再用遮罩裁掉多餘的 bit</span>
+  speed              0000 0101
+  &lt;&lt; 4               0101 0000
+  &amp; SPEED_MASK       1111 0000
+  =                  0101 0000
+
+<span class="c">步驟 C：合併（OR）</span>
+  0000 0000 | 0101 0000 = 0101 0000   <span class="c">← 印出 01010000</span></code></pre>
+  <ul class="plain">
+    <li><b>為什麼一定要先清掉舊值</b>：如果原本的速度是 <code>1010</code>，直接 OR 上 <code>0101</code> 會得到 <code>1111</code>，數值就錯了。</li>
+    <li><b>步驟 B 為什麼還要 <code>&amp; SPEED_MASK</code></b>：防止 speed 超過 15。例如 speed = 20（<code>10100</code>），左移後會多出一個 bit 跑到欄位外面；遮罩會把它裁掉，避免<b>誤改到旁邊其他的 bit</b>。</li>
+  </ul>
+
+  <h3>⑥ 讀出多 bit 欄位：先遮罩，再右移</h3>
+<pre><code>ctrl          0101 0000
+&amp; SPEED_MASK  1111 0000
+=             0101 0000
+&gt;&gt; 4          0000 0101  = 5   <span class="c">← 印出 speed = 5</span></code></pre>
+  <p>寫入的步驟反過來：先只留下欄位那幾個 bit，再移回最右邊，就得到原本的數字。</p>
+
+  <h3>重點整理</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>操作</th><th>寫法</th><th>口訣</th></tr></thead>
+    <tbody>
+      <tr><td>設定</td><td><code>reg |= MASK</code></td><td>OR 打開</td></tr>
+      <tr><td>清除</td><td><code>reg &amp;= ~MASK</code></td><td>AND 反遮罩關掉</td></tr>
+      <tr><td>翻轉</td><td><code>reg ^= MASK</code></td><td>XOR 切換</td></tr>
+      <tr><td>測試</td><td><code>(reg &amp; MASK) != 0</code></td><td>AND 看結果，記得加括號</td></tr>
+      <tr><td>寫欄位</td><td><code>reg = (reg &amp; ~MASK) | ((v &lt;&lt; SHIFT) &amp; MASK)</code></td><td>先清再放</td></tr>
+      <tr><td>讀欄位</td><td><code>(reg &amp; MASK) &gt;&gt; SHIFT</code></td><td>先遮再移</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>⑦ 跟真實韌體的差別</h3>
+  <p>這裡的 <code>ctrl</code> 只是記憶體裡一個普通變數。真實的暫存器在一個固定的硬體位址上，通常要這樣存取：</p>
+<pre><code>volatile uint32_t *ctrl = (volatile uint32_t *)0xFED00000;   <span class="c">// 硬體位址</span>
+*ctrl |= CTRL_ENABLE;</code></pre>
+  <p><code>volatile</code> 告訴編譯器：每次都要真的去讀寫硬體，不能用快取的舊值，也不能把讀寫最佳化掉。<code>*</code> 是指標，第 5 章會學到。除了這兩點，遮罩和位移的寫法完全一樣。</p>
+
+  <h3>位移的注意事項</h3>
+  <ul class="plain">
+    <li><b>用無號數做位元運算。</b><code>1 &lt;&lt; 31</code> 在 32 bit 的 <code>int</code> 上是 undefined behavior，因為會移進正負號位元；<code>1u &lt;&lt; 31</code> 才安全。</li>
+    <li><b>位移量不能大於或等於型別的寬度</b>：對 32 bit 的值做 <code>x &lt;&lt; 32</code> 也是 undefined behavior。</li>
+    <li><b>負數右移的結果由實作決定</b>：大部分平台會補正負號位元（算術右移），但標準沒有保證。這也是要用無號數的原因之一。</li>
+    <li><code>~</code> 會作用在整數提升後的 <code>int</code> 上：<code>~(uint8_t)0x0F</code> 的結果是 int 的 <code>0xFFFFFFF0</code>，不是 <code>0xF0</code>。存回 8 bit 變數時要注意這點，上面範例裡的 <code>(uint8_t)</code> cast 就是在處理它。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>這一段基本上就是 BIOS／BMC 的日常工作。例如：打開 PCIe 裝置的 Memory Space 存取，就是把 Command 暫存器（offset <code>0x04</code>）的 bit 1 設成 1；讀 CPU 的 MSR、設定 GPIO、解析 ACPI 欄位，都是「遮罩加位移」。EDK II 甚至直接提供 <code>BIT0</code>～<code>BIT63</code> 巨集，以及 <code>MmioOr32</code>、<code>MmioAnd32</code>、<code>MmioBitFieldWrite32</code> 這類函式，做的就是上面這些事。</div>
+</section>
+
+<!-- 2.10-2.11 -->
+<section id="c2-s10">
+  <h2><span class="no">2.10–2.11</span>複合賦值與條件運算式</h2>
+  <h3>複合賦值（2.10）</h3>
+  <p><code>x op= y</code> 等於 <code>x = x op (y)</code>，<code>op</code> 可以是 <code>+ - * / % &lt;&lt; &gt;&gt; &amp; ^ |</code>。注意右邊會被當成一整個整體：</p>
+<pre><code>x *= y + 1;      <span class="c">// 是 x = x * (y + 1)，不是 x = x * y + 1</span>
+flags |= MASK;   <span class="c">// 設定 bit 的標準寫法</span>
+flags &amp;= ~MASK;  <span class="c">// 清除 bit 的標準寫法</span></code></pre>
+  <p>好處是變數名稱只寫一次。像 <code>regs[port * 4 + offset] |= BIT(2);</code> 這種長的寫法，不用重複寫一次左邊，也比較不會打錯。</p>
+  <h3>條件運算式 <code>?:</code>（2.11）</h3>
+<pre><code>int hi = (a &gt; b) ? a : b;                        <span class="c">// 取較大值</span>
+char hex_char = (d &lt; 10) ? '0' + d : 'A' + d - 10; <span class="c">// 0–15 轉成 '0'–'F'</span>
+printf("%s\n", (status == 0) ? "OK" : "FAIL");</code></pre>
+  <ul class="plain">
+    <li><code>條件 ? 值1 : 值2</code> 是一個運算式，可以直接放在賦值右邊或函式參數裡，跟 JS 一樣。</li>
+    <li>適合用在簡短的二選一。巢狀太多層會很難讀，那時候應該改用 <code>if</code>。</li>
+  </ul>
+</section>
+
+<!-- 2.12 -->
+<section id="c2-s12">
+  <h2><span class="no">2.12</span>優先順序與求值順序 ⭐</h2>
+  <p class="lead">不需要把整張優先順序表背起來，但下面這幾個陷阱一定要記住。<b>不確定的時候就加括號。</b></p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>優先順序（高 → 低，節錄）</th><th>運算子</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>()</code> <code>[]</code> <code>-&gt;</code> <code>.</code></td></tr>
+      <tr><td>2（由右到左）</td><td><code>!</code> <code>~</code> <code>++</code> <code>--</code> 正負號 <code>*</code>（取值）<code>&amp;</code>（取位址）<code>(type)</code> <code>sizeof</code></td></tr>
+      <tr><td>3</td><td><code>*</code> <code>/</code> <code>%</code></td></tr>
+      <tr><td>4</td><td><code>+</code> <code>-</code></td></tr>
+      <tr><td>5</td><td><code>&lt;&lt;</code> <code>&gt;&gt;</code></td></tr>
+      <tr><td>6</td><td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td></tr>
+      <tr><td>7</td><td><code>==</code> <code>!=</code></td></tr>
+      <tr><td>8 → 10</td><td><code>&amp;</code> → <code>^</code> → <code>|</code>（⚠ 都比 <code>==</code> 低）</td></tr>
+      <tr><td>11 → 12</td><td><code>&amp;&amp;</code> → <code>||</code></td></tr>
+      <tr><td>13（由右到左）</td><td><code>?:</code></td></tr>
+      <tr><td>14（由右到左）</td><td><code>=</code> <code>+=</code> <code>|=</code> 等賦值</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>三個經典陷阱</h3>
+<pre><code><span class="c">/* 陷阱 1：位元運算子的優先順序比 == 低 */</span>
+if (status &amp; READY == 0)        <span class="c">// ⚠ 實際上是 status &amp; (READY == 0)，結果永遠是 0</span>
+if ((status &amp; READY) == 0)      <span class="c">// ✅ 正確</span>
+
+<span class="c">/* 陷阱 2：位移的優先順序比 + 低 */</span>
+x = 1 &lt;&lt; n + 1;                 <span class="c">// ⚠ 是 1 &lt;&lt; (n + 1)</span>
+x = (1 &lt;&lt; n) + 1;               <span class="c">// ✅ 想要先位移就要加括號</span>
+
+<span class="c">/* 陷阱 3：求值順序沒有規定 */</span>
+printf("%d %d\n", ++n, n);      <span class="c">// ⚠ undefined behavior：兩個參數哪個先算沒有規定</span>
+a[i] = i++;                     <span class="c">// ⚠ undefined behavior</span></code></pre>
+  <ul class="plain">
+    <li><b>優先順序</b>決定運算式「怎麼分組」；<b>求值順序</b>決定「哪一邊先算」。C 只規定了少數幾個運算子的求值順序：<code>&amp;&amp;</code>、<code>||</code>、<code>?:</code>、逗號。其他像 <code>f() + g()</code> 誰先執行，或函式參數的計算順序，都沒有規定。</li>
+    <li>所以有副作用的寫法（<code>++</code>、賦值、會修改狀態的函式呼叫），不要在同一個運算式裡跟同一個變數混用。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>陷阱 1 是韌體裡真實存在的經典 bug：檢查硬體狀態的 bit 時忘了加括號，條件永遠不成立，程式就卡在等待迴圈裡，看起來像硬體沒有回應。開啟 <code>-Wall</code> 時，gcc 會對這種寫法發出 <code>-Wparentheses</code> 警告。</div>
+</section>
+
+<!-- compare -->
+<section id="c2-cmp">
+  <h2>與 JS／C# 對照：第二章最需要調整的觀念</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>主題</th><th>JS／C#</th><th>C</th></tr></thead>
+    <tbody>
+      <tr><td>數字型別</td><td>JS 只有 <code>number</code>（double）和 <code>bigint</code>；C# 的 <code>int</code> 固定是 32 bit</td><td>大小由平台決定，需要固定寬度時用 <code>&lt;stdint.h&gt;</code></td></tr>
+      <tr><td>無號整數</td><td>JS 沒有；C# 有 <code>uint</code>，但很少用</td><td>韌體的主力，暫存器幾乎都用無號數</td></tr>
+      <tr><td>整數溢位</td><td>C# 預設會繞回，<code>checked</code> 區塊會拋例外</td><td>無號數保證繞回；<b>有號數溢位是 undefined behavior</b></td></tr>
+      <tr><td>位元運算</td><td>JS 會先轉成 32 bit 有號數，無號右移要用 <code>&gt;&gt;&gt;</code></td><td>寬度依型別決定；對無號數做 <code>&gt;&gt;</code> 就是邏輯右移</td></tr>
+      <tr><td><code>x &amp; MASK == 0</code></td><td>C# 會<b>編譯錯誤</b>（bool 不能跟 int 做 &amp;）；JS 會默默算出錯誤的結果</td><td>能編譯，但結果是錯的，只有 <code>-Wall</code> 會提醒</td></tr>
+      <tr><td>有號和無號比較</td><td>C# 會把兩邊都轉成 <code>long</code>，結果正確</td><td><code>-1 &lt; 1u</code> 是<b>假</b>，因為 -1 被轉成很大的無號數</td></tr>
+      <tr><td>比較的結果</td><td><code>true</code>／<code>false</code></td><td><code>int</code> 的 1 或 0，可以直接拿來運算</td></tr>
+      <tr><td>八進位常數</td><td>JS 嚴格模式禁止 <code>010</code>，要寫 <code>0o10</code></td><td><code>010</code> 就是 8，很容易誤寫</td></tr>
+      <tr><td>求值順序</td><td>都規定由左到右</td><td>大多沒有規定，同一個運算式裡混用副作用是 undefined behavior</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- exercises -->
+<section id="c2-ex">
+  <h2>習題建議（第二章共 10 題）</h2>
+  <p class="lead">這一章的習題份量比較少，但跟韌體直接相關，<b>建議全部做完</b>。題號對照原書，題目描述是我自己的簡述，詳細內容請看書。</p>
+  <ul class="check">
+    <li><input type="checkbox" data-id="kr2-1"><span><b>2-1</b>：印出各整數型別有號和無號的範圍，一次用 <code>&lt;limits.h&gt;</code>、一次自己用運算算出來。在 x86 和 ARM 上各跑一次<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr2-2"><span><b>2-2</b>：改寫一個迴圈，不用 <code>&amp;&amp;</code> 和 <code>||</code><span class="tag">暖身</span></span></li>
+    <li><input type="checkbox" data-id="kr2-3"><span><b>2-3</b>：把十六進位字串（可以有 <code>0x</code> 前綴）轉成整數<span class="tag">必做，韌體常用</span></span></li>
+    <li><input type="checkbox" data-id="kr2-4"><span><b>2-4、2-5</b>：從字串裡刪掉另一個字串出現過的所有字元；找出第一個符合的位置<span class="tag">推薦</span></span></li>
+    <li><input type="checkbox" data-id="kr2-6"><span><b>2-6</b>：把 y 的低位元寫進 x 的某個 bit 欄位，其餘 bit 不變<span class="tag">必做，就是寫暫存器欄位</span></span></li>
+    <li><input type="checkbox" data-id="kr2-7"><span><b>2-7</b>：翻轉 x 裡某個 bit 欄位<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr2-8"><span><b>2-8</b>：把整數的 bit 往右旋轉 n 位（移出去的 bit 從左邊補回來）<span class="tag">必做</span></span></li>
+    <li><input type="checkbox" data-id="kr2-9"><span><b>2-9</b>：利用二補數的特性，寫出更快的「計算有幾個 1」<span class="tag">必做，面試常考</span></span></li>
+    <li><input type="checkbox" data-id="kr2-10"><span><b>2-10</b>：用條件運算式改寫轉小寫的函式<span class="tag">暖身</span></span></li>
+  </ul>
+  <div class="callout ok"><b>做法建議：</b>延續第一章，放在 <code>C/ch2/exercise/</code>。位元運算的題目先寫一個 <code>print_bin()</code> 小工具，每一步都把二進位印出來看，會比在腦中推算清楚很多。2-6 到 2-9 都是韌體面試的 C 手寫題常客，做完之後可以練習不看筆記重寫一次。</div>
+</section>
+
+<!-- quiz -->
+<section id="c2-quiz">
+  <h2>自我檢查</h2>
+  <p class="lead">先自己回答再點開答案。全部答得出來，就可以進第 3 章。</p>
+  <details><summary>1. 為什麼韌體程式碼用 <code>uint32_t</code> 或 <code>UINT32</code>，而不直接用 <code>unsigned int</code>？</summary><code>int</code> 的大小由平台決定，標準只保證至少 16 bit。暫存器是固定寬度的，所以要用保證寬度的型別，程式換到別的平台時行為才不會改變。</details>
+  <details><summary>2. <code>int x = 010 + 0x10;</code>，x 是多少？</summary>24。<code>010</code> 是八進位，等於 8；<code>0x10</code> 是十六進位，等於 16。</details>
+  <details><summary>3. 寫出三行程式：把變數 <code>reg</code> 的第 5 個 bit 設成 1、清成 0、翻轉。</summary><code>reg |= (1u &lt;&lt; 5);</code><br><code>reg &amp;= ~(1u &lt;&lt; 5);</code><br><code>reg ^= (1u &lt;&lt; 5);</code></details>
+  <details><summary>4. 怎麼取出 <code>reg</code> 的 bit[11:8]（4 個 bit 的欄位）？</summary><code>(reg &gt;&gt; 8) &amp; 0xF</code>，先右移 8 位，再用 4 個 1 當遮罩。也可以寫成 <code>(reg &amp; 0xF00) &gt;&gt; 8</code>。</details>
+  <details><summary>5. <code>if (flags &amp; MASK == MASK)</code> 有什麼問題？</summary><code>==</code> 的優先順序比 <code>&amp;</code> 高，所以實際上算的是 <code>flags &amp; (MASK == MASK)</code>，也就是 <code>flags &amp; 1</code>。正確寫法是 <code>if ((flags &amp; MASK) == MASK)</code>。</details>
+  <details><summary>6. <code>int a = -1; unsigned b = 1;</code>，<code>a &lt; b</code> 是真還是假？為什麼？</summary>假。有號數和無號數比較時，<code>a</code> 會被轉成 <code>unsigned</code>，-1 變成 <code>UINT_MAX</code>（4294967295），所以比 1 大。</details>
+  <details><summary>7. 為什麼要寫 <code>1u &lt;&lt; 31</code>，不寫 <code>1 &lt;&lt; 31</code>？</summary><code>1</code> 是有號的 <code>int</code>，在 32 bit 的 int 上左移 31 位會碰到正負號位元，這是 undefined behavior。<code>1u</code> 是無號數，位移的結果有明確定義。</details>
+  <details><summary>8. <code>x = n++ + n;</code> 的結果是什麼？</summary>沒有固定答案。同一個運算式裡既修改 <code>n</code>（<code>n++</code>）又讀取 <code>n</code>，而且兩者的先後沒有規定，所以是 undefined behavior。不同的編譯器或最佳化設定可能得到不同的結果。</details>
+</section>
+
+</div><!-- /ch2 -->
+
+<div class="chapter" id="ch3" data-label="第三章">
+
+<div class="chapter-head">
+  <h2 class="ch-title">第三章：Control Flow</h2>
+  <p>第三章講流程控制：<code>if</code>、<code>switch</code>、迴圈、<code>break</code>／<code>continue</code>、<code>goto</code>。語法你在 JS、C# 都用過，所以這份筆記<b>只講 C 不一樣的地方</b>，以及韌體裡常見的寫法：輪詢加 timeout、用 <code>switch</code> 寫狀態機、<code>do { } while (0)</code> 巨集、用 <code>goto</code> 統一清理資源。</p>
+</div>
+
+<div class="callout info">
+  <b>對應計劃：</b>階段 1 W3（2026-11-02 起）· <b>預估時間：</b>5–7 小時（閱讀 2 小時，習題 3–5 小時）· <b>重點小節：</b>3.4、3.6、3.8
+</div>
+
+<nav class="toc" aria-label="第三章目錄">
+  <ol>
+    <li><a href="#c3-s1">3.1 敘述與區塊</a></li>
+    <li><a href="#c3-s2">3.2–3.3 if、else if</a></li>
+    <li><a href="#c3-s4">3.4 switch</a></li>
+    <li><a href="#c3-s5">3.5 while、for、逗號運算子</a></li>
+    <li><a href="#c3-s6">3.6 do-while</a></li>
+    <li><a href="#c3-s7">3.7 break 與 continue</a></li>
+    <li><a href="#c3-s8">3.8 goto 與標籤</a></li>
+    <li><a href="#c3-cmp">與 JS／C# 對照</a></li>
+    <li><a href="#c3-ex">習題建議</a></li>
+    <li><a href="#c3-quiz">自我檢查</a></li>
+  </ol>
+</nav>
+
+<!-- 3.1 -->
+<section id="c3-s1">
+  <h2><span class="no">3.1</span>敘述與區塊</h2>
+  <ul class="plain">
+    <li>運算式後面加上分號，就成為一個<b>敘述（statement）</b>：<code>x = 0;</code>、<code>i++;</code>、<code>printf(...);</code>。分號是敘述的結尾，不是分隔符號。</li>
+    <li>用 <code>{ }</code> 把多個敘述包起來，就是一個<b>區塊（block）</b>，語法上等同一個敘述。<code>}</code> 後面不用加分號。</li>
+    <li>區塊裡可以宣告變數，它只在這個區塊內有效。</li>
+  </ul>
+  <div class="callout warn"><b>⚠ 單獨一個分號也是敘述（空敘述）</b>，這會造成很難發現的 bug：
+<pre><code>if (status == READY);       <span class="c">// ⚠ 多了分號：if 管的是「空敘述」</span>
+    start_device();         <span class="c">// 這行不受 if 控制，永遠會執行</span>
+
+while (i &lt; n);              <span class="c">// ⚠ 同樣的錯：迴圈本體是空的，i 不會變，變成無窮迴圈</span>
+    i++;</code></pre>
+  開啟 <code>-Wall -Wextra</code> 時，編譯器會對 <code>if (...);</code> 發出 <code>-Wempty-body</code> 警告。</div>
+</section>
+
+<!-- 3.2-3.3 -->
+<section id="c3-s2">
+  <h2><span class="no">3.2–3.3</span>if-else 與 else if</h2>
+  <p class="lead">寫法和 JS 一樣，差別在條件的型別：C 的條件<b>可以是任何數值</b>，0 是假，非 0 就是真。</p>
+<pre><code>if (n)            <span class="c">// 等於 if (n != 0)，C 程式很常這樣寫</span>
+if (!ptr)         <span class="c">// 等於 if (ptr == NULL)（第 5 章）</span>
+if (reg &amp; BIT(3)) <span class="c">// 等於 if ((reg &amp; BIT(3)) != 0)：測試 bit 的常見寫法</span></code></pre>
+
+  <h3>else if：多路分支</h3>
+<pre><code>#include &lt;stdio.h&gt;
+
+<span class="c">/* 依溫度決定風扇轉速等級，BMC 的風扇控制就是這種邏輯 */</span>
+int fan_level(int temp_c)
+{
+    if (temp_c &gt;= 85)
+        return 3;           <span class="c">// 全速</span>
+    else if (temp_c &gt;= 70)
+        return 2;
+    else if (temp_c &gt;= 50)
+        return 1;
+    else
+        return 0;           <span class="c">// 最低速</span>
+}
+
+int main(void)
+{
+    int temps[] = { 30, 55, 72, 90 };
+    for (int i = 0; i &lt; 4; i++)
+        printf("%d°C → level %d\n", temps[i], fan_level(temps[i]));
+    return 0;
+}</code></pre>
+  <p>條件由上往下檢查，第一個成立的就執行，後面的全部跳過。所以範圍判斷要<b>從大到小</b>（或從小到大）依序排好，順序錯了結果就會錯。</p>
+
+  <h3>懸空的 else（dangling else）</h3>
+<pre><code>if (n &gt; 0)
+    if (a &gt; b)
+        z = a;
+else                <span class="c">// ⚠ 縮排看起來屬於外層的 if，實際上屬於最近的內層 if</span>
+    z = b;</code></pre>
+  <p><b><code>else</code> 一律跟最近的、還沒配對的 <code>if</code> 配對</b>，縮排不影響編譯器。解法很簡單：<b>巢狀的 if 一律加大括號</b>。<code>-Wall</code> 會用 <code>-Wdangling-else</code>（gcc 是 <code>-Wparentheses</code>）提醒。</p>
+<pre><code>if (n &gt; 0) {
+    if (a &gt; b)
+        z = a;
+} else {            <span class="c">// ✅ 有大括號，else 明確屬於外層</span>
+    z = b;
+}</code></pre>
+  <div class="fw"><b>韌體連結：</b>很多韌體專案的 coding style 規定 <code>if</code>、<code>for</code> 後面<b>一律要加大括號</b>，即使只有一行。EDK II 和 Linux kernel 的規範都有類似要求，原因就是上面這種錯誤，以及之後加第二行時忘了補括號。</div>
+</section>
+
+<!-- 3.4 -->
+<section id="c3-s4">
+  <h2><span class="no">3.4</span>switch ⭐</h2>
+  <p class="lead">C 的 <code>switch</code> 有兩個跟 JS、C# 不同的地方：<b>只能比對整數常數</b>，以及<b>沒寫 <code>break</code> 就會往下掉</b>。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+<span class="c">/* 模擬 debug console：從 UART 一次讀一個字元當作指令 */</span>
+int main(void)
+{
+    int c, speed = 0, enabled = 0;
+
+    while ((c = getchar()) != EOF) {
+        switch (c) {
+        case 'e':                       <span class="c">// enable</span>
+            enabled = 1;
+            printf("enabled\n");
+            break;                      <span class="c">// ⚠ 沒有 break 就會繼續執行下一個 case</span>
+        case 'd':                       <span class="c">// disable</span>
+            enabled = 0;
+            printf("disabled\n");
+            break;
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+            speed = c - '0';            <span class="c">// 多個 case 共用同一段程式</span>
+            printf("speed = %d\n", speed);
+            break;
+        case '?':
+            printf("status: enabled=%d speed=%d\n", enabled, speed);
+            break;
+        case '\n': case ' ':            <span class="c">// 忽略換行和空白</span>
+            break;
+        default:                        <span class="c">// 其他所有值</span>
+            printf("unknown command '%c'\n", c);
+            break;
+        }
+    }
+    return 0;
+}</code></pre>
+<pre><code><span class="c"># 存成 ch3/console.c 之後執行</span>
+echo "e 5 ? d x" | ./serve.sh ch3/console.c
+<span class="c"># enabled / speed = 5 / status: enabled=1 speed=5 / disabled / unknown command 'x'</span></code></pre>
+  <ul class="plain">
+    <li><b><code>case</code> 後面必須是整數常數</b>：數字、字元常數（<code>'e'</code>）、<code>enum</code>、<code>#define</code> 的常數都可以；<b>字串和變數不行</b>。要比對字串只能用 <code>if</code> 加 <code>strcmp</code>。</li>
+    <li><b>fall-through（往下掉）</b>：<code>case</code> 只是一個「入口標籤」，進來之後會一路往下執行，直到遇到 <code>break</code> 或 <code>switch</code> 結束。上面 <code>'0'</code>～<code>'9'</code> 共用同一段程式，就是故意利用這個特性。</li>
+    <li><b><code>default</code></b> 處理所有沒列出的值。就算覺得不可能發生，也建議寫上，可以抓到意料之外的輸入。</li>
+    <li>每個 <code>case</code> 最後都加 <code>break</code>，包括最後一個。之後在下面再加新的 <code>case</code> 時，就不會忘記。</li>
+  </ul>
+  <div class="callout warn"><b>⚠ 忘了 <code>break</code> 是最常見的 switch bug。</b>如果<b>真的</b>要往下掉，寫一行註解說明是故意的，例如 <code>/* fall through */</code>。gcc 和 clang 的 <code>-Wimplicit-fallthrough</code> 會對沒註明的 fall-through 發出警告（gcc 的 <code>-Wextra</code> 會開啟它；C23 起也可以寫 <code>[[fallthrough]];</code>）。</div>
+  <div class="fw"><b>韌體連結：</b><code>switch</code> 是韌體裡實作<b>狀態機</b>最常見的方式：<code>switch (state) { case STATE_IDLE: … case STATE_WAIT_ACK: … }</code>。UEFI 裡也很常見，例如依 <code>EFI_STATUS</code> 或 PCI class code 決定怎麼處理一個裝置。<code>case</code> 後面配合 <code>enum</code> 使用，可讀性最好。</div>
+</section>
+
+<!-- 3.5 -->
+<section id="c3-s5">
+  <h2><span class="no">3.5</span>while、for 與逗號運算子</h2>
+  <p class="lead"><code>while</code> 和 <code>for</code> 的寫法跟 JS 一樣。這裡看三個 C 和韌體特有的用法。</p>
+
+  <h3>逗號運算子：在 for 裡同時更新兩個變數</h3>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+
+<span class="c">/* 就地反轉 byte 順序：大小端轉換（endianness swap）就是這樣做的 */</span>
+void reverse_bytes(uint8_t buf[], int n)
+{
+    int i, j;
+    uint8_t tmp;
+
+    for (i = 0, j = n - 1; i &lt; j; i++, j--) {   <span class="c">// 逗號：兩個變數一起初始化、一起更新</span>
+        tmp = buf[i];
+        buf[i] = buf[j];
+        buf[j] = tmp;
+    }
+}
+
+int main(void)
+{
+    uint8_t v[4] = { 0x12, 0x34, 0x56, 0x78 };
+    reverse_bytes(v, 4);
+    for (int i = 0; i &lt; 4; i++)
+        printf("%02X ", v[i]);                   <span class="c">// 78 56 34 12</span>
+    printf("\n");
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><b>逗號運算子</b>從左到右計算每個運算式，整體的值是最右邊那個。實務上幾乎只用在 <code>for</code> 的初始化和更新部分。</li>
+    <li>注意：函式參數之間的逗號（<code>f(a, b)</code>）和宣告裡的逗號（<code>int i, j;</code>）都只是分隔符號，<b>不是</b>逗號運算子，也不保證計算順序（見 2.12）。</li>
+  </ul>
+
+  <h3><code>for (;;)</code>：無窮迴圈</h3>
+  <p><code>for</code> 的三個部分都可以省略，三個都省略就是無窮迴圈，要靠裡面的 <code>break</code> 或 <code>return</code> 離開。<code>for (;;)</code> 和 <code>while (1)</code> 意思完全一樣，韌體的主迴圈常常就是其中一種。</p>
+
+  <h3>輪詢硬體狀態，一定要加 timeout</h3>
+<pre><code><span class="c">/* 等待硬體的 READY bit 變成 1，最多等 MAX_TRIES 次 */</span>
+#define READY       BIT(0)
+#define MAX_TRIES   1000
+
+int wait_ready(void)
+{
+    for (int tries = 0; tries &lt; MAX_TRIES; tries++) {
+        if (read_status() &amp; READY)
+            return 0;               <span class="c">// 成功</span>
+        delay_us(10);               <span class="c">// 等一下再問</span>
+    }
+    return -1;                      <span class="c">// 逾時：回報錯誤，不要永遠卡住</span>
+}</code></pre>
+  <div class="fw"><b>韌體連結：</b>這就是上一章 IRQ 問答裡說的「輪詢」，UEFI driver 幾乎都這樣寫。<b>絕對不要寫成 <code>while (!(read_status() &amp; READY));</code></b>：硬體壞了或沒插好時，整台機器就會卡死在開機畫面，而且看不到任何錯誤訊息。EDK II 裡等待硬體的程式碼，幾乎都有 timeout 參數。（<code>read_status()</code>、<code>delay_us()</code> 是假想的函式，真實環境會是讀取 <code>volatile</code> 暫存器，以及呼叫 <code>gBS-&gt;Stall()</code> 或 <code>MicroSecondDelay()</code>。）</div>
+</section>
+
+<!-- 3.6 -->
+<section id="c3-s6">
+  <h2><span class="no">3.6</span>do-while</h2>
+  <p class="lead"><code>do { … } while (條件);</code> 先執行再檢查，所以<b>至少會執行一次</b>。結尾的分號不能省。</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+<span class="c">/* 把無號整數轉成十六進位字串。用 do-while，n = 0 時才會印出 "0" */</span>
+void to_hex(unsigned n, char out[])
+{
+    char tmp[9];
+    int i = 0, j = 0;
+
+    do {
+        int d = n % 16;
+        tmp[i++] = (d &lt; 10) ? '0' + d : 'A' + d - 10;
+        n /= 16;
+    } while (n &gt; 0);                <span class="c">// 先做一次再判斷</span>
+
+    while (i &gt; 0)                   <span class="c">// 數字是從低位算出來的，要反過來放</span>
+        out[j++] = tmp[--i];
+    out[j] = '\0';
+}
+
+int main(void)
+{
+    unsigned tests[] = { 0, 255, 0xDEADBEEF };
+    char buf[9];
+    for (int k = 0; k &lt; 3; k++) {
+        to_hex(tests[k], buf);
+        printf("0x%s\n", buf);      <span class="c">// 0x0、0xFF、0xDEADBEEF</span>
+    }
+    return 0;
+}</code></pre>
+  <p>如果改用 <code>while (n &gt; 0) { … }</code>，<code>n</code> 一開始就是 0 時迴圈一次都不會跑，結果會是空字串。這種「至少要做一次」的情況就適合 <code>do-while</code>。</p>
+
+  <h3>韌體最常見的用法：<code>do { … } while (0)</code> 巨集</h3>
+<pre><code><span class="c">/* 想把兩行程式包成一個巨集 */</span>
+#define LOG_AND_RESET_BAD(x)   log_error(x); reset_device()           <span class="c">// ❌</span>
+#define LOG_AND_RESET(x)       do { log_error(x); reset_device(); } while (0)   <span class="c">// ✅</span>
+
+if (failed)
+    LOG_AND_RESET_BAD(code);   <span class="c">// ❌ 展開後只有 log_error 受 if 控制，reset_device 永遠會執行</span>
+else
+    ...                        <span class="c">// ❌ 甚至會編譯錯誤：else 前面不是 if</span>
+
+if (failed)
+    LOG_AND_RESET(code);       <span class="c">// ✅ 整個 do-while 是一個敘述，後面的分號也剛好合法</span>
+else
+    ...</code></pre>
+  <p><code>while (0)</code> 表示只執行一次，所以它不是真的迴圈，只是借用 <code>do-while</code>「把多行包成<b>一個</b>敘述，而且結尾要加分號」的語法特性。</p>
+  <div class="fw"><b>韌體連結：</b>EDK II 的 <code>DEBUG(())</code>、<code>ASSERT()</code> 這類巨集，以及 Linux kernel 裡大量的巨集，都是用 <code>do { … } while (0)</code> 包起來的。第一次看到會覺得奇怪，知道原因之後就會到處看到它。</div>
+</section>
+
+<!-- 3.7 -->
+<section id="c3-s7">
+  <h2><span class="no">3.7</span>break 與 continue</h2>
+  <p class="lead"><code>break</code> 離開<b>最內層</b>的迴圈或 <code>switch</code>；<code>continue</code> 跳過這一輪剩下的部分，直接進下一輪（<code>continue</code> 只能用在迴圈，不能用在 <code>switch</code>）。</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+<span class="c">/* 在一段「記憶體」裡每 16 bytes 找一次簽章，
+   BIOS 找 SMBIOS 入口點（"_SM_"）、ACPI 的 RSDP（"RSD PTR "）就是這樣找的 */</span>
+int find_signature(const unsigned char mem[], int size, const char sig[])
+{
+    int len = (int)strlen(sig);
+
+    for (int off = 0; off + len &lt;= size; off += 16) {   <span class="c">// 簽章只會出現在 16 byte 對齊的位置</span>
+        if (mem[off] != sig[0])
+            continue;                   <span class="c">// 第一個字元就不對，直接看下一個位置</span>
+        if (memcmp(&amp;mem[off], sig, len) == 0)
+            return off;                 <span class="c">// 找到了：用 return 直接離開函式</span>
+    }
+    return -1;                          <span class="c">// 找完都沒有</span>
+}
+
+int main(void)
+{
+    unsigned char mem[64] = { 0 };
+    memcpy(&amp;mem[32], "_SM_", 4);       <span class="c">// 在 offset 32 放一個簽章</span>
+    printf("found at %d\n", find_signature(mem, 64, "_SM_"));   <span class="c">// found at 32</span>
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li><code>continue</code> 適合用來「先排除不要的情況」，可以減少一層巢狀的 <code>if</code>。</li>
+    <li>在函式裡找到結果就直接 <code>return</code>，通常比 <code>break</code> 再加一個旗標變數清楚。</li>
+    <li><code>break</code> 只能離開<b>一層</b>。要從兩層迴圈裡一次跳出來，C 沒有 JS 那種 labeled break，常見做法是包成函式再 <code>return</code>，或者用下一節的 <code>goto</code>。</li>
+    <li><code>&amp;mem[off]</code> 是「<code>mem[off]</code> 的位址」，第 5 章指標會正式介紹，這裡先當作「從第 off 個 byte 開始」。</li>
+  </ul>
+</section>
+
+<!-- 3.8 -->
+<section id="c3-s8">
+  <h2><span class="no">3.8</span>goto 與標籤 ⭐</h2>
+  <p class="lead">一般教學會說「不要用 <code>goto</code>」，K&amp;R 也說它幾乎都可以避免。但在韌體和 kernel 的 C 程式碼裡，有一種用法是<b>公認的好寫法</b>：錯誤發生時，統一跳到函式結尾清理資源。</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+<span class="c">/* 依序取得三個資源，任何一步失敗都要把「已經拿到的」釋放掉 */</span>
+int load_config(const char *path)
+{
+    int ret = -1;
+    FILE *f = NULL;
+    char *buf = NULL, *parsed = NULL;
+
+    f = fopen(path, "r");
+    if (f == NULL)
+        goto out;                   <span class="c">// 什麼都還沒拿到，直接結束</span>
+
+    buf = malloc(4096);
+    if (buf == NULL)
+        goto close_file;            <span class="c">// 只要關檔</span>
+
+    parsed = malloc(4096);
+    if (parsed == NULL)
+        goto free_buf;              <span class="c">// 要釋放 buf，也要關檔</span>
+
+    <span class="c">/* ……正常的處理…… */</span>
+    printf("loaded %s\n", path);
+    ret = 0;
+
+    free(parsed);
+free_buf:                           <span class="c">// 標籤：名稱後面加冒號</span>
+    free(buf);
+close_file:
+    fclose(f);
+out:
+    return ret;                     <span class="c">// 只有一個出口</span>
+}
+
+int main(void)
+{
+    load_config("README.md");       <span class="c">// loaded README.md（在 C/ 底下執行時，這個檔案存在）</span>
+    load_config("no-such-file");    <span class="c">// 開檔失敗，直接回傳 -1</span>
+    return 0;
+}</code></pre>
+  <ul class="plain">
+    <li>標籤的寫法是 <code>名稱:</code>，只在同一個函式內有效，<code>goto</code> 不能跳到別的函式。</li>
+    <li>標籤<b>由下往上</b>對應「取得資源的順序」：越晚拿到的資源，清理的程式碼放在越上面。所以從哪一步失敗跳進來，就會依反方向一路釋放下去。</li>
+    <li>如果不用 <code>goto</code>，每個錯誤分支都要自己寫一份清理程式碼，很容易漏掉某個 <code>free</code> 或 <code>fclose</code>，造成資源洩漏。</li>
+    <li>只往<b>下</b>跳、只用在清理，就是安全的用法。往上跳、拿來代替迴圈，才是一般說的「不要用 goto」。</li>
+  </ul>
+  <div class="fw"><b>韌體連結：</b>這個寫法在 Linux kernel 裡到處都是（標籤常命名為 <code>err_free</code>、<code>out_unlock</code>）。EDK II 也很常見，通常寫成「呼叫 Boot Service → <code>if (EFI_ERROR (Status)) { goto Exit; }</code>」，最後在 <code>Exit:</code> 統一用 <code>FreePool()</code> 釋放記憶體、<code>CloseProtocol()</code> 釋放 protocol。後端的 <code>try/finally</code> 或 C++ 的 RAII，在 C 裡就是靠這個模式來做。</div>
+</section>
+
+<!-- compare -->
+<section id="c3-cmp">
+  <h2>與 JS／C# 對照：第三章最需要調整的觀念</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>主題</th><th>JS／C#</th><th>C</th></tr></thead>
+    <tbody>
+      <tr><td>條件的型別</td><td>JS 有 truthy／falsy；C# 只接受 <code>bool</code></td><td>任何數值或指標，0 是假，非 0 是真</td></tr>
+      <tr><td><code>if (x = 0)</code></td><td>C# <b>編譯錯誤</b>（int 不能當 bool）；JS 能跑</td><td>能編譯，條件永遠是假，只有 <code>-Wall</code> 會提醒</td></tr>
+      <tr><td>switch 比對的值</td><td>可以是字串（兩者都可以）</td><td><b>只能是整數常數</b>，字串要用 <code>strcmp</code></td></tr>
+      <tr><td>switch 沒寫 break</td><td>C# <b>編譯錯誤</b>（不允許隱性 fall-through）；JS 會往下掉</td><td>會往下掉，用 <code>-Wimplicit-fallthrough</code> 抓</td></tr>
+      <tr><td>跳出多層迴圈</td><td>JS 有 labeled break；C# 用 <code>goto</code> 或旗標</td><td>沒有 labeled break，用函式 <code>return</code> 或 <code>goto</code></td></tr>
+      <tr><td>錯誤時清理資源</td><td><code>try/finally</code>、<code>using</code></td><td>沒有例外機制，用 <code>goto</code> 跳到清理標籤</td></tr>
+      <tr><td>多行巨集</td><td>沒有巨集</td><td>用 <code>do { … } while (0)</code> 包起來</td></tr>
+      <tr><td>無窮迴圈</td><td><code>while (true)</code></td><td><code>for (;;)</code> 或 <code>while (1)</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- exercises -->
+<section id="c3-ex">
+  <h2>習題建議（第三章共 6 題）</h2>
+  <p class="lead">題目不多，建議全部做完。題號對照原書，題目描述是我自己的簡述，詳細內容請看書。</p>
+  <ul class="check">
+    <li><input type="checkbox" data-id="kr3-1"><span><b>3-1</b>：改寫二分搜尋，讓迴圈裡只做一次比較，並比較改寫前後的執行時間<span class="tag">推薦</span></span></li>
+    <li><input type="checkbox" data-id="kr3-2"><span><b>3-2</b>：用 <code>switch</code> 把換行、tab 轉成看得見的 <code>\n</code>、<code>\t</code>，再寫一個反方向的轉換<span class="tag">必做，練 switch</span></span></li>
+    <li><input type="checkbox" data-id="kr3-3"><span><b>3-3</b>：把 <code>a-z</code>、<code>0-9</code> 這種簡寫展開成完整的字元序列，處理開頭和結尾的 <code>-</code><span class="tag">推薦</span></span></li>
+    <li><input type="checkbox" data-id="kr3-4"><span><b>3-4</b>：解釋為什麼書上的整數轉字串處理不了最小的負數，並修正它<span class="tag">必做，連結第 2 章的二補數</span></span></li>
+    <li><input type="checkbox" data-id="kr3-5"><span><b>3-5</b>：把整數轉成任意進位（2–16）的字串<span class="tag">必做，韌體常用</span></span></li>
+    <li><input type="checkbox" data-id="kr3-6"><span><b>3-6</b>：整數轉字串時，支援指定最小寬度（不足時左邊補空白）<span class="tag">暖身</span></span></li>
+  </ul>
+  <div class="callout ok"><b>做法建議：</b>放在 <code>C/ch3/exercise/</code>，用 <code>./serve.sh</code> 執行。3-4 和 3-5 可以搭配第 2 章的 <code>print_bin8()</code> 驗證結果。3-5 寫好之後，就有一個自己的「印出二進位或十六進位」工具，之後的章節都用得上。另外可以自己加一題：用 <code>goto</code> 清理的寫法，依序開兩個檔案、配置一塊記憶體，並故意讓其中一步失敗，確認每一種失敗路徑都有正確釋放（搭配 <code>--asan</code> 檢查有沒有記憶體洩漏）。</div>
+</section>
+
+<!-- quiz -->
+<section id="c3-quiz">
+  <h2>自我檢查</h2>
+  <p class="lead">先自己回答再點開答案。全部答得出來，就可以進第 4 章。</p>
+  <details><summary>1. <code>if (x &gt; 0); { x = 0; }</code> 會發生什麼事？</summary><code>if</code> 後面多了分號，控制的是「空敘述」。後面的 <code>{ x = 0; }</code> 是一個獨立的區塊，不管條件如何<b>永遠會執行</b>。開啟 <code>-Wall -Wextra</code> 時會有 <code>-Wempty-body</code> 警告。</details>
+  <details><summary>2. 下面這段的 <code>else</code> 屬於哪個 <code>if</code>？<code>if (a) if (b) f(); else g();</code></summary>屬於內層的 <code>if (b)</code>。<code>else</code> 永遠跟最近的、還沒配對的 <code>if</code> 配對，跟縮排無關。要讓它屬於外層，就要用大括號把內層的 <code>if</code> 包起來。</details>
+  <details><summary>3. <code>switch</code> 裡如果 <code>case 1:</code> 沒有寫 <code>break</code>，輸入 1 會怎樣？</summary>執行完 <code>case 1</code> 的程式之後，會<b>繼續往下</b>執行 <code>case 2</code>（以及更下面的）程式碼，直到遇到 <code>break</code> 或 <code>switch</code> 結束。這叫 fall-through。</details>
+  <details><summary>4. 可以寫 <code>switch (name) { case "eth0": … }</code> 嗎？</summary>不行。<code>case</code> 後面只能是整數常數。比對字串要用 <code>if (strcmp(name, "eth0") == 0)</code>。</details>
+  <details><summary>5. 為什麼多行巨集要寫成 <code>do { … } while (0)</code>？</summary>讓整個巨集在語法上變成<b>一個</b>敘述，而且呼叫時結尾要加分號。這樣放在沒有大括號的 <code>if</code> 底下也能正確運作，後面接 <code>else</code> 也不會出錯。<code>while (0)</code> 代表只執行一次，不是真的迴圈。</details>
+  <details><summary>6. 輪詢硬體狀態時，為什麼不能寫 <code>while (!(read_status() &amp; READY));</code>？</summary>硬體如果壞了、沒插好或沒初始化，READY 永遠不會變成 1，程式就會永遠卡在這裡，整台機器停在開機畫面，而且沒有任何錯誤訊息。要加上次數或時間的上限，逾時就回傳錯誤。</details>
+  <details><summary>7. 在 C 裡，什麼情況下用 <code>goto</code> 是好寫法？</summary>函式中途發生錯誤時，<b>往下</b>跳到函式結尾的清理標籤，依取得的反順序釋放資源（記憶體、檔案、鎖），並從同一個出口回傳。這是 Linux kernel 和 EDK II 常見的寫法。往上跳、拿來代替迴圈則應該避免。</details>
+</section>
+
+</div>
+
+<footer>K&amp;R 讀書筆記 · 原書版權屬原作者與出版社，本頁只有自己整理的摘要和自寫範例 · 私人學習筆記</footer>
+</main>
+
+<button class="theme-btn" id="themeBtn" type="button">切換深淺色</button>
+
+<script>
+(function(){
+  var KEY = "kr-ch1-checklist-v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ state = {}; }
+  document.querySelectorAll('.check input[type=checkbox]').forEach(function(b){
+    b.checked = !!state[b.dataset.id];
+    b.parentNode.classList.toggle("done", b.checked);
+    b.addEventListener("change", function(){
+      state[b.dataset.id] = b.checked;
+      b.parentNode.classList.toggle("done", b.checked);
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+    });
+  });
+
+  // ---- Chapter tabs ----
+  var chapters = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapters a'));
+  function show(id, scrollTarget){
+    chapters.forEach(function(c){ c.classList.toggle('active', c.id === id); });
+    tabs.forEach(function(t){ t.setAttribute('aria-current', t.dataset.ch === id ? 'true' : 'false'); });
+    try { localStorage.setItem('kr-last-chapter', id); } catch(e){}
+    if (scrollTarget) scrollTarget.scrollIntoView();
+  }
+  function fromHash(){
+    var id = decodeURIComponent(location.hash.slice(1));
+    var el = id && document.getElementById(id);
+    if (!el) return false;
+    var ch = el.classList.contains('chapter') ? el : el.closest('.chapter');
+    if (!ch) return false;
+    show(ch.id, el === ch ? null : el);
+    if (el === ch) window.scrollTo(0, 0);
+    return true;
+  }
+  window.addEventListener('hashchange', fromHash);
+  if (!fromHash()) {
+    var last = null;
+    try { last = localStorage.getItem('kr-last-chapter'); } catch(e){}
+    show(document.getElementById(last) ? last : chapters[chapters.length - 1].id);
+  }
+
+  var root = document.documentElement;
+  try { var t = localStorage.getItem("fw-career-theme"); if(t) root.setAttribute("data-theme", t); } catch(e){}
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var next = cur === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("fw-career-theme", next); } catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

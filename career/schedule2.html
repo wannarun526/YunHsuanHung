@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Top-down 學習計畫</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --ink:#1b1d21; --muted:#5d6470; --line:#dfe2e7;
+  --accent:#0b62c4; --accent-soft:#e6f0fb;
+  --p0:#8a5cf6; --lang-c:#5b7083; --lang-cpp:#00599c; --lang-rust:#b7410e; --p1:#0b62c4; --p2:#0f9d76; --p3:#d97706; --p4:#dc2626; --p5:#64748b;
+  --warn-bg:#fff6e0; --warn-ink:#7a5600; --ok-bg:#e7f6ef; --ok-ink:#0b6b4c;
+  --font:"PingFang TC","Noto Sans TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --card:#1b1e23; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+    --accent:#5aa2ff; --accent-soft:#1c2a3d;
+    --warn-bg:#3a2f12; --warn-ink:#f3cf73; --ok-bg:#12332a; --ok-ink:#7fe0b8;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --card:#1b1e23; --ink:#e7e9ec; --muted:#9aa2ad; --line:#2d323a;
+  --accent:#5aa2ff; --accent-soft:#1c2a3d;
+  --warn-bg:#3a2f12; --warn-ink:#f3cf73; --ok-bg:#12332a; --ok-ink:#7fe0b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.65;font-size:15px;padding:32px 16px 80px}
+main{max-width:1040px;margin:0 auto}
+a{color:var(--accent)}
+code,kbd{font-family:var(--mono);font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+header.top{margin-bottom:28px}
+header.top h1{font-size:28px;line-height:1.25;letter-spacing:-.01em}
+header.top p.sub{color:var(--muted);margin-top:6px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{font-size:12.5px;border:1px solid var(--line);background:var(--card);padding:3px 10px;border-radius:999px;color:var(--muted)}
+.pill b{color:var(--ink)}
+nav.toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:22px;font-size:14px}
+nav.toc ol{display:flex;flex-wrap:wrap;gap:4px 18px;list-style:none;counter-reset:t}
+nav.toc li{counter-increment:t}
+nav.toc li::before{content:counter(t)". ";color:var(--muted)}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-bottom:20px}
+section h2{font-size:20px;margin-bottom:4px}
+section .lead{color:var(--muted);margin-bottom:16px;font-size:14px}
+h3{font-size:16px;margin:18px 0 8px}
+p+p{margin-top:8px}
+ul.plain{padding-left:20px}
+ul.plain li{margin:3px 0}
+.callout{border-radius:8px;padding:12px 16px;font-size:14px;margin:12px 0}
+.callout.warn{background:var(--warn-bg);color:var(--warn-ink)}
+.callout.ok{background:var(--ok-bg);color:var(--ok-ink)}
+.callout.info{background:var(--accent-soft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.box h4{font-size:14.5px;margin-bottom:6px}
+.box ul{padding-left:18px;font-size:14px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:999px;border:1px solid currentColor;margin-right:4px;vertical-align:1px}
+.tbl-wrap{overflow-x:auto;margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap}
+td.nowrap{white-space:nowrap}
+.lvl{font-family:var(--mono);letter-spacing:1px}
+/* Gantt */
+.gantt{display:grid;grid-template-columns:150px repeat(18,minmax(32px,1fr));font-size:12px;min-width:900px}
+.gantt .hd{color:var(--muted);text-align:center;padding:4px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.gantt .yr{grid-column:span 3;text-align:left;padding-left:4px;font-weight:600;color:var(--ink);border-bottom:none}
+.gantt .lab{padding:7px 8px 7px 0;font-weight:600;font-size:12.5px;border-bottom:1px dashed var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gantt .cell{border-bottom:1px dashed var(--line);border-left:1px solid var(--line);position:relative;min-height:32px}
+.gantt .bar{position:absolute;top:7px;bottom:7px;border-radius:5px;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;padding:0 6px;white-space:nowrap;overflow:hidden;z-index:1}
+.gantt .mile{position:absolute;top:8px;width:14px;height:14px;transform:rotate(45deg);border:2px solid var(--card);z-index:2}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+/* phases */
+.phase{border-left:4px solid var(--c);padding:4px 0 4px 18px;margin:22px 0 8px}
+.phase h3{margin:0 0 2px;font-size:17px}
+.phase .when{color:var(--muted);font-size:13px}
+.weeks{width:100%}
+.weeks td:first-child{white-space:nowrap;font-family:var(--mono);font-size:12.5px;color:var(--muted);width:110px}
+.deliver{background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:14px}
+.deliver b{color:var(--accent)}
+/* checklist */
+.check{list-style:none}
+.check li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.check li:last-child{border-bottom:none}
+.check input{margin-top:5px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+.check li.done span{color:var(--muted);text-decoration:line-through}
+.check .due{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;padding-left:10px}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 4px}
+.progress>div{height:100%;background:var(--accent);width:0;transition:width .2s}
+.small{font-size:13px;color:var(--muted)}
+.gate{display:grid;grid-template-columns:110px 1fr;gap:4px 14px;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.gate .k{color:var(--muted);font-size:13px}
+footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px}
+.theme-btn{position:fixed;right:16px;bottom:16px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
+@media (max-width:760px){
+  body{padding:20px 16px 70px;font-size:14.5px}
+  section{padding:18px 16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .gate{grid-template-columns:1fr}
+  header.top h1{font-size:23px}
+}
+@media print{
+  body{background:#fff;padding:0}
+  section{break-inside:avoid-page;border:none;padding:10px 0}
+  nav.toc,.theme-btn{display:none}
+}
+
+:root{--s0:#8a5cf6;--s1:#0b62c4;--s2:#0f9d76;--s3:#d97706;--s4:#00599c;--s5:#334155}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s5:#64748b}}
+:root[data-theme="dark"]{--s5:#64748b}
+</style>
+</head>
+<body>
+<main>
+
+<header class="top">
+  <h1>Top-down 學習計畫：從「伺服器怎麼被管理」一路往下挖到 reset vector</h1>
+  <p class="sub">同一個目標（第一份 BIOS／BMC／Server firmware 工作），換一個學法。<a href="schedule.html">schedule.html</a> 是由下往上（先 K&amp;R、CS:APP，再寫 bootloader，最後才碰伺服器）；這一份反過來，<b>先把整台伺服器跑起來、從我熟的那一層開始操作</b>，遇到看不懂的地方才往下挖一層，挖到能解決問題就停。</p>
+  <div class="meta-row">
+    <span class="pill">起算日 <b>2026-10-27</b></span>
+    <span class="pill">目前進度 <b>K&amp;R 第 3 章</b>（第 1–2 章筆記在 <a href="K&amp;R.html">K&amp;R.html</a>）</span>
+    <span class="pill">A 路線（診斷／測試工具）offer 目標 <b>2027-06</b></span>
+    <span class="pill">韌體開發職 offer 目標 <b>2027-12</b>（最晚 2028-03）</span>
+    <span class="pill">每週 <b>12–15 小時</b>：主軌 70%、補強軌 30%</span>
+  </div>
+  <div class="callout warn" style="margin-top:14px">⚠️ 跟 schedule.html 一樣，這份含個人規劃，放在 <code>career/</code>。push 之後會公開在 GitHub Pages 上，commit 前先確認。</div>
+</header>
+
+<nav class="toc" aria-label="目錄">
+  <ol>
+    <li><a href="#why">為什麼改成 top-down</a></li>
+    <li><a href="#method">學習方法：一個螺旋怎麼走</a></li>
+    <li><a href="#layers">伺服器的六層地圖</a></li>
+    <li><a href="#timeline">時程總覽</a></li>
+    <li><a href="#spirals">六個螺旋的週計劃</a></li>
+    <li><a href="#pull">補強軌：K&amp;R、CS:APP 什麼時候被拉進來</a></li>
+    <li><a href="#langs">C、C++、Rust 的出場順序</a></li>
+    <li><a href="#gates">決策關卡</a></li>
+    <li><a href="#jobs">每個螺旋解鎖的職缺</a></li>
+    <li><a href="#compare">跟 schedule.html 對照</a></li>
+    <li><a href="#risks">Top-down 的風險與對策</a></li>
+    <li><a href="#tracker">進度追蹤</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section id="why">
+  <h2>1. 為什麼改成 top-down</h2>
+  <p class="lead">我的強項在最上層（Python、REST、Linux、正式環境除錯），由下往上學，等於前 6 個月都在離強項最遠的地方打轉，而且一直沒有東西可以給面試官看。</p>
+  <div class="grid3">
+    <div class="box"><h4>由下往上的問題</h4><ul>
+      <li>K&amp;R、CS:APP 讀了幾個月，還不知道這些東西在伺服器的哪裡用到，動機容易掉</li>
+      <li>第一個能放上履歷的作品要到第 4 個月（bootloader），能投的職缺要到第 8–9 個月</li>
+      <li>學了很多「之後可能用到」的東西，真正用到時又忘了</li>
+    </ul></div>
+    <div class="box"><h4>由上往下的好處</h4><ul>
+      <li><b>第一個螺旋就用到強項</b>：Python 加 Redfish 做伺服器診斷工具，對應鴻海高雄 Server Diagnostic 職缺「經歷不拘、重視 Python／Linux 與 debug 能力」</li>
+      <li>每一層都是「為了解決眼前的問題」才往下學，記得牢</li>
+      <li>大約 2–3 個月就有可以投的作品，邊學邊用面試回饋校正方向</li>
+    </ul></div>
+    <div class="box"><h4>但要守住的底線</h4><ul>
+      <li>韌體面試一定考 C 手寫題，這是由下往上的硬功夫，不能只靠專案「順便學」</li>
+      <li>所以保留一條<b>補強軌（30%）</b>：K&amp;R、CS:APP、手寫題照進度走，只是章節順序改成「下一個螺旋要用到的先讀」</li>
+      <li>K&amp;R 已經讀到第 3 章，不浪費，繼續往下讀</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="method">
+  <h2>2. 學習方法：一個螺旋怎麼走</h2>
+  <p class="lead">每個螺旋都有一個「看得到的成品」。成品做出來之前，按照下面五步反覆走。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>步驟</th><th>做什麼</th><th>例子（螺旋 2：OVMF 開機）</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap"><b>① 先跑起來</b></td><td>照官方文件把東西跑起來，先不求懂</td><td>在 QEMU 用 OVMF 開進 UEFI Shell，把 debug log 存成檔案</td></tr>
+      <tr><td class="nowrap"><b>② 從輸出往回追</b></td><td>挑一行看不懂的輸出，找出是哪段程式印的</td><td>log 裡的 <code>Loading driver at 0x...</code>，用 <code>grep -rn</code> 在 edk2 原始碼找到它</td></tr>
+      <tr><td class="nowrap"><b>③ 卡住才往下挖一層</b></td><td>看不懂程式碼時，才去讀需要的那一章；挖到能解釋那一行就停</td><td>看到 <code>gBS-&gt;LocateProtocol(...)</code> 看不懂 → 讀 K&amp;R 5.11 函式指標、6.2 結構指標</td></tr>
+      <tr><td class="nowrap"><b>④ 改它、弄壞它</b></td><td>改一個地方，預測會發生什麼，再驗證</td><td>在 DXE driver 的 entry point 加一行 <code>DEBUG</code>，或故意回傳錯誤，看開機流程怎麼變</td></tr>
+      <tr><td class="nowrap"><b>⑤ 不看筆記講一遍</b></td><td>螺旋結束時，對著空白紙畫圖、講給別人聽，再寫成 blog</td><td>畫出 SEC→PEI→DXE→BDS，並說明每一段在 log 裡長什麼樣子</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="box"><h4>問題清單（question backlog）</h4><ul>
+      <li>每次卡住，就在問題清單記一行：問題、在哪裡遇到、目前的猜測</li>
+      <li>解決時補上答案，以及是哪本書的哪一節解答的</li>
+      <li>沒有馬上需要的問題先放著，不要為了它岔出去（這是 top-down 最容易失控的地方）</li>
+      <li>建議放在 <code>career/notes/questions.md</code>，跟 <a href="K&amp;R.html">K&amp;R.html</a> 一樣是私人筆記</li>
+    </ul></div>
+    <div class="box"><h4>每週節奏</h4><ul>
+      <li><b>週一、三、四晚上</b>（1.5 小時 ×3）：主軌，做當前螺旋的成品</li>
+      <li><b>週二晚上</b>（1.5 小時）：補強軌，K&amp;R／CS:APP 加習題，用 <code>career/C/serve.sh</code> 跑</li>
+      <li><b>週六</b>（5–6 小時）：前 4 小時主軌深度工作，最後 1–2 小時補強軌或整理問題清單</li>
+      <li><b>週日</b>（0–2 小時）：Rust 輕量練習，或休息</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="layers">
+  <h2>3. 伺服器的六層地圖</h2>
+  <p class="lead">從最上面往下挖。左邊是層，右邊是在哪個螺旋碰到它。每完成一個螺旋，就在這張地圖上多點亮一層。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>層</th><th>這一層在做什麼</th><th>我會碰到的東西</th><th>語言</th><th>螺旋</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap"><b>L1 管理介面</b></td><td>從外部查詢、控制伺服器</td><td>Redfish、IPMI、SEL／SDR、韌體更新（UpdateService）</td><td>Python</td><td class="nowrap">S0、S1</td></tr>
+      <tr><td class="nowrap"><b>L2 作業系統看到的硬體</b></td><td>Linux 開機後怎麼認識硬體</td><td><code>lspci</code>、<code>dmidecode</code>、<code>acpidump</code>、sysfs、PCIe config space、dmesg</td><td>Python、C</td><td class="nowrap">S1</td></tr>
+      <tr><td class="nowrap"><b>L3 開機韌體（觀察）</b></td><td>OS 之前誰在做事、做了什麼</td><td>OVMF debug log、SEC／PEI／DXE／BDS、UEFI Shell、memory map、ACPI tables</td><td>C</td><td class="nowrap">S2</td></tr>
+      <tr><td class="nowrap"><b>L4 開機韌體（修改）</b></td><td>自己加功能進韌體</td><td>DXE driver、protocol、UEFI variable、HII Setup 頁、SSDT、coreboot、真機燒錄</td><td>C、ASL</td><td class="nowrap">S3</td></tr>
+      <tr><td class="nowrap"><b>L5 BMC 內部</b></td><td>L1 的 Redfish 背後是怎麼實作的</td><td>bmcweb、D-Bus、phosphor 感測器、sdbusplus、Yocto／bitbake、RAS、PCIe AER</td><td>C++</td><td class="nowrap">S4</td></tr>
+      <tr><td class="nowrap"><b>L6 最底層</b></td><td>CPU 通電後的第一條指令</td><td>reset vector、real mode、GDT、protected／long mode、E820、x86 組語</td><td>C、NASM</td><td class="nowrap">S5</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">注意 L5 排在 L4 之後：BMC 雖然在 L1 就碰到，但它的內部是 C++ 加 Linux 加 D-Bus，等 C 和開機流程有基礎後再拆比較順。L6 放在最後當作收尾，到那時「OVMF 的 SEC 之前發生了什麼」會是一個自然冒出來的問題。</p>
+</section>
+
+<!-- 4 -->
+<section id="timeline">
+  <h2>4. 時程總覽</h2>
+  <p class="lead">2026-10 → 2028-03。上面六條是主軌螺旋，下面是補強軌和求職。求職從 2027-01 就開始，每個螺旋結束就解鎖一批職缺。</p>
+  <div class="tbl-wrap"><div class="gantt" id="gantt"></div></div>
+  <div class="legend" id="legend"></div>
+  <div class="callout info" style="margin-top:14px">
+    <b>關鍵日期：</b>
+    11/15 全景圖完成，確定用哪份計劃當主計劃 ·
+    2027/01/10 診斷工具完成，開始投 A 路線 ·
+    03/07 能看懂開機 log ·
+    05/16 改得動韌體，開始投 BIOS 職缺 ·
+    07/25 拆完 BMC，開始投 BMC 職缺 ·
+    09/05 寫完 bootloader，六層全部打通 ·
+    12 月 韌體開發職 offer 目標 ·
+    2028/03 最晚期限
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="spirals">
+  <h2>5. 六個螺旋的週計劃</h2>
+  <p class="lead">每個螺旋列出主軌成品、每週內容，以及同一段時間的補強軌。<span class="tag" style="color:var(--lang-c)">補強</span> 標示的是週二晚上和週六最後一段的內容。</p>
+
+  <div class="phase" style="--c:var(--s0)">
+    <h3>S0　全景：先把整台伺服器的樣子看一遍</h3>
+    <div class="when">2026-10-27 → 2026-11-15（3 週）· 對應 L1–L3 的「只看不改」</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1<br>10/27–11/01</td><td>把 Fusion VM 和 GCP VM 確認可用（schedule.html 階段 0 的環境）。架起 DMTF <b>Redfish-Mockup-Server</b>，用 <code>curl</code> 把 <code>/redfish/v1</code> 底下的樹整個走一遍：Systems、Chassis、Managers、UpdateService。這是 REST，我最熟的東西。<br><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 3 章讀完，第 1–2 章習題補做至少 10 題（<code>C/ch1/exercise/</code> 目前是空的）。</td></tr>
+    <tr><td>W2<br>11/02–11/08</td><td>在 Linux VM 裡跑 <code>lspci -vvv</code>、<code>dmidecode</code>、<code>acpidump</code>、<code>dmesg</code>，把 Redfish 看到的資訊跟 OS 裡看到的對起來（同一個 PCIe 裝置在兩邊各叫什麼）。用 QEMU 加 OVMF 開進 UEFI Shell，在 Shell 裡打 <code>memmap</code>、<code>pci</code>、<code>acpiview</code>。<br><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 4 章前半（函式、標頭檔、多檔編譯，延續 <code>ch1/main.c</code> + <code>counter.c</code> 的 <code>extern</code> 練習）。</td></tr>
+    <tr><td>W3<br>11/09–11/15</td><td>如果能取得 OpenBMC 的預建 QEMU image（例如官方 CI 產出的 romulus 或 ast2600-evb image），就把它開起來，從它的 Redfish 看「真的 BMC」跟 mockup 差在哪；取得不到就先跳過，留到 S4。<b>畫出全景圖</b>：從按下電源到 OS，再到 BMC，用自己的話標出每一層。整理出第一版問題清單（至少 20 題）。<br><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 4 章後半（前置處理器、<code>#define</code> 巨集；EDK II 到處都是巨集）。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>成品：</b>全景圖（一頁）加問題清單第一版。<b>11/15 決定</b>：用這份 top-down 計劃，還是 schedule.html 的 bottom-up 計劃當主計劃。</div>
+
+  <div class="phase" style="--c:var(--s1)">
+    <h3>S1　從外面操作伺服器：Python 診斷工具（L1 + L2）</h3>
+    <div class="when">2026-11-16 → 2027-01-10（8 週）· 最貼近我強項的一層</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–2<br>11/16–11/29</td><td><b>Redfish 和 IPMI</b>：讀 DMTF Redfish schema（ComputerSystem、Chassis、Sensor、LogService），用 <code>ipmitool</code> 讀 SEL、SDR、sensor，搞懂 IPMI 和 Redfish 各自的用途。<br><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 5 章前半：指標、陣列和指標、指標運算。</td></tr>
+    <tr><td>W3–5<br>11/30–12/20</td><td><b>做 <code>server-diag</code></b>（Python CLI）：<br>· 頻外（out-of-band）：透過 Redfish 收集硬體清單、感測器、SEL，比對各元件韌體版本<br>· 頻內（in-band）：在 Linux 裡呼叫 <code>lspci</code>、<code>dmidecode</code>、<code>smartctl</code>、<code>nvme-cli</code>、<code>ethtool</code>，把兩邊的資料合併<br>· 輸出一份 HTML 或 JSON 診斷報告，附 pytest 和 CI<br><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 5 章後半：字串、指標陣列、函式指標。</td></tr>
+    <tr><td>W6–8<br>12/21–01/10</td><td><b>往下挖一層：用 C 自己讀 PCIe config space</b>。<code>lspci</code> 的資料是從哪來的？答案是 <code>/sys/bus/pci/devices/*/config</code>。寫一支 C 小工具 <code>pcidump</code>：讀這個檔案，解出 vendor ID、device ID、class code、BAR、capability list。這是第一次「因為需要」而寫 C。對照 pciutils 的原始碼看別人怎麼寫。<br><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 6 章：struct、struct 指標、union、bit-field（PCIe header 就是一個 struct）；CS:APP 第 2 章（整數表示、endianness，讀 config space 時會遇到）。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>成品：</b><code>server-diag</code>（Python，附測試和 CI）、<code>pcidump</code>（C）、blog 第 1 篇「從 Redfish 往下挖到 PCIe config space」。<br><b>G1（01/10）過關後</b>：開始投 A 路線的診斷和測試工具職缺（見 §9）。</div>
+
+  <div class="phase" style="--c:var(--s2)">
+    <h3>S2　打開開機韌體：先看懂（L3）</h3>
+    <div class="when">2027-01-11 → 2027-03-07（8 週）</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–2</td><td>從原始碼 build EDK II／OVMF，開啟完整 debug log。<b>從 log 往回追</b>：每一行在 SEC、PEI、DXE、BDS 哪一段？是哪個 driver 印的？用 <code>grep</code> 在原始碼裡找到它。這時才讀《Beyond BIOS》，只讀能解釋 log 的那幾章。<br><span class="tag" style="color:var(--lang-c)">補強</span> CS:APP 第 9 章（虛擬記憶體；OVMF 的 memory map 和 paging 會遇到）。</td></tr>
+    <tr><td>W3–4</td><td>在 GCP VM 用 KVM 加速，用 gdb 載入 OVMF 的 symbol，在 DXE 的 driver entry point 下中斷點，一步一步跟。遇到組語就讀 CS:APP 第 3 章對應的小節。<br><span class="tag" style="color:var(--lang-c)">補強</span> CS:APP 第 3 章：函式呼叫慣例、stack frame（gdb 裡一定會看到）。</td></tr>
+    <tr><td>W5–7</td><td><b>UEFI Shell app</b>：用 C 寫一個 app，做跟 S1 <code>server-diag</code> 頻內部分一樣的事，只是在 OS 之前做：印 memory map、用 <code>EFI_PCI_IO_PROTOCOL</code> 列舉 PCI 裝置、列出 ACPI tables。拿它的輸出跟 S1 在 Linux 看到的比對，同一份硬體，兩個時間點。<br><span class="tag" style="color:var(--lang-c)">補強</span> 回頭複習 K&amp;R 5.11 和第 6 章：UEFI 的 protocol 就是「裝滿函式指標的 struct」，這時會真正看懂。</td></tr>
+    <tr><td>W8</td><td><span class="tag" style="color:var(--lang-rust)">Rust</span> 選做：用 <code>uefi</code> crate 把 Shell app 的 memory map 部分重寫一次，對照 C 版。<br>不看筆記講一遍開機流程，寫 blog 第 2 篇。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>成品：</b><code>uefi-playground</code> 的第一部分（Shell app）、開機 log 對照表（每一行 log 對到哪個 phase、哪個 driver）、blog 第 2 篇。</div>
+
+  <div class="phase" style="--c:var(--s3)">
+    <h3>S3　修改開機韌體（L4）：對應 Jenny 在 Insyde 的工作</h3>
+    <div class="when">2027-03-08 → 2027-05-16（10 週）</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–3</td><td><b>DXE driver</b>：定義一個 protocol 並 install，讓 S2 的 Shell app 去 consume。讀寫 UEFI variable（NV／BS／RT 屬性）。<br><span class="tag" style="color:var(--lang-c)">補強</span> CS:APP 第 7 章（linking；EDK II 的 <code>.inf</code>、<code>.dsc</code>、library class 會用到）。</td></tr>
+    <tr><td>W4–5</td><td><b>HII Setup 頁</b>：用 VFR 做一個 BIOS Setup 選單，存成 variable，讓 driver 讀回來改變行為。這是 Jenny 在 Insyde 做的 OEM feature 的縮小版。<br><span class="tag" style="color:var(--lang-c)">補強</span> 開始每天 20 分鐘 C 手寫題（見 §6）。</td></tr>
+    <tr><td>W6–7</td><td><b>ACPI</b>：用 <code>iasl -d</code> 反組譯 QEMU 的 DSDT。寫一個自訂 SSDT（含 <code>_DSM</code> 或 WMI 風格的 method），在 Linux 裡用 <code>acpidump</code> 驗證，接回 S1 看過的 ACPI tables。</td></tr>
+    <tr><td>W8–10</td><td><b>coreboot 和真機</b>：在 QEMU q35 上 build coreboot 加 edk2 payload，比較它跟 OVMF 的 log 差在哪。接著在真機上操作：用 CH341A 先備份原廠 flash，再燒入自己 build 的 image，接 UART 看 log（硬體清單見 schedule.html §10）。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>成品：</b><code>uefi-playground</code> 完整版（Shell app、DXE driver、HII Setup 頁、SSDT）、coreboot 真機燒錄紀錄、blog 第 3 篇。<br><b>G3（05/16）過關後</b>：開始投 BIOS 職缺，例如仁寶高雄的 NB BIOS（無經驗可）。</div>
+
+  <div class="phase" style="--c:var(--s4)">
+    <h3>S4　拆開 BMC（L5）：Redfish 背後是怎麼實作的</h3>
+    <div class="when">2027-05-17 → 2027-07-25（10 週）· C++ 在這裡成為主力</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–3</td><td>在 GCP 上用 Yocto build OpenBMC（<code>romulus</code> 或 <code>ast2600-evb</code>），在 QEMU 跑起來。<b>從 S1 的 Redfish 請求往回追</b>：一個 <code>GET /redfish/v1/Chassis/.../Sensors</code> 進到 bmcweb，透過 D-Bus 問了誰？用 <code>busctl</code> 觀察。<br><span class="tag" style="color:var(--lang-cpp)">C++</span> 讀 bmcweb 看不懂的地方才查《A Tour of C++》：class、RAII、lambda、smart pointer。</td></tr>
+    <tr><td>W4–7</td><td><span class="tag" style="color:var(--lang-cpp)">C++</span> <b>openbmc-virtual-sensor</b>：用 sdbusplus 寫一個 phosphor 風格的虛擬感測器，實作 <code>xyz.openbmc_project.Sensor.Value</code>，用 meson 建置，寫 bitbake recipe 放進 image。最後讓 S1 的 <code>server-diag</code> 透過 Redfish 讀到它，從最上層驗證最下層。</td></tr>
+    <tr><td>W8–9</td><td><b>RAS</b>：MCA／MCE、ECC 的 CE 和 UE、Linux EDAC、rasdaemon；用 <code>aer-inject</code> 做 PCIe AER 錯誤注入，看錯誤怎麼一路出現在 dmesg、SEL、Redfish LogService。在 <code>server-diag</code> 加上錯誤分析功能。</td></tr>
+    <tr><td>W10</td><td><span class="tag" style="color:var(--lang-rust)">Rust</span> 選做：Pico 2 加 embassy 讀 I2C 溫度感測器（迷你 BMC 感測器），跟 C++ daemon 對照。寫 blog 第 4 篇。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>成品：</b><code>openbmc-virtual-sensor</code>（C++，含 bitbake recipe）、<code>server-diag</code> 加上 RAS 分析、blog 第 4 篇。<br><b>G4（07/25）過關後</b>：開始投 BMC 職缺（鴻海高雄、緯穎台南）。</div>
+
+  <div class="phase" style="--c:var(--s5)">
+    <h3>S5　挖到最底層（L6）：reset vector 和 bootloader</h3>
+    <div class="when">2027-07-26 → 2027-09-05（6 週）· 收尾，也是面試的底氣</div>
+  </div>
+  <table class="weeks"><tbody>
+    <tr><td>W1–4</td><td>回答 S2 留下的問題「OVMF 的 SEC 之前發生了什麼」：reset vector、real mode、boot sector（NASM）、A20、GDT、切到 protected mode 和 long mode、E820、從 port <code>0x3F8</code> 輸出到 serial。用 <code>qemu -s -S</code> 接 gdb。這時寫 bootloader 會比一開始就寫容易很多，因為已經知道它在整條鏈裡的位置。</td></tr>
+    <tr><td>W5–6</td><td><b>開源 patch</b>：挑一個 good-first-issue 或文件修正，候選有 bmcweb（C++）、webui-vue（Vue，最快上手）、edk2（C）、uefi crate（Rust）。<br>更新全景圖：六層全部打通，寫 blog 第 5 篇「從 Redfish 一路挖到 reset vector」。</td></tr>
+  </tbody></table>
+  <div class="deliver"><b>成品：</b><code>qemu-x86-bootloader</code>、至少 1 個送出的上游 patch、全景圖最終版、blog 第 5 篇（整個系列的總結，也是履歷上最好的一個連結）。</div>
+</section>
+
+<!-- 6 -->
+<section id="pull">
+  <h2>6. 補強軌：K&amp;R、CS:APP 什麼時候被拉進來</h2>
+  <p class="lead">書還是要讀完，只是順序由「主軌下一步要用到什麼」決定。下表是每個章節第一次「被需要」的地方，讀的時候就知道它在伺服器的哪裡出現。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>章節</th><th>什麼時候讀</th><th>主軌裡在哪裡用到</th></tr></thead>
+    <tbody>
+      <tr><td>K&amp;R 第 1–2 章 ✅</td><td>已讀完</td><td>bit 運算：<a href="K&amp;R.html">K&amp;R.html</a> 裡的「假想暫存器」例子，S1 解 PCIe config space 時會再用一次</td></tr>
+      <tr><td>K&amp;R 第 3 章</td><td>S0（現在）</td><td>筆記裡的「輪詢硬體狀態一定要加 timeout」，S3 寫 driver 會遇到</td></tr>
+      <tr><td>K&amp;R 第 4 章</td><td>S0</td><td>多檔編譯、標頭檔、巨集：EDK II 的 <code>DEBUG()</code>、<code>EFI_ERROR()</code> 都是巨集</td></tr>
+      <tr><td>K&amp;R 第 5 章</td><td>S1</td><td><code>pcidump</code> 讀檔案和 buffer；UEFI 的 <code>gBS-&gt;</code>、<code>gST-&gt;</code> 是結構指標，protocol 裡是函式指標</td></tr>
+      <tr><td>K&amp;R 第 6 章</td><td>S1</td><td>PCIe header、ACPI table header、UEFI protocol 都是 struct；<code>#pragma pack</code> 和對齊</td></tr>
+      <tr><td>K&amp;R 第 7–8 章</td><td>S2 期間略讀</td><td>韌體裡沒有 stdio，重點只在了解差異；第 8 章的 <code>malloc</code> 實作對照 UEFI 的 <code>AllocatePool</code></td></tr>
+      <tr><td>CS:APP 第 2 章</td><td>S1 末</td><td>endianness、整數表示：讀 config space 和 ACPI table 的原始位元組</td></tr>
+      <tr><td>CS:APP 第 9 章</td><td>S2 初</td><td>UEFI memory map、identity mapping、paging</td></tr>
+      <tr><td>CS:APP 第 3 章</td><td>S2 中</td><td>用 gdb 逐步跟 DXE 時看到的組語、stack frame、calling convention</td></tr>
+      <tr><td>CS:APP 第 7 章</td><td>S3 初</td><td>EDK II 的 library class 和 build 系統、symbol、linker</td></tr>
+      <tr><td>CS:APP 第 6 章</td><td>S5 前選讀</td><td>Cache-as-RAM（開機最早期沒有 DRAM 可用時，拿 cache 當記憶體）</td></tr>
+      <tr><td>C 手寫題</td><td>S3 起每天 20 分鐘</td><td>面試必考：<code>memcpy</code>／<code>memmove</code>、bit 操作、linked list、ring buffer、<code>volatile</code>、struct padding</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout ok">落後時的原則跟 schedule.html 一樣：<b>補強軌的 C 不砍</b>。主軌可以縮小成品範圍（例如 Setup 頁先不做），Rust 選做項目可以整個跳過。</div>
+</section>
+
+<!-- 7 -->
+<section id="langs">
+  <h2>7. C、C++、Rust 的出場順序</h2>
+  <p class="lead">沿用 2026-10-26 定下的比重（C 約 55%、C++ 約 25%、Rust 約 20%），但改成「主軌需要時才上場」。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>語言</th><th>第一次上場</th><th>主軌裡的成品</th><th>跟 schedule.html 的差別</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag" style="color:var(--lang-c)">C</span></td><td>S1 的 <code>pcidump</code>（補強軌從現在就持續）</td><td><code>pcidump</code>、UEFI Shell app、DXE driver、bootloader</td><td>不變，仍是主線；只是第一個 C 作品從 bootloader 改成更貼近伺服器的 <code>pcidump</code></td></tr>
+      <tr><td><span class="tag" style="color:var(--lang-cpp)">C++</span></td><td>S4 讀 bmcweb 原始碼</td><td><code>openbmc-virtual-sensor</code></td><td>不再先讀完《A Tour of C++》，改成讀 OpenBMC 原始碼時遇到什麼查什麼；開始時間從 2027-02 延到 2027-05，但更聚焦</td></tr>
+      <tr><td><span class="tag" style="color:var(--lang-rust)">Rust</span></td><td>S2 選做（<code>uefi</code> crate）</td><td>Rust 版 memory map app、Pico 2 感測器（皆選做）</td><td>從「每個階段都要有」降為選做，週日有空才做；the Book 可以當週日的輕量閱讀</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 8 -->
+<section id="gates">
+  <h2>8. 決策關卡</h2>
+  <p class="lead">每個關卡檢查兩件事：主軌成品有沒有做出來，以及補強軌有沒有跟上。只做專案、C 沒跟上的話，面試一樣過不了。</p>
+  <div class="gate"><div class="k">G0′ · 11/15</div><div><b>用哪份計劃？</b>全景圖畫完後，如果覺得「從上往下」讓我更想繼續挖，就用這份當主計劃，schedule.html 當參考；反之就回到 schedule.html。G0（轉不轉、地點策略）如果還沒正式決定，這裡一起決定。</div></div>
+  <div class="gate"><div class="k">G1 · 2027/01/10</div><div><b>開始投 A 路線？</b>過關條件：<code>server-diag</code> 和 <code>pcidump</code> 上 GitHub；K&amp;R 讀到第 6 章；能不看筆記解釋 <code>lspci</code> 的資料是從哪裡來的。<br>沒過的話：延後投遞，先補 C。</div></div>
+  <div class="gate"><div class="k">G2 · 2027/03/07</div><div><b>看得懂開機嗎？</b>過關條件：能拿著一份 OVMF log 講出每一段是 SEC、PEI、DXE 還是 BDS；Shell app 能跑。<br>沒過的話：S3 的 Setup 頁和 SSDT 先縮減，把時間給 DXE driver。</div></div>
+  <div class="gate"><div class="k">G3 · 2027/05/16</div><div><b>開始投 BIOS 職缺？</b>過關條件：DXE driver 加 protocol 完成、真機燒錄成功；C 手寫題做過 30 題以上。</div></div>
+  <div class="gate"><div class="k">G4 · 2027/07/25</div><div><b>開始投 BMC 職缺？</b>過關條件：虛擬感測器從 Redfish 讀得到；能說明一個 Redfish 請求在 BMC 裡經過哪些元件。</div></div>
+  <div class="gate"><div class="k">G5 · 2027/12</div><div><b>韌體開發職 offer。</b>排序跟 schedule.html 相同：有 BIOS 內轉路徑的 team &gt; 直接進 BIOS team 但地點差 &gt; 只做純測試的職缺。如果 2027 年上半年已經拿到 A 路線的 offer，S4–S5 改成在職進修，每週降到 8 小時，時程順延。</div></div>
+  <div class="gate"><div class="k">最晚 · 2028/03</div><div>還沒拿到韌體開發職的話，接受 validation 或 tool 職當跳板，或暫停並重新評估，不要無限期延長。</div></div>
+</section>
+
+<!-- 9 -->
+<section id="jobs">
+  <h2>9. 每個螺旋解鎖的職缺</h2>
+  <p class="lead">用 2026-10-05 在 104 上查到的台南、高雄職缺當參考（台南到高雄軟體園區可以每天通勤）。職缺會變動，投遞前要重新查。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>解鎖時間</th><th>職缺</th><th>公司／地點</th><th>對應的成品</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap">G1 · 2027/01</td><td><a href="https://www.104.com.tw/job/9540i">Server Diagnostic Software Engineer</a></td><td>鴻海／高雄軟體園區</td><td><code>server-diag</code>、<code>pcidump</code>。JD 幾乎就是 S1 的內容（Python、Redfish、IPMI、lspci、dmidecode）</td></tr>
+      <tr><td class="nowrap">G1 · 2027/01</td><td><a href="https://www.104.com.tw/job/94kmo">伺服器測試軟體開發工程師</a>、<a href="https://www.104.com.tw/job/94km8">GPU伺服器產測軟體系統工程師</a></td><td>緯創／高雄</td><td><code>server-diag</code>；客戶窗口經驗</td></tr>
+      <tr><td class="nowrap">G2 · 2027/03</td><td><a href="https://www.104.com.tw/job/8xel4">系統驗證工程師</a></td><td>鴻海／高雄軟體園區</td><td>Python、C、Linux；加上看得懂開機流程</td></tr>
+      <tr><td class="nowrap">G3 · 2027/05</td><td><a href="https://www.104.com.tw/job/7kgie">NB韌體設計(BIOS)工程師</a></td><td>仁寶／高雄</td><td><code>uefi-playground</code>、coreboot 真機。JD 寫「無經驗可」，是 Jenny 那種 B 路線的入口</td></tr>
+      <tr><td class="nowrap">G3 · 2027/05</td><td><a href="https://www.104.com.tw/job/7qx4j">BIOS研發工程師</a></td><td>鴻海／高雄軟體園區</td><td>同上；JD 要 1–2 年 BIOS 經驗，可以試投</td></tr>
+      <tr><td class="nowrap">G4 · 2027/07</td><td><a href="https://www.104.com.tw/job/36u71">BMC研發工程師</a></td><td>鴻海、鴻佰／高雄軟體園區</td><td><code>openbmc-virtual-sensor</code>；JD 要紮實的 C 和 Linux driver 基礎</td></tr>
+      <tr><td class="nowrap">G4 · 2027/07</td><td><a href="https://www.104.com.tw/job/949sq">BMC韌體研發工程師</a></td><td>緯穎／台南安定</td><td>同上；JD 要 2 年嵌入式經驗，可能要等第一份工作之後</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">新唐（歸仁）、台達（南科）的 BMC 和資料中心職缺要求碩士，暫不列入；在職專班的考量見 schedule.html §11。</p>
+</section>
+
+<!-- 10 -->
+<section id="compare">
+  <h2>10. 跟 schedule.html 對照</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th></th><th>schedule.html（bottom-up）</th><th>schedule2.html（top-down）</th></tr></thead>
+    <tbody>
+      <tr><td><b>學習順序</b></td><td>C → CS:APP → bootloader → UEFI → OpenBMC → Redfish</td><td>Redfish → Linux 看到的硬體 → UEFI（看）→ UEFI（改）→ OpenBMC 內部 → bootloader</td></tr>
+      <tr><td><b>第一個作品</b></td><td>bootloader（2027-02）</td><td><code>server-diag</code> 和 <code>pcidump</code>（2027-01）</td></tr>
+      <tr><td><b>第一次能投的職缺</b></td><td>2027-06（零星）、2027-09（正式）</td><td>2027-01（A 路線的診斷和測試職）</td></tr>
+      <tr><td><b>C 的扎實度</b></td><td>前 4 個月幾乎全部投入 C，基礎最扎實</td><td>靠補強軌 30% 維持；風險較高，用 G1–G3 的 C 檢查點把關</td></tr>
+      <tr><td><b>C++</b></td><td>2027-02 起讀完一本書</td><td>2027-05 起看原始碼時邊查邊學</td></tr>
+      <tr><td><b>適合的情況</b></td><td>想先把基礎打穩、不急著投；或是喜歡按部就班讀書</td><td>需要早點有作品和收入選項；讀書讀不下去、需要看到東西跑起來才有動力</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">兩份計劃共用同一套實驗環境（schedule.html §10）、同一份面試題庫（§9）和同樣的地點與並行事項考量（§7、§11）。</p>
+</section>
+
+<!-- 11 -->
+<section id="risks">
+  <h2>11. Top-down 的風險與對策</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>風險</th><th>可能性</th><th>對策</th></tr></thead>
+    <tbody>
+      <tr><td>會用工具、會跟教學操作，但基礎有洞，面試手寫題答不出來</td><td>高</td><td>補強軌的 C 不能砍；G1、G3 都檢查 K&amp;R 進度和手寫題數量；S3 起每天 20 分鐘手寫題</td></tr>
+      <tr><td>一直往下挖，挖到失控（例如為了一行 log 讀完整本 spec）</td><td>高</td><td>守住「挖到能解釋那一行就停」；其他問題記進問題清單，不要當場追</td></tr>
+      <tr><td>照著教學貼指令，跑起來了卻不懂</td><td>中</td><td>每個螺旋都要做「④ 改它、弄壞它」和「⑤ 不看筆記講一遍」，沒做到就不算完成</td></tr>
+      <tr><td>A 路線太早拿到 offer，之後停在測試工具，沒有往韌體開發走</td><td>中</td><td>接 offer 前先問清楚內轉 BIOS／BMC team 的機會；入職後 S4–S5 照樣做完（每週 8 小時）</td></tr>
+      <tr><td>S1 的工具做得太大，變成另一個後端專案</td><td>中</td><td><code>server-diag</code> 只做 CLI 加報告，不做 web UI；W8 一到就收尾，進入 <code>pcidump</code></td></tr>
+      <tr><td>OpenBMC 的預建 image 取得不到，S0 看不到真的 BMC</td><td>低</td><td>S0 只用 Redfish mockup 也足夠；真的 BMC 留到 S4 自己 build</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 12 -->
+<section id="tracker">
+  <h2>12. 進度追蹤</h2>
+  <p class="lead">勾選狀態只存在這台電腦的瀏覽器裡（localStorage），跟 schedule.html 的勾選分開記錄。</p>
+  <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+  <p class="small" id="count"></p>
+
+  <h3>S0 · 全景</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="s0-1"><span>架起 Redfish-Mockup-Server，用 curl 走完 <code>/redfish/v1</code></span><span class="due">11/01</span></li>
+    <li><input type="checkbox" data-id="s0-b1"><span><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 3 章讀完；第 1–2 章習題補做 10 題</span><span class="due">11/01</span></li>
+    <li><input type="checkbox" data-id="s0-2"><span>在 Linux VM 跑 lspci、dmidecode、acpidump，跟 Redfish 的資訊對起來</span><span class="due">11/08</span></li>
+    <li><input type="checkbox" data-id="s0-3"><span>OVMF 開進 UEFI Shell，跑 memmap、pci、acpiview</span><span class="due">11/08</span></li>
+    <li><input type="checkbox" data-id="s0-b2"><span><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 4 章</span><span class="due">11/15</span></li>
+    <li><input type="checkbox" data-id="s0-4"><span>全景圖（一頁）加問題清單第一版（20 題以上）</span><span class="due">11/15</span></li>
+    <li><input type="checkbox" data-id="s0-g"><span><b>G0′</b>：決定主計劃用 top-down 還是 bottom-up</span><span class="due">11/15</span></li>
+  </ul>
+
+  <h3>S1 · Python 診斷工具（L1 + L2）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="s1-1"><span>ipmitool 讀 SEL、SDR、sensor；讀完 Redfish 主要 schema</span><span class="due">11/29</span></li>
+    <li><input type="checkbox" data-id="s1-b1"><span><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 5 章</span><span class="due">12/20</span></li>
+    <li><input type="checkbox" data-id="s1-2"><span><code>server-diag</code>：頻外加頻內收集、診斷報告、pytest 和 CI</span><span class="due">12/20</span></li>
+    <li><input type="checkbox" data-id="s1-3"><span><code>pcidump</code>（C）：從 sysfs 讀 PCIe config space，解出 header 和 capability</span><span class="due">01/10</span></li>
+    <li><input type="checkbox" data-id="s1-b2"><span><span class="tag" style="color:var(--lang-c)">補強</span> K&amp;R 第 6 章、CS:APP 第 2 章</span><span class="due">01/10</span></li>
+    <li><input type="checkbox" data-id="s1-4"><span>blog 第 1 篇；<b>G1</b> 檢查，過關就開始投 A 路線</span><span class="due">01/10</span></li>
+  </ul>
+
+  <h3>S2 · 看懂開機（L3）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="s2-1"><span>從原始碼 build OVMF，完成開機 log 對照表</span><span class="due">01/24</span></li>
+    <li><input type="checkbox" data-id="s2-b1"><span><span class="tag" style="color:var(--lang-c)">補強</span> CS:APP 第 9 章、第 3 章</span><span class="due">02/07</span></li>
+    <li><input type="checkbox" data-id="s2-2"><span>在 GCP 用 KVM 加 gdb 逐步跟 DXE driver</span><span class="due">02/07</span></li>
+    <li><input type="checkbox" data-id="s2-3"><span>UEFI Shell app（memory map、PCI、ACPI），跟 S1 的輸出比對</span><span class="due">02/28</span></li>
+    <li><input type="checkbox" data-id="s2-r"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> 選做：用 uefi crate 重寫 memory map</span><span class="due">03/07</span></li>
+    <li><input type="checkbox" data-id="s2-4"><span>blog 第 2 篇；<b>G2</b> 檢查</span><span class="due">03/07</span></li>
+  </ul>
+
+  <h3>S3 · 修改開機韌體（L4）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="s3-1"><span>DXE driver、自訂 protocol、UEFI variable</span><span class="due">03/28</span></li>
+    <li><input type="checkbox" data-id="s3-b1"><span><span class="tag" style="color:var(--lang-c)">補強</span> CS:APP 第 7 章；開始每天 20 分鐘手寫題</span><span class="due">03/28</span></li>
+    <li><input type="checkbox" data-id="s3-2"><span>HII／VFR Setup 頁</span><span class="due">04/11</span></li>
+    <li><input type="checkbox" data-id="s3-3"><span>自訂 SSDT，在 Linux 用 acpidump 驗證</span><span class="due">04/25</span></li>
+    <li><input type="checkbox" data-id="s3-4"><span>coreboot on QEMU；真機先備份 flash 再燒入，看 UART log</span><span class="due">05/16</span></li>
+    <li><input type="checkbox" data-id="s3-5"><span>blog 第 3 篇；<b>G3</b> 檢查（手寫題 30 題以上），開始投 BIOS 職缺</span><span class="due">05/16</span></li>
+  </ul>
+
+  <h3>S4 · 拆開 BMC（L5）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="s4-1"><span>OpenBMC 用 Yocto build 完，在 QEMU 上跑起來</span><span class="due">06/06</span></li>
+    <li><input type="checkbox" data-id="s4-2"><span>追完一個 Redfish 請求在 bmcweb、D-Bus 裡的路徑</span><span class="due">06/06</span></li>
+    <li><input type="checkbox" data-id="s4-3"><span><span class="tag" style="color:var(--lang-cpp)">C++</span> <code>openbmc-virtual-sensor</code>，讓 <code>server-diag</code> 透過 Redfish 讀到</span><span class="due">07/04</span></li>
+    <li><input type="checkbox" data-id="s4-4"><span>RAS 和 AER 錯誤注入，<code>server-diag</code> 加上錯誤分析</span><span class="due">07/18</span></li>
+    <li><input type="checkbox" data-id="s4-r"><span><span class="tag" style="color:var(--lang-rust)">Rust</span> 選做：Pico 2 加 embassy 的 I2C 感測器</span><span class="due">07/25</span></li>
+    <li><input type="checkbox" data-id="s4-5"><span>blog 第 4 篇；<b>G4</b> 檢查，開始投 BMC 職缺</span><span class="due">07/25</span></li>
+  </ul>
+
+  <h3>S5 · 最底層（L6）</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="s5-1"><span><code>qemu-x86-bootloader</code>：protected／long mode、E820、serial 輸出</span><span class="due">08/22</span></li>
+    <li><input type="checkbox" data-id="s5-2"><span>送出第一個上游 patch</span><span class="due">09/05</span></li>
+    <li><input type="checkbox" data-id="s5-3"><span>全景圖最終版加 blog 第 5 篇</span><span class="due">09/05</span></li>
+  </ul>
+
+  <h3>求職</h3>
+  <ul class="check">
+    <li><input type="checkbox" data-id="j-1"><span>firmware 版履歷第一版（主打 <code>server-diag</code> 和 <code>pcidump</code>），放在新 branch</span><span class="due">01/10</span></li>
+    <li><input type="checkbox" data-id="j-2"><span>A 路線：投鴻海 Server Diagnostic、緯創 server test 等職缺</span><span class="due">02/28</span></li>
+    <li><input type="checkbox" data-id="j-3"><span>履歷加入 UEFI 和 coreboot 作品，投 BIOS 職缺</span><span class="due">05/31</span></li>
+    <li><input type="checkbox" data-id="j-4"><span>履歷加入 OpenBMC 作品，投 BMC 職缺</span><span class="due">08/15</span></li>
+    <li><input type="checkbox" data-id="j-5"><span><b>簽下第一份韌體開發職 offer</b>（G5）</span><span class="due">12/31</span></li>
+  </ul>
+</section>
+
+<footer>建立於 2026-10-27 · 搭配 <a href="schedule.html">schedule.html</a>（bottom-up 版）與 <a href="K&amp;R.html">K&amp;R.html</a> 使用 · 私人規劃文件，不公開</footer>
+</main>
+
+<button class="theme-btn" id="themeBtn" type="button">切換深淺色</button>
+
+<script>
+(function(){
+  // months index: 0 = 2026-10 ... 17 = 2028-03; positions are fractional months
+  var N = 18;
+  var months = ["10","11","12","1","2","3","4","5","6","7","8","9","10","11","12","1","2","3"];
+  var rows = [
+    {lab:"S0 全景",        c:"--s0", s:0.84, e:1.5,   t:"全景"},
+    {lab:"S1 診斷工具",    c:"--s1", s:1.5,  e:3.32,  t:"Redfish · IPMI · pcidump"},
+    {lab:"S2 看懂開機",    c:"--s2", s:3.33, e:5.22,  t:"OVMF log · gdb · Shell app"},
+    {lab:"S3 修改韌體",    c:"--s3", s:5.25, e:7.5,   t:"DXE · HII · SSDT · coreboot"},
+    {lab:"S4 拆開 BMC",    c:"--s4", s:7.53, e:9.8,   t:"OpenBMC · C++ · RAS"},
+    {lab:"S5 最底層",      c:"--s5", s:9.81, e:11.15, t:"bootloader · patch"},
+    {lab:"補強軌 C",       c:"--lang-c", s:0.84, e:11.15, t:"K&R 3–8 → CS:APP 2/9/3/7 → 手寫題"},
+    {lab:"求職 A 路線",    c:"--p4", s:3.33, e:8.97,  t:"診斷／測試職"},
+    {lab:"求職 韌體開發",  c:"--p4", s:7.5,  e:14.97, t:"BIOS → BMC"},
+    {lab:"緩衝",           c:"--p5", s:15.0, e:18.0,  t:"緩衝"}
+  ];
+  var miles = [
+    {m:1.47,  c:"--s0", t:"G0′ 選計劃"},
+    {m:3.3,   c:"--s1", t:"G1 開始投 A"},
+    {m:5.2,   c:"--s2", t:"G2"},
+    {m:7.48,  c:"--s3", t:"G3 投 BIOS"},
+    {m:9.78,  c:"--s4", t:"G4 投 BMC"},
+    {m:14.9,  c:"--p4", t:"G5 offer"},
+    {m:17.9,  c:"--p5", t:"最晚期限"}
+  ];
+  var g = document.getElementById("gantt");
+  if(!g) return;
+  g.style.gridTemplateColumns = "150px repeat("+N+",minmax(30px,1fr))";
+  var html = '<div class="hd"></div><div class="hd yr" style="grid-column:span 3">2026</div><div class="hd yr" style="grid-column:span 12">2027</div><div class="hd yr" style="grid-column:span 3">2028</div>';
+  html += '<div class="hd"></div>';
+  months.forEach(function(m){ html += '<div class="hd">'+m+'月</div>'; });
+  function rowHtml(label, inner){
+    var h = '<div class="lab">'+label+'</div>';
+    for(var i=0;i<N;i++){ h += '<div class="cell">'+(inner[i]||"")+'</div>'; }
+    return h;
+  }
+  rows.forEach(function(r){
+    var inner = {};
+    var first = Math.floor(r.s);
+    var left = (r.s-first)*100;
+    var width = (r.e-r.s)*100;
+    inner[first] = '<div class="bar" style="left:'+left+'%;width:calc('+width+'% + '+Math.floor(r.e-r.s)+'px);background:var('+r.c+')" title="'+r.t+'">'+r.t+'</div>';
+    html += rowHtml(r.lab, inner);
+  });
+  var mi = {};
+  miles.forEach(function(m){
+    var i = Math.min(N-1, Math.floor(m.m));
+    mi[i] = (mi[i]||"") + '<div class="mile" title="'+m.t+'" style="left:calc('+((m.m-i)*100)+'% - 7px);background:var('+m.c+')"></div>';
+  });
+  html += rowHtml("◆ 決策關卡", mi);
+  g.innerHTML = html;
+  g.querySelectorAll(".cell").forEach(function(c){ c.style.overflow="visible"; });
+
+  document.getElementById("legend").innerHTML =
+    rows.slice(0,7).map(function(r){ return '<span><i style="background:var('+r.c+')"></i>'+r.lab+'</span>'; }).join("") +
+    '<span>◆ G0′ 11/15 · G1 1/10 · G2 3/7 · G3 5/16 · G4 7/25 · G5 2027/12 · 最晚 2028/03</span>';
+
+  // ---- Checklist (localStorage, best-effort) ----
+  var KEY = "fw-career-topdown-v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch(e){ state = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.check input[type=checkbox]'));
+  function refresh(){
+    var done = 0;
+    boxes.forEach(function(b){ b.parentNode.classList.toggle("done", b.checked); if(b.checked) done++; });
+    document.getElementById("bar").style.width = (boxes.length ? done/boxes.length*100 : 0) + "%";
+    document.getElementById("count").textContent = "已完成 " + done + " / " + boxes.length + " 項";
+  }
+  boxes.forEach(function(b){
+    b.checked = !!state[b.dataset.id];
+    b.addEventListener("change", function(){
+      state[b.dataset.id] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+      refresh();
+    });
+  });
+  refresh();
+
+  // ---- Theme toggle (shared preference with schedule.html) ----
+  var root = document.documentElement;
+  try { var t = localStorage.getItem("fw-career-theme"); if(t) root.setAttribute("data-theme", t); } catch(e){}
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var next = cur === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("fw-career-theme", next); } catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

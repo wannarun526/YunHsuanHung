@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自我介紹 — 洪昀璿（Sean）</title>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --muted:#5c5c5c;
+    --line:#d8d8d8;
+    --accent:#0067b8;
+    --accent-soft:#e8f1fa;
+    --surround:#1e2228;
+    --font: "Segoe UI", -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", "Helvetica Neue", Arial, sans-serif;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html, body{ height:100%; }
+  body{
+    background:var(--surround);
+    font-family:var(--font);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+
+  /* ---------- stage: fixed 1280×720 canvas, scaled to fit ---------- */
+  .viewport{ position:fixed; inset:0; overflow:hidden; }
+  .stage{
+    width:1280px; height:720px; position:absolute; left:50%; top:50%;
+    transform:translate(-50%, -50%) scale(var(--scale, 1)); transform-origin:center;
+  }
+  .slide{
+    position:absolute; inset:0; background:#fff;
+    padding:64px 84px 72px; display:none; flex-direction:column;
+    box-shadow:0 8px 40px rgba(0,0,0,.35);
+  }
+  .slide.active{ display:flex; }
+
+  .kicker{
+    font-size:15px; font-weight:700; letter-spacing:.12em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:10px;
+  }
+  h1{ font-size:40px; font-weight:700; line-height:1.2; letter-spacing:-.01em; }
+  h2{ font-size:34px; font-weight:700; line-height:1.2; margin-bottom:32px; }
+  h2::after{
+    content:""; display:block; width:56px; height:4px;
+    background:var(--accent); margin-top:14px; border-radius:2px;
+  }
+  p, li{ font-size:21px; line-height:1.55; color:#2b2b2b; }
+  strong{ color:var(--ink); }
+  .muted{ color:var(--muted); }
+
+  .slide-foot{
+    position:absolute; left:84px; right:84px; bottom:28px;
+    display:flex; justify-content:space-between;
+    font-size:13px; color:#9a9a9a; letter-spacing:.02em;
+  }
+
+  /* ---------- 1. cover ---------- */
+  .cover{ justify-content:center; padding-left:110px; }
+  .cover::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:16px; background:var(--accent);
+  }
+  .cover .name{ font-size:64px; font-weight:700; letter-spacing:-.01em; line-height:1.1; }
+  .cover .role{ font-size:26px; font-weight:600; color:var(--accent); margin-top:18px; }
+  .cover .tagline{ font-size:22px; color:var(--muted); margin-top:36px; max-width:860px; line-height:1.6; }
+  .cover .contact{ margin-top:56px; display:flex; gap:36px; font-size:18px; color:var(--muted); }
+
+  /* ---------- 2. about ---------- */
+  .stats{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-bottom:40px; }
+  .stat{ background:var(--accent-soft); border-radius:10px; padding:26px 28px; }
+  .stat .num{ font-size:46px; font-weight:700; color:var(--accent); line-height:1.1; }
+  .stat .label{ font-size:18px; color:#333; margin-top:8px; line-height:1.45; }
+  .stats.compact{ margin-bottom:24px; }
+  .stats.compact .stat{ padding:18px 24px; }
+  .stats.compact .num{ font-size:36px; }
+  .stats.compact .label{ font-size:16.5px; margin-top:4px; }
+  .timeline.compact{ margin-top:auto; margin-bottom:8px; }
+  .timeline.compact .tl-item .org{ font-size:19px; }
+  .timeline.compact .tl-item .title{ font-size:15px; }
+  ul.dots{ list-style:none; }
+  ul.dots li{ position:relative; padding-left:24px; margin-bottom:12px; }
+  ul.dots li::before{
+    content:""; position:absolute; left:4px; top:13px;
+    width:8px; height:8px; border-radius:50%; background:var(--accent);
+  }
+
+  /* ---------- 3. timeline ---------- */
+  .timeline{ position:relative; display:grid; grid-template-columns:repeat(5, 1fr); gap:18px; margin-top:24px; }
+  .timeline::before{
+    content:""; position:absolute; left:0; right:0; top:11px; height:3px; background:var(--line);
+  }
+  .tl-item{ position:relative; padding-top:42px; }
+  .tl-item::before{
+    content:""; position:absolute; left:0; top:2px; width:21px; height:21px;
+    border-radius:50%; background:#fff; border:4px solid var(--line);
+  }
+  .tl-item.now::before{ border-color:var(--accent); background:var(--accent); }
+  .tl-item .when{ font-size:15px; font-weight:700; color:var(--accent); letter-spacing:.02em; }
+  .tl-item .org{ font-size:21px; font-weight:700; margin-top:8px; line-height:1.3; }
+  .tl-item .title{ font-size:16px; color:var(--muted); margin-top:4px; }
+  .tl-item .what{ font-size:16.5px; color:#333; margin-top:14px; line-height:1.55; }
+  .tl-note{ margin-top:auto; font-size:18px; color:var(--muted); }
+
+  /* ---------- project slides ---------- */
+  .proj-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:6px; }
+  .proj-head .client{ font-size:15px; color:var(--muted); }
+  .cases{ display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; }
+  .case{ border:1px solid var(--line); border-radius:10px; padding:22px 24px; display:flex; flex-direction:column; }
+  .case h3{ font-size:21px; font-weight:700; margin-bottom:14px; }
+  .case dl{ display:grid; grid-template-columns:auto 1fr; gap:8px 12px; font-size:16.5px; line-height:1.5; }
+  .case dt{ font-weight:700; color:var(--muted); white-space:nowrap; }
+  .case dd{ color:#2b2b2b; }
+  .case dd.result{ color:var(--accent); font-weight:700; }
+  .also{
+    margin-top:22px; padding:16px 22px; background:#f6f7f9; border-radius:8px;
+    font-size:17px; color:#333; line-height:1.6;
+  }
+  .also b{ color:var(--accent); }
+
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .panel{ border:1px solid var(--line); border-radius:10px; padding:26px 30px; }
+  .panel .label{ font-size:14px; font-weight:700; color:var(--accent); letter-spacing:.08em; }
+  .panel h3{ font-size:24px; font-weight:700; margin:6px 0 4px; }
+  .panel .sub{ font-size:15.5px; color:var(--muted); margin-bottom:16px; }
+  .panel ul.dots li{ font-size:18px; margin-bottom:10px; line-height:1.5; }
+  .panel ul.dots li::before{ top:11px; }
+  .arch{ flex:1; min-height:0; display:flex; align-items:center; justify-content:center; }
+  .arch img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .tag{
+    display:inline-block; font-size:14px; font-weight:700; color:var(--accent);
+    background:var(--accent-soft); border-radius:4px; padding:3px 9px; margin-top:6px;
+  }
+
+  /* ---------- project overview ---------- */
+  .overview{ display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; }
+  .ov{ border:1px solid var(--line); border-radius:10px; padding:20px 22px 16px; display:flex; flex-direction:column; }
+  .ov-label{ font-size:13px; font-weight:700; color:var(--accent); letter-spacing:.06em; }
+  .ov h3{ font-size:21px; font-weight:700; margin:4px 0 6px; }
+  .ov p{ font-size:16px; line-height:1.5; color:#333; }
+  .mini{ width:100%; height:auto; margin-top:auto; padding-top:14px; }
+  .mini rect{ fill:#f1f3f5; stroke:#c9ced6; }
+  .mini rect.hi{ fill:var(--accent-soft); stroke:var(--accent); }
+  .mini text{ font-family:var(--font); font-size:11.5px; fill:#333; text-anchor:middle; }
+  .mini text.hi{ fill:var(--accent); font-weight:700; }
+  .mini path{ fill:none; stroke:#9aa3ad; stroke-width:1.5; }
+
+  /* ---------- skills ---------- */
+  .skills{ display:grid; grid-template-columns:repeat(3, 1fr); gap:22px 26px; }
+  .skill{ border-top:3px solid var(--accent); padding-top:14px; }
+  .skill h3{ font-size:19px; font-weight:700; margin-bottom:10px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ font-size:15.5px; background:#f1f3f5; border-radius:4px; padding:5px 10px; color:#222; }
+
+  /* ---------- fit table ---------- */
+  table.fit{ width:100%; border-collapse:collapse; }
+  table.fit th{
+    text-align:left; font-size:15px; letter-spacing:.06em; color:var(--muted);
+    padding:0 18px 12px; border-bottom:2px solid var(--ink);
+  }
+  table.fit td{ font-size:18.5px; line-height:1.5; padding:13px 18px; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.fit td:first-child{ font-weight:700; width:34%; }
+
+  /* ---------- closing ---------- */
+  .closing{ justify-content:center; align-items:center; text-align:center; background:var(--accent); color:#fff; }
+  .closing h1{ font-size:64px; color:#fff; }
+  .closing p{ color:#dbe9f6; font-size:24px; margin-top:20px; }
+  .closing .contact{ margin-top:48px; display:flex; gap:40px; justify-content:center; font-size:20px; color:#fff; }
+  .closing .slide-foot{ color:#a9c9e8; }
+
+  /* ---------- chrome: progress, nav ---------- */
+  .progress{ position:fixed; left:0; top:0; height:4px; background:var(--accent); transition:width .2s ease; z-index:5; }
+  .nav{
+    position:fixed; right:18px; bottom:16px; display:flex; gap:8px; align-items:center;
+    font-size:13px; color:#c9ced6; z-index:5;
+  }
+  .nav button{
+    appearance:none; border:1px solid #4a525e; background:#2a3038; color:#e6e9ee;
+    font-family:var(--font); font-size:13px; padding:6px 12px; border-radius:4px; cursor:pointer;
+  }
+  .nav button:hover{ background:#38414c; }
+  .nav button:focus-visible{ outline:2px solid #ffb900; outline-offset:2px; }
+
+  @media print{
+    @page{ size:1280px 720px; margin:0; }
+    html, body{ height:auto; overflow:visible; background:#fff; }
+    .viewport{ position:static; overflow:visible; }
+    .stage{ position:static; transform:none; width:1280px; height:auto; }
+    .slide{
+      position:relative; display:flex !important; width:1280px; height:720px;
+      box-shadow:none; break-after:page; page-break-after:always;
+    }
+    .closing{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .stat, .also, .chip, .tag{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .progress, .nav{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="viewport">
+  <div class="stage" id="stage">
+
+    <!-- 1. 封面 -->
+    <section class="slide cover">
+      <div class="kicker">自我介紹</div>
+      <div class="name">洪昀璿（Sean）</div>
+      <div class="role">軟體工程師 · 後端 · AI 整合 · 基礎架構</div>
+      <p class="tagline">6 年正式系統開發經驗，從需求訪談一路負責到上線維運；<br>擅長在真實負載下找出問題的根本原因並解決。</p>
+      <div class="contact">
+        <span>yunshanghong@gmail.com</span>
+      </div>
+    </section>
+
+    <!-- 2. 關於我 -->
+    <section class="slide">
+      <div class="kicker">About me</div>
+      <h2 style="margin-bottom:24px">關於我</h2>
+      <div class="stats compact">
+        <div class="stat"><div class="num">6 年</div><div class="label">正式系統開發經驗</div></div>
+        <div class="stat"><div class="num">10 萬+</div><div class="label">使用者、每日交易筆數（XSGD 支付平台）</div></div>
+        <div class="stat"><div class="num">端到端</div><div class="label">需求訪談 → 實作 → 上線 → 正式環境維運</div></div>
+      </div>
+      <ul class="dots">
+        <li><strong>產業經驗：</strong>零售銀行、人壽保險、穩定幣支付，以及 ERP 供應商、家電製造商等企業客戶</li>
+        <li><strong>工作方式：</strong>能獨立面對客戶交付，也在團隊內帶工程教育訓練</li>
+      </ul>
+      <div class="timeline compact">
+        <div class="tl-item">
+          <div class="when">2016 – 2018</div>
+          <div class="org">土木工程師</div>
+          <div class="title">2018 年轉職軟體</div>
+        </div>
+        <div class="tl-item">
+          <div class="when">2020/03 – 2020/11</div>
+          <div class="org">昕力科技</div>
+          <div class="title">軟體工程師</div>
+        </div>
+        <div class="tl-item">
+          <div class="when">2020/11 – 2022/04</div>
+          <div class="org">普鴻資訊</div>
+          <div class="title">軟體工程師</div>
+        </div>
+        <div class="tl-item">
+          <div class="when">2022/04 – 2023/01</div>
+          <div class="org">Xfers / StraitsX</div>
+          <div class="title">全端工程師（遠距）</div>
+        </div>
+        <div class="tl-item now">
+          <div class="when">2023/03 – 至今</div>
+          <div class="org">NEUX 新逸科技</div>
+          <div class="title">軟體工程師（遠距）</div>
+        </div>
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>2</span></div>
+    </section>
+
+    <!-- 3. 專案概覽 -->
+    <section class="slide">
+      <div class="kicker">Projects</div>
+      <h2 style="margin-bottom:24px">專案概覽</h2>
+      <div class="overview">
+        <div class="ov">
+          <div class="ov-label">NEUX · 2023 – 至今</div>
+          <h3>鼎新 DigiKnow 就享知</h3>
+          <p>10 萬+ 會員平台：NestJS API、React Native App 與 Vertex AI 助理</p>
+          <svg class="mini" viewBox="0 0 320 64" aria-hidden="true"><rect x="0.0" y="17" width="65.0" height="30" rx="5"/><text x="32.5" y="36">Web / App</text><path d="M68.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect class="hi" x="85.0" y="17" width="65.0" height="30" rx="5"/><text class="hi" x="117.5" y="36">NestJS</text><path d="M153.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="170.0" y="17" width="65.0" height="30" rx="5"/><text x="202.5" y="36">MySQL</text><path d="M238.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="255.0" y="17" width="65.0" height="30" rx="5"/><text x="287.5" y="36">Gemini</text></svg>
+        </div>
+        <div class="ov">
+          <div class="ov-label">NEUX · 2023 – 至今</div>
+          <h3>櫻花台灣 官網</h3>
+          <p>對外企業官網：逐層找出瓶頸，把逾時端點壓到一秒內</p>
+          <svg class="mini" viewBox="0 0 320 64" aria-hidden="true"><rect x="0.0" y="17" width="65.0" height="30" rx="5"/><text x="32.5" y="36">訪客</text><path d="M68.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="85.0" y="17" width="65.0" height="30" rx="5"/><text x="117.5" y="36">Nginx</text><path d="M153.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect class="hi" x="170.0" y="17" width="65.0" height="30" rx="5"/><text class="hi" x="202.5" y="36">.NET MVC</text><path d="M238.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="255.0" y="17" width="65.0" height="30" rx="5"/><text x="287.5" y="36">MSSQL</text></svg>
+        </div>
+        <div class="ov">
+          <div class="ov-label">NEUX · 2023 – 至今</div>
+          <h3>新光人壽 CMS</h3>
+          <p>保單平台後台：Angular 11 → 17 升級，維護 Java CMS</p>
+          <svg class="mini" viewBox="0 0 320 64" aria-hidden="true"><rect x="0.0" y="17" width="65.0" height="30" rx="5"/><text x="32.5" y="36">CMS 後台</text><path d="M68.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect class="hi" x="85.0" y="17" width="65.0" height="30" rx="5"/><text class="hi" x="117.5" y="36">WildFly</text><path d="M153.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="170.0" y="17" width="65.0" height="30" rx="5"/><text x="202.5" y="36">SSR 產生</text><path d="M238.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="255.0" y="17" width="65.0" height="30" rx="5"/><text x="287.5" y="36">靜態官網</text></svg>
+        </div>
+        <div class="ov">
+          <div class="ov-label">StraitsX · 2022 – 2023</div>
+          <h3>XSGD 鏈下支付流程</h3>
+          <p>新加坡穩定幣：非同步結算、冪等重試與 webhook 對帳</p>
+          <svg class="mini" viewBox="0 0 320 64" aria-hidden="true"><rect x="0.0" y="17" width="65.0" height="30" rx="5"/><text x="32.5" y="36">使用者</text><path d="M68.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect class="hi" x="85.0" y="17" width="65.0" height="30" rx="5"/><text class="hi" x="117.5" y="36">支付流程</text><path d="M153.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="170.0" y="17" width="65.0" height="30" rx="5"/><text x="202.5" y="36">鏈下帳本</text><path d="M238.0 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="255.0" y="17" width="65.0" height="30" rx="5"/><text x="287.5" y="36">鏈上轉帳</text></svg>
+        </div>
+        <div class="ov">
+          <div class="ov-label">普鴻資訊 · 2020 – 2022</div>
+          <h3>玉山銀行 零售銀行系統</h3>
+          <p>主導導覽驗證模組，Azure Pipelines 部署錯誤率降到零</p>
+          <svg class="mini" viewBox="0 0 320 64" aria-hidden="true"><rect x="0.0" y="17" width="93.3" height="30" rx="5"/><text x="46.7" y="36">客戶</text><path d="M96.3 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect class="hi" x="113.3" y="17" width="93.3" height="30" rx="5"/><text class="hi" x="160.0" y="36">導覽驗證</text><path d="M209.7 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="226.7" y="17" width="93.3" height="30" rx="5"/><text x="273.3" y="36">銀行後端</text></svg>
+        </div>
+        <div class="ov">
+          <div class="ov-label">昕力科技 · 2020</div>
+          <h3>銀行系統全端開發</h3>
+          <p>第一份工程師工作，在資深工程師指導下開發全端功能</p>
+          <svg class="mini" viewBox="0 0 320 64" aria-hidden="true"><rect x="0.0" y="17" width="93.3" height="30" rx="5"/><text x="46.7" y="36">前端</text><path d="M96.3 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect class="hi" x="113.3" y="17" width="93.3" height="30" rx="5"/><text class="hi" x="160.0" y="36">後端 API</text><path d="M209.7 32h12l-4 -3.5m4 3.5l-4 3.5"/><rect x="226.7" y="17" width="93.3" height="30" rx="5"/><text x="273.3" y="36">資料庫</text></svg>
+        </div>
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>3</span></div>
+    </section>
+
+    <!-- 4. 專案：DigiKnow -->
+    <section class="slide">
+      <div class="kicker">Project</div>
+      <div class="proj-head"><h2 style="margin-bottom:0">鼎新電腦 DigiKnow 就享知平台</h2></div>
+      <p class="muted" style="font-size:17px;margin:4px 0 24px">ERP 供應商的會員知識平台，會員超過 10 萬人 · 負責後端、基礎架構、行動 App 與 AI 整合</p>
+      <div class="cases">
+        <div class="case">
+          <h3>積分兌換資料不一致</h3>
+          <dl>
+            <dt>問題</dt><dd>多人同時兌換，搶同一筆庫存記錄，造成競爭條件與資料庫死鎖</dd>
+            <dt>做法</dt><dd>導入悲觀併發控制</dd>
+            <dt>結果</dt><dd class="result">兌換資料恢復一致</dd>
+          </dl>
+        </div>
+        <div class="case">
+          <h3>API 逾時</h3>
+          <dl>
+            <dt>問題</dt><dd>N+1 查詢、缺索引、過多 join</dd>
+            <dt>做法</dt><dd>加入可共用的快取層、補齊索引、精簡查詢</dd>
+            <dt>結果</dt><dd class="result">從逾時優化到一秒內回應</dd>
+          </dl>
+        </div>
+        <div class="case">
+          <h3>後台大量匯出 OOM</h3>
+          <dl>
+            <dt>問題</dt><dd>一次撈出全部資料，記憶體不足</dd>
+            <dt>做法</dt><dd>改成分批分頁處理</dd>
+            <dt>結果</dt><dd class="result">徹底解決記憶體不足</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="also">
+        <b>另外：</b>在 Vertex AI Agent Engine 上打造給客戶用的 AI 助理 ·
+        導入 Kubernetes 負載平衡與 GCP Cloud Logging 監控正式環境 ·
+        用同一套 React Native 程式碼交付 iOS 與 Android App
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>4</span></div>
+    </section>
+
+    <!-- 5. 架構：DigiKnow -->
+    <section class="slide">
+      <div class="kicker">Architecture</div>
+      <div class="proj-head"><h2 style="margin-bottom:0">DigiKnow 就享知 系統架構</h2></div>
+      <p class="muted" style="font-size:17px;margin:4px 0 16px">前台 Nuxt 3、App React Native、後台 Vue 3 · NestJS API 逐步取代舊 PHP API · MySQL + Flyway、Redis 佇列 · 串接 Google Cloud 與 Gemini</p>
+      <figure class="arch"><img src="img/digiknow-architecture.svg" alt="DigiKnow 就享知系統架構圖"></figure>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>5</span></div>
+    </section>
+
+    <!-- 6. 專案：櫻花 + 新光 -->
+    <section class="slide">
+      <div class="kicker">Project · NEUX 新逸科技</div>
+      <h2>跨團隊合作與系統升級</h2>
+      <div class="two-col">
+        <div class="panel">
+          <div class="label">家電製造商 · 企業官網</div>
+          <h3>櫻花台灣</h3>
+          <div class="sub">正式站頁面載入緩慢</div>
+          <ul class="dots">
+            <li>主導跨部門調查，與<strong>基礎架構團隊</strong>、<strong>資料庫管理團隊</strong>合作</li>
+            <li>從應用程式、資料庫到基礎架構逐層找出瓶頸</li>
+            <li>用查詢與快取優化，把逾時端點壓到<strong>一秒內</strong></li>
+          </ul>
+          <span class="tag">跨部門溝通</span>
+        </div>
+        <div class="panel">
+          <div class="label">人壽保險 · 正式保單平台</div>
+          <h3>新光人壽</h3>
+          <div class="sub">框架升級與後台維護</div>
+          <ul class="dots">
+            <li>Angular 11 → 17，跨六個主要版本，開發效率提升 <strong>80% 以上</strong></li>
+            <li>維護 Java / Maven 寫的 CMS 後台，持續交付功能異動與缺陷修正</li>
+            <li>與 <strong>QA 團隊</strong>合作打造 AI 輔助自動化測試原型</li>
+          </ul>
+          <span class="tag">跨團隊合作</span>
+        </div>
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>6</span></div>
+    </section>
+
+    <!-- 7. 架構：櫻花台灣 -->
+    <section class="slide">
+      <div class="kicker">Architecture</div>
+      <div class="proj-head"><h2 style="margin-bottom:0">櫻花台灣 官網系統架構</h2></div>
+      <p class="muted" style="font-size:17px;margin:4px 0 16px">Nginx 反向代理 · ASP.NET Core MVC 前台與後台（Identity 登入） · EF Core + MSSQL · 舊站轉址與 SEO · 從舊產品資料庫匯入</p>
+      <figure class="arch"><img src="img/sakura-cms-architecture.svg" alt="櫻花台灣官網系統架構圖"></figure>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>7</span></div>
+    </section>
+
+    <!-- 8. 架構：新光人壽 CMS -->
+    <section class="slide">
+      <div class="kicker">Architecture</div>
+      <div class="proj-head"><h2 style="margin-bottom:0">新光人壽 CMS 系統架構</h2></div>
+      <p class="muted" style="font-size:17px;margin:4px 0 16px">Angular 後台 + WildFly（Java）API · Node SSR 產生靜態官網，發佈到 Web 主機 · SQL Server · 串接新光 SSO 與外部系統</p>
+      <figure class="arch"><img src="img/shinkong-cms-architecture.svg" alt="新光人壽 CMS 系統架構圖"></figure>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>8</span></div>
+    </section>
+
+    <!-- 9. 專案：金融系統 -->
+    <section class="slide">
+      <div class="kicker">Project · 金融系統</div>
+      <h2>高監管、高流量的金融系統</h2>
+      <div class="two-col">
+        <div class="panel">
+          <div class="label">Xfers / StraitsX · 2022 – 2023</div>
+          <h3>XSGD 鏈下支付流程</h3>
+          <div class="sub">新加坡最大穩定幣發行商 · 10 萬+ 使用者、每日 10 萬+ 筆交易</div>
+          <ul class="dots">
+            <li>處理鏈下帳本與鏈上轉帳之間的<strong>非同步結算</strong>與對帳</li>
+            <li>重複或失敗的事件用<strong>冪等處理</strong>與重試機制確保正確</li>
+            <li>串接銀行與支付服務商 API，webhook 可處理亂序與重複送達</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="label">普鴻資訊 · 2020 – 2022</div>
+          <h3>玉山銀行零售銀行系統</h3>
+          <div class="sub">對外的零售銀行系統</div>
+          <ul class="dots">
+            <li>主導開發<strong>導覽驗證模組</strong>，落實銀行流程的法規要求</li>
+            <li>訂定完整介面規格並搭配 mock 服務，讓團隊能<strong>並行開發</strong></li>
+            <li>用 Azure Pipelines 自動化發布，部署錯誤率降到<strong>零</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>9</span></div>
+    </section>
+
+    <!-- 10. 技術能力 -->
+    <section class="slide">
+      <div class="kicker">Skills</div>
+      <h2>技術能力</h2>
+      <div class="skills">
+        <div class="skill">
+          <h3>後端</h3>
+          <div class="chips"><span class="chip">C# / .NET</span><span class="chip">NestJS（TypeScript）</span><span class="chip">Java（Maven）</span><span class="chip">FastAPI（Python）</span><span class="chip">REST API</span></div>
+        </div>
+        <div class="skill">
+          <h3>前端與行動裝置</h3>
+          <div class="chips"><span class="chip">Angular</span><span class="chip">React</span><span class="chip">Vue</span><span class="chip">React Native（iOS / Android）</span></div>
+        </div>
+        <div class="skill">
+          <h3>資料庫</h3>
+          <div class="chips"><span class="chip">SQL Server</span><span class="chip">MySQL</span><span class="chip">Redis</span></div>
+        </div>
+        <div class="skill">
+          <h3>效能與可靠性</h3>
+          <div class="chips"><span class="chip">併發控制／死鎖</span><span class="chip">查詢優化與索引</span><span class="chip">快取策略</span><span class="chip">OOM 除錯</span><span class="chip">正式環境監控</span></div>
+        </div>
+        <div class="skill">
+          <h3>雲端與 DevOps</h3>
+          <div class="chips"><span class="chip">GCP</span><span class="chip">Azure</span><span class="chip">Kubernetes</span><span class="chip">Docker</span><span class="chip">Azure Pipelines</span><span class="chip">Git</span></div>
+        </div>
+        <div class="skill">
+          <h3>AI 與交付</h3>
+          <div class="chips"><span class="chip">Vertex AI Agent Engine</span><span class="chip">Claude Code</span><span class="chip">需求訪談</span><span class="chip">時程估算</span><span class="chip">教育訓練</span></div>
+        </div>
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>10</span></div>
+    </section>
+
+    <!-- 11. 與職務的連結 -->
+    <section class="slide">
+      <div class="kicker">Fit</div>
+      <h2>我能帶來什麼</h2>
+      <table class="fit">
+        <thead><tr><th>職務需要</th><th>我的經驗</th></tr></thead>
+        <tbody>
+          <tr><td>系統分析與設計（SA / SD）</td><td>需求訪談、範疇界定、時程估算，獨立對客戶交付</td></tr>
+          <tr><td>處理系統 Issue 與 Change Request</td><td>正式環境診斷：死鎖、N+1、OOM；持續交付功能異動與缺陷修正</td></tr>
+          <tr><td>.NET / C#、Angular、SQL</td><td>C# / .NET 開發、Angular 11 → 17 升級、SQL Server 查詢優化與索引設計</td></tr>
+          <tr><td>測試與上線</td><td>與 QA 團隊合作；Azure Pipelines 自動化發布，部署錯誤率降到零</td></tr>
+          <tr><td>全球廠區 Rollout、海外出差</td><td>任職新加坡公司、遠距協作的經驗；可配合外派與出差</td></tr>
+        </tbody>
+      </table>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>11</span></div>
+    </section>
+
+    <!-- 12. 結尾 -->
+    <section class="slide closing">
+      <h1>謝謝聆聽</h1>
+      <p>歡迎提問</p>
+      <div class="contact">
+        <span>yunshanghong@gmail.com</span>
+        <span>github.com/wannarun526</span>
+      </div>
+      <div class="slide-foot"><span>洪昀璿（Sean）</span><span>12</span></div>
+    </section>
+
+  </div>
+</div>
+
+<div class="nav">
+  <button type="button" id="prev" aria-label="上一頁">←</button>
+  <span id="counter">1 / 12</span>
+  <button type="button" id="next" aria-label="下一頁">→</button>
+  <button type="button" id="fullscreen">全螢幕 (F)</button>
+</div>
+
+<script>
+  (function(){
+    var stage = document.getElementById('stage');
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var counter = document.getElementById('counter');
+    var progress = document.getElementById('progress');
+    var current = 0;
+
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720) * 0.94;
+      stage.style.setProperty('--scale', s);
+    }
+
+    function show(i){
+      current = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach(function(el, idx){ el.classList.toggle('active', idx === current); });
+      counter.textContent = (current + 1) + ' / ' + slides.length;
+      progress.style.width = ((current + 1) / slides.length * 100) + '%';
+      if (location.hash !== '#' + (current + 1)) history.replaceState(null, '', '#' + (current + 1));
+    }
+
+    function toggleFullscreen(){
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen && document.exitFullscreen();
+      }
+    }
+
+    document.addEventListener('keydown', function(e){
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      switch (e.key) {
+        case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': case 'Enter':
+          e.preventDefault(); show(current + 1); break;
+        case 'ArrowLeft': case 'ArrowUp': case 'PageUp': case 'Backspace':
+          e.preventDefault(); show(current - 1); break;
+        case 'Home': show(0); break;
+        case 'End': show(slides.length - 1); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+
+    document.getElementById('prev').addEventListener('click', function(){ show(current - 1); });
+    document.getElementById('next').addEventListener('click', function(){ show(current + 1); });
+    document.getElementById('fullscreen').addEventListener('click', toggleFullscreen);
+    window.addEventListener('resize', fit);
+
+    function fromHash(){
+      var n = parseInt(location.hash.slice(1), 10);
+      show(isNaN(n) ? 0 : n - 1);
+    }
+    window.addEventListener('hashchange', fromHash);
+
+    fit();
+    fromHash();
+  })();
+</script>
+</body>
+</html>
